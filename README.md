@@ -13,4 +13,7 @@ Projekt Softwareengineering (ISEF01): Quizapp - Quizius Maximus
 ## Setup mithilfe package.json
 für die Einrichtung auf einem anderen Gerät zur Entwicklung müssen folgende zwei Schritte durchgeführt werden:
 - den entsprechenden Branch von GitHub klonen
-- mithilfe des Befehls 'npm install' die dependencies aus package.json lokal installieren
+- Mithilfe des folgenden npm-Befehls die Dependencies aus package.json lokal installieren
+```sh
+npm install
+```
