@@ -1,6 +1,10 @@
 # quizius-maximus
 Projekt Softwareengineering (ISEF01): Quizapp - Quizius Maximus
 
+## Branches
+- **main:** hier befindet sich der fertig getestete, aktuelle Stand der Quizapp.
+- **dev:** hier wird entwickelt und getestet. Nach dem Code-Review wird *dev* in *main* gemerged (4-Augen-Prinzip).
+
 ## Setup (initial)
 ### Frameworks: 
 - [X] Vue
