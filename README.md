@@ -3,12 +3,12 @@ Projekt Softwareengineering (ISEF01): Quizapp - Quizius Maximus
 
 ## Setup (initial)
 ### Frameworks: 
-[X] Vue
-[X] Vue-Routing
-[X] Bootstrap 
-[X] Bootstrap-Icons
+- [X] Vue
+- [X] Vue-Routing
+- [X] Bootstrap 
+- [X] Bootstrap-Icons
 ### Backend
-[X] Firebase SDK
+- [X] Firebase SDK
 
 ## Setup mithilfe package.json
 für die Einrichtung auf einem anderen Gerät zur Entwicklung müssen folgende zwei Schritte durchgeführt werden:
