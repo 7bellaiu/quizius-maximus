@@ -3,8 +3,8 @@ Projekt Softwareengineering (ISEF01): Quizapp - Quizius Maximus
 
 ## Setup (initial)
 ### Frameworks: 
-[] Vue
-[] Vue-Routing
+[X] Vue
+[X] Vue-Routing
 [] Bootstrap 
 [] Bootstrap-Icons
 ### Backend
