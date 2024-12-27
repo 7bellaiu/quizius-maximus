@@ -2,7 +2,6 @@
 import { ref, onMounted, computed } from "vue";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
-import Toast from "@/components/Toast.vue";
 
 /** REFERENCES */
 const router = useRouter();

@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import router from '@/router';
-import LogoutButton from '@/components/LogoutButton.vue';
 
 const userLoggedIn = ref(false);
 const userName = ref("");

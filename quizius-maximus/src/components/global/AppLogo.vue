@@ -8,8 +8,8 @@ const props = defineProps({
 </script>
 
 <template>
-    <img v-if="props.variant == 'dark'" src="../assets/logo.png" alt="Logo" class="logo-img rounded-circle" />
-    <img v-else-if="props.variant == 'light'" src="../assets/logo.png" alt="Logo" class="logo-img rounded-circle p-1 bg-dark"/>
+    <img v-if="props.variant == 'dark'" src="../../assets/logo.PNG" alt="Logo" class="logo-img rounded-circle" />
+    <img v-else-if="props.variant == 'light'" src="../../assets/logo.png" alt="Logo" class="logo-img rounded-circle p-1 bg-dark"/>
 </template>
 
 <style scoped>

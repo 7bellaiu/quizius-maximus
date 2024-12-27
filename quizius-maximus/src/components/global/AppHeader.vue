@@ -2,8 +2,6 @@
 import { ref, onMounted } from 'vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import router from '@/router';
-import AppLogo from './AppLogo.vue';
-import LogoutButton from './LogoutButton.vue';
 
 const userLoggedIn = ref(false);
 

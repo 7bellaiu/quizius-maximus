@@ -3,7 +3,6 @@
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
-import Toast from "@/components/Toast.vue";
 
 const DEFAULT_EMAIL_DOMAIN = '@iu-study.org';
 const LEGACY_EMAIL_DOMAIN = '@iubh.de';
