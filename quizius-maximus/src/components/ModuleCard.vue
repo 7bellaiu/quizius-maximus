@@ -17,8 +17,8 @@ const props = defineProps({
 
 <template>
     <div class="col">
-        <div class="card shadow-sm border-primary border-opacity-25">
-            <div class="card-header text-bg-primary border-primary border-opacity-25 bg-opacity-75">
+        <div class="card shadow-sm border-primary">
+            <div class="card-header text-bg-primary border-primary">
                 {{ props.shortname }}: {{ props.moduleid }}
             </div>
             <div class="card-body bg-primary bg-opacity-10">
