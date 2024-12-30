@@ -1,10 +1,11 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { firestoreDB } from '@/main';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const email = ref("");
-const PLACEHOLDER_REQUEST_TYPE = 'Was beschreibt dein Anliegen am ehesten?';
 const REQUEST_TYPES = ["Login", "Verbesserungsvorschlag", "Sonstiges Anliegen"];
-const requestType = ref(PLACEHOLDER_REQUEST_TYPE);
+const requestType = ref(REQUEST_TYPES[0]);
 const message = ref("");
 const toastRef = ref(null);
 const toastMessage = ref("");
@@ -16,8 +17,37 @@ const emit = defineEmits(["success", "cancel"])
 const disableSubmitButton = computed(() => !email.value.trim() || !message.value.trim());
 
 const handleContact = () => {
-    emit("success", "Success emitted");
-}
+    //Validierung: Keine leeren Nachrichten
+    if (!message.value.trim() || message.value.trim().length < 50) {
+        toastMessage.value = "Bitte erkläre dein Anliegen detaillierter."
+        toastVariant.value = "warning";
+        triggerToast();
+        return;
+    }
+
+
+    // Dokument in Collection erstellen
+    addDoc(collection(firestoreDB, 'supportRequests'), {
+        requestEmail: email.value,
+        requestType: requestType.value,
+        requestMessage: message.value,
+        requestTimestamp: serverTimestamp()
+    })
+        .then((docRef) => {
+            emit("success", "Deine Anfrage wurde erfolgreich gesendet!");
+        })
+        .catch((error) => {
+            toastMessage.value = "Beim Versenden deiner Anfrage ist ein Fehler aufgetreten!";
+            toastVariant.value = "danger";
+            console.error("Fehler beim Absenden der Supportanfrage: ", error);
+        });
+};
+
+const triggerToast = () => {
+    if (toastRef.value) {
+        toastRef.value.showToast();
+    }
+};
 </script>
 
 <template>
@@ -42,13 +72,15 @@ const handleContact = () => {
                         d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
                 </svg>
             </div>
-            <select class="form-select" aria-label="Default select example" v-model="requestType" required>
-                <option :value="PLACEHOLDER_REQUEST_TYPE" selected disabled>{{ PLACEHOLDER_REQUEST_TYPE }}
-                </option>
-                <option :value="REQUEST_TYPES[0]">{{ REQUEST_TYPES[0] }}</option>
-                <option :value="REQUEST_TYPES[1]">{{ REQUEST_TYPES[1] }}</option>
-                <option :value="REQUEST_TYPES[2]">{{ REQUEST_TYPES[2] }}</option>
-            </select>
+            <div class="form-floating">
+                <select class="form-select" id="requestTypeSelect" aria-label="Auswahl der Art der Supportanfrage"
+                    v-model="requestType">
+                    <option :value="REQUEST_TYPES[0]">{{ REQUEST_TYPES[0] }}</option>
+                    <option :value="REQUEST_TYPES[1]">{{ REQUEST_TYPES[1] }}</option>
+                    <option :value="REQUEST_TYPES[2]">{{ REQUEST_TYPES[2] }}</option>
+                </select>
+                <label for="requestTypeSelect">Was beschreibt dein Anliegen am ehesten?</label>
+            </div>
         </div>
         <div class="input-group mb-2">
             <div class="input-group-text" aria-hidden="true">
@@ -60,8 +92,9 @@ const handleContact = () => {
                         d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
                 </svg>
             </div>
-            <textarea type="text" class="form-control" id="message" placeholder="Beschreibe hier dein Anliegen"
-                aria-label="Anfragetext" v-model="message" required />
+            <textarea type="text" class="form-control" id="message"
+                placeholder="Beschreibe hier dein Anliegen möglichst detailliert (mind. 50 Zeichen)"
+                aria-label="Anfragetext" rows="4" v-model="message" required />
         </div>
 
         <div class="d-flex justify-content-between mt-3">
@@ -71,5 +104,7 @@ const handleContact = () => {
         </div>
     </form>
     <!-- Erfolgs-/Fehlermeldung -->
-    <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" />
+    <div class="d-flex justify-content-center mt-3">
+        <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" />
+    </div>
 </template>
