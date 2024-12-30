@@ -5,13 +5,37 @@ import FAQ from "../components/FAQ.vue"
 import { ref } from "vue";
 
 const displayContactForm = ref(false);
+const toastRef = ref(null);
+const toastMessage = ref("");
+const toastVariant = ref("");
+
+
+const handleContactCancel = (message) => {
+    displayContactForm.value = false;
+    toastMessage.value = message;
+    toastVariant.value = 'warning';
+    triggerToast();
+}
+
+const handleContactSuccess = (message) => {
+    displayContactForm.value = false;
+    toastMessage.value = message;
+    toastVariant.value = 'success';
+    triggerToast();
+}
+
+const triggerToast = () => {
+    if (toastRef.value) {
+        toastRef.value.showToast();
+    }
+};
 </script>
 
 <template>
     <main>
         <section class="album py-3 container">
-            <h2 class="text-center">Wie können wir dir helfen?</h2>
-            <div class="row justify-content-center">
+            <article class="row justify-content-center">
+                <h2 class="text-center">Wie können wir dir helfen?</h2>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <!-- FAQ Card innerhalb des Buttons -->
                     <button type="button" class="btn w-50 p-0" @click="displayContactForm = false">
@@ -43,21 +67,28 @@ const displayContactForm = ref(false);
                         </div>
                     </button>
                 </div>
+            </article>
+
+            <!-- Toast-Bereich -->
+            <div class="row row-cols-1 justify-content-center">
+                <div class="d-flex justify-content-center">
+                    <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" />
+                </div>
             </div>
 
             <!-- FAQ-Bereich -->
-            <div class="row row-cols-1 justify-content-center" v-if="!displayContactForm">
+            <article class="row row-cols-1 justify-content-center" v-if="!displayContactForm">
                 <h2 class="text-center mt-5">FAQ</h2>
-                <section class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center">
                     <FAQ />
-                </section>
-            </div>
+                </div>
+            </article>
 
             <!-- Kontaktformular-Bereich -->
-            <div class="row row-cols-1 justify-content-center" v-else>
+            <article class="row row-cols-1 justify-content-center" v-if="displayContactForm">
                 <h2 class="text-center mt-5">Kontaktanfrage</h2>
-                <ContactForm />
-            </div>
+                <ContactForm @cancel="handleContactCancel" @success="handleContactSuccess" />
+            </article>
         </section>
     </main>
 </template>

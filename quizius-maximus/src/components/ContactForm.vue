@@ -16,7 +16,7 @@ const emit = defineEmits(["success", "cancel"])
 const disableSubmitButton = computed(() => !email.value.trim() || !message.value.trim());
 
 const handleContact = () => {
-    emit("success", "Das Passwort wurde erfolgreich aktualisiert");
+    emit("success", "Success emitted");
 }
 </script>
 
@@ -31,7 +31,7 @@ const handleContact = () => {
                 </svg>
             </div>
             <input type="email" class="form-control" id="email" placeholder="Deine E-Mail für die Kommunikation"
-                aria-label="E-Mail" data-ddg-inputtype="credentials.email" v-model="email" />
+                aria-label="E-Mail" data-ddg-inputtype="credentials.email" v-model="email" required />
         </div>
         <div class="input-group mb-2">
             <div class="input-group-text" aria-hidden="true">
@@ -42,7 +42,7 @@ const handleContact = () => {
                         d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
                 </svg>
             </div>
-            <select class="form-select" aria-label="Default select example" v-model="requestType">
+            <select class="form-select" aria-label="Default select example" v-model="requestType" required>
                 <option :value="PLACEHOLDER_REQUEST_TYPE" selected disabled>{{ PLACEHOLDER_REQUEST_TYPE }}
                 </option>
                 <option :value="REQUEST_TYPES[0]">{{ REQUEST_TYPES[0] }}</option>
@@ -61,13 +61,13 @@ const handleContact = () => {
                 </svg>
             </div>
             <textarea type="text" class="form-control" id="message" placeholder="Beschreibe hier dein Anliegen"
-                aria-label="Anfragetext" v-model="message" />
+                aria-label="Anfragetext" v-model="message" required />
         </div>
 
         <div class="d-flex justify-content-between mt-3">
-            <button @click="emit('cancel', 'Kontaktanfrage abgebrochen!');"
+            <button type="button" @click="emit('cancel', 'Kontaktanfrage abgebrochen!');"
                 class="btn btn-outline-danger">Abbrechen</button>
-            <button class="btn btn-primary w-50" :disabled="disableSubmitButton">Anfrage senden</button>
+            <button type="submit" class="btn btn-primary w-50" :disabled="disableSubmitButton">Anfrage senden</button>
         </div>
     </form>
     <!-- Erfolgs-/Fehlermeldung -->
