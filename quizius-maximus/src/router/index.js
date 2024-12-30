@@ -6,6 +6,7 @@ import PrivacyPolicy from '@/components/PrivacyPolicy.vue';
 import Imprint from '@/components/Imprint.vue';
 import Profile from '@/views/Profile.vue';
 import Modules from '@/views/Modules.vue';
+import Help from '@/views/Help.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
             path: "/modules",
             name: "modules",
             component: Modules
+        },
+        {
+            path: "/support",
+            name: "support",
+            component: Help
         },
     ]
 });
