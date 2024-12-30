@@ -1,5 +1,7 @@
 <script setup>
 import ContactForm from "../components/ContactForm.vue";
+import FAQ from "../components/FAQ.vue"
+
 import { ref } from "vue";
 
 const displayContactForm = ref(false);
@@ -9,7 +11,7 @@ const displayContactForm = ref(false);
     <main>
         <section class="album py-3 container">
             <h2 class="text-center">Wie können wir dir helfen?</h2>
-            <div class="row row-cols-2 justify-content-center">
+            <div class="row justify-content-center">
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <!-- FAQ Card innerhalb des Buttons -->
                     <button type="button" class="btn w-50 p-0" @click="displayContactForm = false">
@@ -46,11 +48,8 @@ const displayContactForm = ref(false);
             <!-- FAQ-Bereich -->
             <div class="row row-cols-1 justify-content-center" v-if="!displayContactForm">
                 <h2 class="text-center">FAQ</h2>
-                <section class="d-flex justify-content-start">
-                    <details>
-                        <summary>FAQ Frage 1</summary>
-                        Antworttext zu Frage 1
-                    </details>
+                <section class="d-flex justify-content-center">
+                    <FAQ />
                 </section>
             </div>
 
