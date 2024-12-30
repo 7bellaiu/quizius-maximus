@@ -73,5 +73,3 @@ const handleContact = () => {
     <!-- Erfolgs-/Fehlermeldung -->
     <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" />
 </template>
-
-<style scoped></style>

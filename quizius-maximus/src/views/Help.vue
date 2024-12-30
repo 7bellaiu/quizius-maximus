@@ -47,7 +47,7 @@ const displayContactForm = ref(false);
 
             <!-- FAQ-Bereich -->
             <div class="row row-cols-1 justify-content-center" v-if="!displayContactForm">
-                <h2 class="text-center">FAQ</h2>
+                <h2 class="text-center mt-5">FAQ</h2>
                 <section class="d-flex justify-content-center">
                     <FAQ />
                 </section>
