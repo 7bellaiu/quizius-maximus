@@ -94,13 +94,7 @@ const triggerToast = () => {
 </template>
 
 <style scoped>
-/* Zusätzliche Styles, um den Button-Inhalt zu formatieren */
 .card {
-    cursor: pointer;
     transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.card-body {
-    padding: 20px;
 }
 </style>
