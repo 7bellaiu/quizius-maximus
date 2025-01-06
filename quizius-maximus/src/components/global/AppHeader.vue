@@ -35,8 +35,8 @@ onMounted(() => {
             </button>
             <ul class="dropdown-menu dropdown-menu-end  text-center">
                 <li><router-link class="dropdown-item" to="/profile">Mein Profil</router-link></li>
-                <li><router-link class="dropdown-item" to="/quizzes">Quiz starten</router-link></li>
-                <li><router-link class="dropdown-item" to="/">Hilfe & Kontakt</router-link></li>
+                <li><router-link class="dropdown-item" to="/modules">Quiz starten</router-link></li>
+                <li><router-link class="dropdown-item" to="/support">Hilfe & Kontakt</router-link></li>
                 <li>
                     <hr class="dropdown-divider" />
                 </li>

@@ -1,5 +1,6 @@
 import 'bootstrap/dist/js/bootstrap.bundle.js'
 import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import { initializeApp } from 'firebase/app'
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -11,6 +12,7 @@ import Toast from './components/global/Toast.vue'
 import AppLogo from './components/global/AppLogo.vue'
 import LogoutButton from './components/global/LogoutButton.vue'
 import AppFooter from './components/global/AppFooter.vue'
+import { getFirestore } from 'firebase/firestore'
 
 //firebase config to access APIs
 const firebaseConfig = {
@@ -22,7 +24,8 @@ const firebaseConfig = {
     appId: "1:555791080708:web:c890c0d237eb00c2764451"
 };
 
-initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
+const firestoreDB = getFirestore(firebaseApp);
 
 const app = createApp(App)
 app.use(router);
@@ -34,5 +37,6 @@ app.component('AppLogo', AppLogo);
 app.component('LogoutButton', LogoutButton);
 app.component('AppFooter', AppFooter);
 
-
 app.mount('#app')
+
+export { firestoreDB };
