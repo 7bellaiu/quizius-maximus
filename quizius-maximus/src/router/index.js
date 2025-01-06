@@ -7,6 +7,8 @@ import Imprint from '@/components/Imprint.vue';
 import Profile from '@/views/Profile.vue';
 import Modules from '@/views/Modules.vue';
 import Help from '@/views/Help.vue';
+import Questionnaires from '@/views/Questionnaires.vue';
+import EditQuestionnaire from '@/views/EditQuestionnaire.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +47,16 @@ const router = createRouter({
             path: "/modules",
             name: "modules",
             component: Modules
+        },
+        {
+            path: "/questionnaires",
+            name: "questionnaires",
+            component: Questionnaires
+        },
+        {
+            path: "/editquestionnaire",
+            name: "editquestionnaire",
+            component: EditQuestionnaire
         },
         {
             path: "/support",
