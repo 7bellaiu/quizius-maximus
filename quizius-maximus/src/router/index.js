@@ -9,6 +9,7 @@ import Modules from '@/views/Modules.vue';
 import Help from '@/views/Help.vue';
 import Questionnaires from '@/views/Questionnaires.vue';
 import EditQuestionnaire from '@/views/EditQuestionnaire.vue';
+import CreateQuestionnaire from '@/views/CreateQuestionnaire.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,9 +55,15 @@ const router = createRouter({
             component: Questionnaires
         },
         {
-            path: "/editquestionnaire",
+            path: "/editquestionnaire/:moduleid",
             name: "editquestionnaire",
-            component: EditQuestionnaire
+            component: EditQuestionnaire,
+            props: true
+        },
+        {
+            path: '/createquestionnaire',
+            name: 'createquestionnaire',
+            component: CreateQuestionnaire
         },
         {
             path: "/support",

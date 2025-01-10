@@ -36,6 +36,7 @@ onMounted(() => {
             <ul class="dropdown-menu dropdown-menu-end  text-center">
                 <li><router-link class="dropdown-item" to="/profile">Mein Profil</router-link></li>
                 <li><router-link class="dropdown-item" to="/modules">Quiz starten</router-link></li>
+                <li><router-link class="dropdown-item" to="/questionnaires">Fragenkataloge</router-link></li>
                 <li><router-link class="dropdown-item" to="/support">Hilfe & Kontakt</router-link></li>
                 <li>
                     <hr class="dropdown-divider" />

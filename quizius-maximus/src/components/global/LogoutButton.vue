@@ -3,5 +3,5 @@ import { getAuth, signOut } from 'firebase/auth';
 </script>
 
 <template>
-    <button @click="signOut(getAuth());" class="btn btn-outline-danger">Ausloggen</button>
+    <button @click="signOut(getAuth());" class="btn btn-outline-danger">Abmelden</button>
 </template>

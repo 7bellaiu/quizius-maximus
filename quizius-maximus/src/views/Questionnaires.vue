@@ -1,7 +1,7 @@
 <script setup>
 import ModuleCard from '@/components/QuestionnairesCard.vue';
 import { ref, onMounted, computed } from 'vue';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import router from '@/router';
 
@@ -36,9 +36,45 @@ const top3Modules = computed(() => {
     return [filteredModules.value[0], filteredModules.value[1], filteredModules.value[3]]
 });
 
-function addModule() {
-    router.push('/editquestionnaire');
+// Erstellen
+const createQuestionnaire = () => {
+    router.push('/createquestionnaire');
 };
+
+// Löschen
+const deleteQuestionnaire = async (moduleId) => {
+
+    try {
+        // Popup anzeigen
+        if (!confirm('Der komplette Fragenkatalog zu diesem Modul wird gelöscht. Wirklich Fortfahren?')) {
+            return;
+        }
+
+        const firestoreDB = getFirestore();
+
+        // collection module löschen
+        await deleteDoc(doc(firestoreDB, 'module', moduleId));
+
+        // zugehörige questionnaire collection selektieren und löschen
+        const questionnairesDoc = await getDocs(query(collection(firestoreDB, 'questionnaires'), where('moduleID', '==', moduleId)));
+
+        await Promise.all(questionnairesDoc.docs.map(async (questionnaireDoc) => {
+            const questionsDoc = await getDocs(collection(questionnaireDoc.ref, 'questions'));
+            await Promise.all(questionsDoc.docs.map((questionDoc) => deleteDoc(questionDoc.ref)));
+            await deleteDoc(questionnaireDoc.ref);
+        }));
+
+        alert('Fragenkatalog erfolgreich gelöscht!');
+    } catch (error) {
+        console.error('Fehler beim Löschen des Fragenkatalogs: ', error);
+        alert('Fehler beim Löschen des Fragenkatalogs.');
+    }
+
+    // Modul aus der Ansicht entfernen ohne Seitenrefresh
+    modules.value = modules.value.filter(module => module.id !== moduleId);
+};
+
+
 </script>
 
 <template>
@@ -55,7 +91,7 @@ function addModule() {
                         <datalist id="datalistOptions">
                             <option v-for="module in filteredModules" :value="module.longname"></option>
                         </datalist>
-                        <span class="btn btn-outline-success" @click="addModule" title="Neues Modul anlegen">
+                        <span class="btn btn-outline-success" @click="createQuestionnaire" title="Neues Modul anlegen">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                                 <path
@@ -108,7 +144,7 @@ function addModule() {
         <section class="album py-3 container">
             <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-3">
                 <ModuleCard v-for="module in filteredModules" :moduleid="module.id" :shortname="module.shortname"
-                    :longname="module.longname" />
+                    :longname="module.longname" @delete-questionnaire="deleteQuestionnaire" />
             </div>
         </section>
     </main>
