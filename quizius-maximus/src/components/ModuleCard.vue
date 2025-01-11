@@ -13,6 +13,21 @@ const props = defineProps({
         required: true
     }
 });
+
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const goToCompetitiveGamemodes = () => {
+    router.push({
+        path: '/compgamemodes',
+        state: {
+            moduleId: props.moduleid,
+            moduleShortname: props.shortname
+        }
+    });
+}
+
 </script>
 
 <template>
@@ -25,12 +40,12 @@ const props = defineProps({
                 <h6 class="card-subtitle">{{ props.longname }}</h6>
                 <p class="card-text">Hier könnte zusätzlich noch ein Beschreibungstext rein.</p>
                 <div class="d-flex justify-content-center align-items-center">
-                    <router-link class="btn btn-sm btn-outline-danger w-25 mx-2" to="/compgamemodes">
+                    <button class="btn btn-sm btn-outline-danger w-25 mx-2" @click="goToCompetitiveGamemodes()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-person-fill" viewBox="0 0 16 16">
                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path>
                         </svg>
-                    </router-link>
+                    </button>
                     <!-- TODO: router link für coop gamemodes -->
                     <button type="button" class="btn btn-sm btn-outline-success w-25 mx-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
