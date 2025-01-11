@@ -10,6 +10,7 @@ import Help from '@/views/Help.vue';
 import Questionnaires from '@/views/Questionnaires.vue';
 import EditQuestionnaire from '@/views/EditQuestionnaire.vue';
 import CreateQuestionnaire from '@/views/CreateQuestionnaire.vue';
+import CompetitiveGamemodes from '@/views/CompetitiveGamemodes.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -69,6 +70,11 @@ const router = createRouter({
             path: "/support",
             name: "support",
             component: Help
+        },
+        {
+            path: "/compgamemodes",
+            name: "compgamemodes",
+            component: CompetitiveGamemodes
         },
     ]
 });
