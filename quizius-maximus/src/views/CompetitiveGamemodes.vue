@@ -11,13 +11,13 @@ const COMP_GAMEMODES = [
     },
     {
         title: "Themenbasiertes Quiz",
-        description: "COMING SOON",
+        description: "Hier kannst du dir wertvolles Wissen entweder zu kompletten Modulen oder einzelnen Lektionen der Module gemeinsam mit deinen Komiliton:innen aneignen. Schafft ihr es, die 50%-Hürde zu erreichen?",
         type: "comp",
         isPlayable: false
     },
     {
         title: "Lernmodus",
-        description: "COMING SOON",
+        description: "Hier kannst du dir wertvolles Wissen entweder zu kompletten Modulen oder einzelnen Lektionen der Module gemeinsam mit deinen Komiliton:innen aneignen. In diesem Modus habt ihr weder Zeitdruck, noch eine bestimmte zu erreichende Punktzahl.",
         type: "comp",
         isPlayable: false
     }
@@ -30,7 +30,7 @@ const COMP_GAMEMODES = [
             <div class="row">
                 <h2 class="text-center">Welchen der <span class="text-danger">kompetitiven</span> Spielmodi möchtest du spielen?</h2>
             </div>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center mx-1">
                 <GamemodeCard v-for="comp_gamemode in COMP_GAMEMODES" :gamemode-title="comp_gamemode.title"
                     :gamemode-description="comp_gamemode.description"
                     :gamemode-type="comp_gamemode.type"
