@@ -10,6 +10,10 @@ const props = defineProps({
         type: String,
         required: true
     },
+    moduleLongname: {
+        type: String,
+        required: true
+    },
     gamemodeTitle: {
         type: String,
         required: true
@@ -60,8 +64,9 @@ const displayGray = computed(() => {
                     </svg>
                     COMING SOON
                 </p>
-                <p v-else class="card-text"><small class="text-body-secondary"><strong>Modul:</strong> {{ props.moduleId }} - {{
-                        props.moduleShortname }}</small></p>
+                <p v-else class="card-text"><small class="text-body-secondary"><strong>Modul:</strong> {{ props.moduleShortname
+                        }} - {{
+                            props.moduleLongname }}</small></p>
             </div>
         </div>
     </button>

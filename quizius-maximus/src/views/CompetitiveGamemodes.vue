@@ -9,6 +9,10 @@ const props = defineProps({
     moduleShortname: {
         type: String,
         required: true,
+    },
+    moduleLongname: {
+        type: String,
+        required: true
     }
 });
 
@@ -44,9 +48,9 @@ const COMP_GAMEMODES = [
             </div>
             <div class="row justify-content-center mx-1">
                 <GamemodeCard v-for="comp_gamemode in COMP_GAMEMODES" :module-id="props.moduleId"
-                    :module-shortname="props.moduleShortname" :gamemode-title="comp_gamemode.title"
-                    :gamemode-description="comp_gamemode.description" :gamemode-type="comp_gamemode.type"
-                    :gamemode-is-playable="comp_gamemode.isPlayable" />
+                    :module-shortname="props.moduleShortname" :module-longname="props.moduleLongname"
+                    :gamemode-title="comp_gamemode.title" :gamemode-description="comp_gamemode.description"
+                    :gamemode-type="comp_gamemode.type" :gamemode-is-playable="comp_gamemode.isPlayable" />
             </div>
         </section>
     </main>

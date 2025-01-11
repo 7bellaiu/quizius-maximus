@@ -72,7 +72,7 @@ const router = createRouter({
             component: Help
         },
         {
-            path: '/compgamemodes/:moduleId/:moduleShortname',
+            path: '/compgamemodes/:moduleId/:moduleShortname/:moduleLongname',
             name: 'compgamemodes',
             component: CompetitiveGamemodes,
             props: true,  // URL-Params --props---> view
