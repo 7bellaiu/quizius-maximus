@@ -1,6 +1,17 @@
 <script setup>
 import GamemodeCard from '@/components/gamemodes/gamemodeCard.vue';
 
+const props = defineProps({
+    moduleId: {
+        type: String,
+        required: true,
+    },
+    moduleShortname: {
+        type: String,
+        required: true,
+    }
+});
+
 // TODO: Beschreibungen sind noch für Coop => Comp !!!
 const COMP_GAMEMODES = [
     {
@@ -28,12 +39,13 @@ const COMP_GAMEMODES = [
     <main>
         <section class="album py-3 container">
             <div class="row">
-                <h2 class="text-center">Welchen der <span class="text-danger">kompetitiven</span> Spielmodi möchtest du spielen?</h2>
+                <h2 class="text-center">Welchen der <span class="text-danger">kompetitiven</span> Spielmodi möchtest du
+                    spielen?</h2>
             </div>
             <div class="row justify-content-center mx-1">
-                <GamemodeCard v-for="comp_gamemode in COMP_GAMEMODES" :gamemode-title="comp_gamemode.title"
-                    :gamemode-description="comp_gamemode.description"
-                    :gamemode-type="comp_gamemode.type"
+                <GamemodeCard v-for="comp_gamemode in COMP_GAMEMODES" :module-id="props.moduleId"
+                    :module-shortname="props.moduleShortname" :gamemode-title="comp_gamemode.title"
+                    :gamemode-description="comp_gamemode.description" :gamemode-type="comp_gamemode.type"
                     :gamemode-is-playable="comp_gamemode.isPlayable" />
             </div>
         </section>

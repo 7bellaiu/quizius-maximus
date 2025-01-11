@@ -2,6 +2,14 @@
 import { computed } from 'vue';
 
 const props = defineProps({
+    moduleId: {
+        type: String,
+        required: true
+    },
+    moduleShortname: {
+        type: String,
+        required: true
+    },
     gamemodeTitle: {
         type: String,
         required: true
@@ -37,7 +45,7 @@ const displayGray = computed(() => {
 <template>
     <button type="button" class="btn p-0 my-1" @click="" :disabled="!props.gamemodeIsPlayable">
         <div
-            :class="{ 'card': true, 'border-danger bg-danger text-white': displayGreen, 'border-danger bg-danger text-white': displayRed, 'border-secondary bg-secondary bg-opacity-25 text-secondary': displayGray }">
+            :class="{ 'card': true, 'border-danger bg-danger text-body-primary': displayGreen, 'border-danger bg-danger text-body-primary': displayRed, 'border-secondary bg-secondary bg-opacity-25 text-body-secondary': displayGray }">
             <div class="card-body">
                 <h5 class="card-title">{{ props.gamemodeTitle }}</h5>
                 <p class="card-text">
@@ -52,6 +60,8 @@ const displayGray = computed(() => {
                     </svg>
                     COMING SOON
                 </p>
+                <p v-else class="card-text"><small class="text-body-secondary"><strong>Modul:</strong> {{ props.moduleId }} - {{
+                        props.moduleShortname }}</small></p>
             </div>
         </div>
     </button>
