@@ -1,5 +1,5 @@
 <script setup>
-import GamemodeCard from '@/components/gamemodes/gamemodeCard.vue';
+import GamemodeCard from '@/components/gamemodes/GamemodeCard.vue';
 
 const props = defineProps({
     moduleId: {

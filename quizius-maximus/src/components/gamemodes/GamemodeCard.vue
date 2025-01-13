@@ -47,7 +47,10 @@ const displayGray = computed(() => {
 </script>
 
 <template>
-    <button type="button" class="btn p-0 my-1" @click="" :disabled="!props.gamemodeIsPlayable">
+    <router-link class="btn p-0 my-1"
+        :to="{ name: 'game', params: { moduleId: props.moduleId, moduleShortname: props.moduleShortname, moduleLongname: props.moduleLongname, gameMode: props.gamemodeTitle } }"
+        :disabled="!props.gamemodeIsPlayable">
+        <!-- <button type="button" class="btn p-0 my-1" @click="" :disabled="!props.gamemodeIsPlayable"> -->
         <div
             :class="{ 'card': true, 'border-danger bg-danger text-body-primary': displayGreen, 'border-danger bg-danger text-body-primary': displayRed, 'border-secondary bg-secondary bg-opacity-25 text-body-secondary': displayGray }">
             <div class="card-body">
@@ -64,10 +67,12 @@ const displayGray = computed(() => {
                     </svg>
                     COMING SOON
                 </p>
-                <p v-else class="card-text"><small class="text-body-secondary"><strong>Modul:</strong> {{ props.moduleShortname
-                        }} - {{
+                <p v-else class="card-text"><small class="text-body-secondary"><strong>Modul:</strong> {{
+                    props.moduleShortname
+                }} - {{
                             props.moduleLongname }}</small></p>
             </div>
         </div>
-    </button>
+    </router-link>
+    <!-- </button> -->
 </template>
