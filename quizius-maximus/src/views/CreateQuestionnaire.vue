@@ -3,6 +3,7 @@ import { reactive } from 'vue';
 import { ref, computed } from 'vue';
 import { firestoreDB } from '@/main';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import router from '@/router';
 
 const form = reactive({
     moduleShortname: '',
@@ -78,12 +79,22 @@ const saveQuestionnaire = async () => {
 
         await Promise.all(questionDoc);
         alert('Fragenkatalog erfolgreich gespeichert!');
+        router.push("/questionnaires");
     } catch (error) {
         console.error('Fehler beim Speichern des Fragenkatalogs: ', error);
         alert('Fehler beim Speichern des Fragenkatalogs.');
     }
 };
 
+const handleCancel = () => {
+    router.push("/questionnaires");
+}
+
+// automatisch Höhe anhand des Inhalts anpassen
+const resizeTextarea = (event) => {
+    event.target.style.height = "auto"; // Höhe zurücksetzen
+    event.target.style.height = event.target.scrollHeight + "px";
+}
 </script>
 
 <template>
@@ -130,7 +141,8 @@ const saveQuestionnaire = async () => {
                         <span class="input-group-text">Frage</span>
                         <div class="form-floating">
                             <textarea class="form-control" :id="'question' + index" v-model="question.text"
-                                placeholder="Quizfrage (max. 300 Zeichen)" maxlength="300" required></textarea>
+                                placeholder="Quizfrage (max. 300 Zeichen)" maxlength="300" required
+                                @input="resizeTextarea"></textarea>
                             <label :for="'question' + index" class="form-label">(max. 300 Zeichen)</label>
                         </div>
                         <span class="input-group-text">
@@ -154,7 +166,7 @@ const saveQuestionnaire = async () => {
                         <div class="form-floating">
                             <textarea class="form-control me-2" v-model="answer.text"
                                 :id="'answertext' + index + aIndex" placeholder="Antwortmöglichkeit (max. 150 Zeichen)"
-                                maxlength="150" required></textarea>
+                                maxlength="150" required @input="resizeTextarea"></textarea>
                             <label :for="'answertext' + index + aIndex" class="form-label">(max. 150 Zeichen)</label>
                         </div>
                         <div class="input-group-text">
@@ -170,7 +182,7 @@ const saveQuestionnaire = async () => {
                 </div>
             </fieldset>
             <div class="d-flex justify-content-between mt-3">
-                <button type="button" @click="" class="btn btn-outline-warning m-1 p-2">
+                <button type="button" @click="handleCancel" class="btn btn-outline-warning m-1 p-2">
                     Abbrechen
                 </button>
                 <button type="submit" class="btn btn-primary w-50 m-1 p-2">
@@ -226,5 +238,9 @@ const saveQuestionnaire = async () => {
 .form-wrapper {
     width: 100%;
     max-width: 800px;
+}
+
+.option {
+    height: auto;
 }
 </style>
