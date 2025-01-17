@@ -24,7 +24,7 @@ onMounted(() => {
             <AppLogo variant="dark"/>
         </a>
         <a href="/" class="text-decoration-none" id="quizius-maximus">
-            <span class="text-white p-1 h2">Quiz<span class="text-primary">iu</span>s Maximus</span>
+            <span class="text-white p-1 h2">Quiz<span class="text-info">iu</span>s Maximus</span>
         </a>
         <div v-if="!userLoggedIn" class="dropdown">
             <router-link type="button" class="btn btn-outline-primary" to="/register">Registrieren</router-link>
