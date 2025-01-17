@@ -10,6 +10,7 @@ import Help from '@/views/Help.vue';
 import Questionnaires from '@/views/Questionnaires.vue';
 import EditQuestionnaire from '@/views/EditQuestionnaire.vue';
 import CreateQuestionnaire from '@/views/CreateQuestionnaire.vue';
+import ActiveQuizzes from '@/views/ActiveQuizzes.vue';
 import CompetitiveGamemodes from '@/views/CompetitiveGamemodes.vue';
 import Game from '@/views/Game.vue';
 
@@ -66,6 +67,11 @@ const router = createRouter({
             path: '/createquestionnaire',
             name: 'createquestionnaire',
             component: CreateQuestionnaire
+        },
+        {
+            path: '/activequizzes',
+            name: 'activequizzes',
+            component: ActiveQuizzes
         },
         {
             path: "/support",
