@@ -32,10 +32,6 @@ const filteredModules = computed(() => {
     });
 });
 
-const top3Modules = computed(() => {
-    return [filteredModules.value[0], filteredModules.value[1], filteredModules.value[3]]
-});
-
 // Erstellen
 const createQuestionnaire = () => {
     router.push('/createquestionnaire');
@@ -89,7 +85,7 @@ const deleteQuestionnaire = async (moduleId) => {
                             placeholder="Suche nach einem Modul zum Bearbeiten des Fragenkataloges..."
                             list="datalistOptions" id="exampleDataList">
                         <datalist id="datalistOptions">
-                            <option v-for="module in filteredModules" :value="module.longname"></option>
+                            <option v-for="module in filteredModules.slice(0, 3)" :value="module.longname"></option>
                         </datalist>
                         <span class="btn btn-outline-success" @click="createQuestionnaire" title="Neues Modul anlegen">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

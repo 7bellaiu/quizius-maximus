@@ -11,7 +11,8 @@ import Questionnaires from '@/views/Questionnaires.vue';
 import EditQuestionnaire from '@/views/EditQuestionnaire.vue';
 import CreateQuestionnaire from '@/views/CreateQuestionnaire.vue';
 import ActiveQuizzes from '@/views/ActiveQuizzes.vue';
-import CreateNewGame from '@/components/CreateNewGame.vue';
+import CompetitiveGamemodes from '@/views/CompetitiveGamemodes.vue';
+import Game from '@/views/Game.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -76,6 +77,18 @@ const router = createRouter({
             path: "/support",
             name: "support",
             component: Help
+        },
+        {
+            path: '/compgamemodes/:moduleId/:moduleShortname/:moduleLongname',
+            name: 'compgamemodes',
+            component: CompetitiveGamemodes,
+            props: true,  // URL-Params --props---> view
+        },
+        {
+            path: '/game/:moduleId/:moduleShortname/:moduleLongname/:gameMode',
+            name: 'game',
+            component: Game,
+            props: true
         },
     ]
 });

@@ -1,0 +1,25 @@
+  <script setup>
+  const props = defineProps({
+    currentQuestion: {
+      type: Number,
+      required: true
+    },
+    totalQuestions: {
+      type: Number,
+      required: true
+    }
+  });
+</script>
+  
+<template>
+  <div class="row row-cols-1 mx-2 my-2">
+    <div class="col text-center text-body-secondary">
+      <p>
+        <strong>Spielmodus</strong>
+        <br />
+        <small>Frage {{ currentQuestion }} von {{ totalQuestions }}</small>
+      </p>
+    </div>
+  </div>
+</template>
+

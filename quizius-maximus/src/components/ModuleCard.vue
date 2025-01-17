@@ -13,6 +13,7 @@ const props = defineProps({
         required: true
     }
 });
+
 </script>
 
 <template>
@@ -25,12 +26,14 @@ const props = defineProps({
                 <h6 class="card-subtitle">{{ props.longname }}</h6>
                 <p class="card-text">Hier könnte zusätzlich noch ein Beschreibungstext rein.</p>
                 <div class="d-flex justify-content-center align-items-center">
-                    <button type="button" class="btn btn-sm btn-outline-danger w-25 mx-2">
+                    <router-link class="btn btn-sm btn-outline-danger w-25 mx-2"
+                        :to="{ name: 'compgamemodes', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname } }">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-person-fill" viewBox="0 0 16 16">
                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path>
                         </svg>
-                    </button>
+                    </router-link>
+                    <!-- TODO: router link für coop gamemodes -->
                     <button type="button" class="btn btn-sm btn-outline-success w-25 mx-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-people-fill" viewBox="0 0 16 16">
