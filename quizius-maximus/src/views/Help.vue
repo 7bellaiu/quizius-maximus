@@ -41,8 +41,8 @@ const triggerToast = () => {
                     <button type="button" class="btn w-50 p-0" @click="displayContactForm = false">
                         <div :class="{
                             'card': true,
-                            'border-primary': displayContactForm,
-                            'bg-primary text-white': !displayContactForm
+                            'border-info': displayContactForm,
+                            'bg-info bg-opacity-50': !displayContactForm
                         }" class="m-0">
                             <div class="card-body">
                                 <h5 class="card-title">FAQ</h5>
@@ -56,8 +56,8 @@ const triggerToast = () => {
                     <button type="button" class="btn w-50 p-0" @click="displayContactForm = true">
                         <div :class="{
                             'card': true,
-                            'border-primary': !displayContactForm,
-                            'bg-primary text-white': displayContactForm
+                            'border-info': !displayContactForm,
+                            'bg-info bg-opacity-50': displayContactForm
                         }" class="m-0">
                             <div class="card-body">
                                 <h5 class="card-title">Kontaktanfrage</h5>
