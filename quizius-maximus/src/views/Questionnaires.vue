@@ -3,6 +3,7 @@ import QuestionnairesCard from '@/components/questionnaires/QuestionnairesCard.v
 import { ref, onMounted, computed } from 'vue';
 import { getFirestore, collection, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore';
 import router from '@/router';
+import PlusIcon from '@/components/icons/PlusIcon.vue';
 
 const modules = ref([]);
 const search = ref("");
@@ -82,18 +83,13 @@ const deleteQuestionnaire = async (moduleId) => {
                     <h1 class="fw-light">Fragenkataloge</h1>
                     <div class="lead text-body-secondary py-3 d-flex align-items-center">
                         <input type="search" class="form-control me-2" v-model="search"
-                            placeholder="Suche nach einem Modul ..."
-                            list="datalistOptions" id="exampleDataList">
+                            placeholder="Suche nach einem Modul ..." list="datalistOptions" id="exampleDataList">
                         <datalist id="datalistOptions">
                             <option v-for="module in filteredModules.slice(0, 3)" :value="module.longname"></option>
                         </datalist>
-                        <span class="btn btn-outline-success" @click="createQuestionnaire" title="Neues Modul anlegen">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
-                            </svg>
-                        </span>
+                        <button type="button" class="btn btn-outline-success" @click="createQuestionnaire" title="Neues Modul anlegen">
+                            <PlusIcon />
+                        </button>
                     </div>
                 </div>
             </div>
@@ -101,9 +97,10 @@ const deleteQuestionnaire = async (moduleId) => {
         <!-- Liste der Module als Cards -->
         <section class="album container">
             <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-3">
-                <QuestionnairesCard v-for="module in filteredModules" :moduleid="module.id"
-                    :shortname="module.shortname" :longname="module.longname"
-                    @delete-questionnaire="deleteQuestionnaire" />
+                <div class="col" v-for="module in filteredModules">
+                    <QuestionnairesCard :moduleid="module.id" :shortname="module.shortname" :longname="module.longname"
+                        @delete-questionnaire="deleteQuestionnaire" />
+                </div>
             </div>
         </section>
     </main>

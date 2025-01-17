@@ -39,23 +39,23 @@ const filteredModules = computed(() => {
             <div class="row py-lg-3">
                 <div class="col-lg-6 col-md-8 mx-auto">
                     <h1 class="fw-light">Module</h1>
-                    <p class="lead text-body-secondary py-3">
+                    <div class="lead text-body-secondary py-3 d-flex align-items-center">
                         <input type="search" class="form-control" v-model="search"
                             placeholder="Suche nach einem Modul für ein Quiz..." list="datalistOptions"
                             id="exampleDataList">
                         <datalist id="datalistOptions">
-                            <option v-for="module in filteredModules.slice(0, 3)"
-                                :value="module.longname"></option>
+                            <option v-for="module in filteredModules.slice(0, 3)" :value="module.longname"></option>
                         </datalist>
-                    </p>
+                    </div>
                 </div>
             </div>
         </section>
         <!-- Liste der Module als Cards -->
         <section class="album container">
             <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-3">
-                <ModuleCard v-for="module in filteredModules" :moduleid="module.id" :shortname="module.shortname"
-                    :longname="module.longname" />
+                <div class="col" v-for="module in filteredModules">
+                    <ModuleCard :moduleid="module.id" :shortname="module.shortname" :longname="module.longname" />
+                </div>
             </div>
         </section>
     </main>
