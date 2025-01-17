@@ -9,6 +9,8 @@ const props = defineProps({
 
 <template>
     <router-link class="btn btn-light w-100 text-start" to="support">
-        <small>{{ props.text }}</small>
+        <div class="lead">
+            {{ props.text }}
+        </div>
     </router-link>
 </template>

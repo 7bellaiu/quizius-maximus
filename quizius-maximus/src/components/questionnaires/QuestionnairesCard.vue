@@ -27,7 +27,7 @@ const emit = defineEmits(['delete-questionnaire']);
             {{ props.shortname }}: {{ props.longname }}
         </div>
         <div class="card-body">
-            <div class="row row-cols-2 mb-1">
+            <div class="row mb-2 align-items-center">
                 <div class="col-2">
                     <router-link class="btn btn-sm btn-outline-primary w-100 mx-2"
                         :to="{ name: 'displayquestionnaire', params: { moduleid: props.moduleid } }"
@@ -35,11 +35,13 @@ const emit = defineEmits(['delete-questionnaire']);
                         <EyeIcon />
                     </router-link>
                 </div>
-                <div class="col-9">
-                    <small>Fragenkatalog anzeigen</small>
+                <div class="col-10">
+                    <div class="lead">
+                        Fragenkatalog anzeigen
+                    </div>
                 </div>
             </div>
-            <div class="row row-cols-2 mb-1">
+            <div class="row mb-2 align-items-center">
                 <div class="col-2">
                     <router-link class="btn btn-sm btn-outline-warning w-100 mx-2"
                         :to="{ name: 'editquestionnaire', params: { moduleid: props.moduleid } }"
@@ -47,19 +49,23 @@ const emit = defineEmits(['delete-questionnaire']);
                         <PencilIcon />
                     </router-link>
                 </div>
-                <div class="col-9">
-                    <small>Fragenkatalog bearbeiten</small>
+                <div class="col-10">
+                    <div class="lead">
+                        Fragenkatalog bearbeiten
+                    </div>
                 </div>
             </div>
-            <div class="row row-cols-2 mb-1">
+            <div class="row align-items-center">
                 <div class="col-2">
                     <button type="button" class="btn btn-sm btn-outline-danger w-100 mx-2"
                         @click="emit('delete-questionnaire', props.moduleid)" title="Fragenkatalog löschen">
                         <TrashCanIcon />
                     </button>
                 </div>
-                <div class="col-9">
-                    <small>Fragenkatalog löschen</small>
+                <div class="col-10">
+                    <div class="lead">
+                        Fragenkatalog löschen
+                    </div>
                 </div>
             </div>
         </div>
