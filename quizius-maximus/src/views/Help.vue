@@ -1,7 +1,7 @@
 <script setup>
 import ContactForm from "../components/ContactForm.vue";
 import FAQ from "../components/FAQ.vue"
-
+import router from '@/router'
 import { ref } from "vue";
 
 const displayContactForm = ref(false);

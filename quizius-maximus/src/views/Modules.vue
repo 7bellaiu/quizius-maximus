@@ -3,6 +3,7 @@ import ModuleCard from '@/components/ModuleCard.vue';
 import { ref, onMounted, computed } from 'vue';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import router from '@/router'
 
 const modules = ref([]);
 const search = ref("");
