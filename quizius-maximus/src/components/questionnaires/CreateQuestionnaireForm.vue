@@ -4,7 +4,6 @@ import { firestoreDB } from '@/main';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import router from '@/router';
 import TrashCanIcon from '@/components/icons/TrashCanIcon.vue'
-import CheckFilledIcon from '../icons/CheckFilledIcon.vue';
 import PlusIcon from '../icons/PlusIcon.vue';
 import DiskIcon from '../icons/DiskIcon.vue';
 import QuestionIcon from '../icons/QuestionIcon.vue';
