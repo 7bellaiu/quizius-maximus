@@ -7,6 +7,7 @@ import TrashCanIcon from '@/components/icons/TrashCanIcon.vue'
 import CheckFilledIcon from '../icons/CheckFilledIcon.vue';
 import PlusIcon from '../icons/PlusIcon.vue';
 import DiskIcon from '../icons/DiskIcon.vue';
+import QuestionIcon from '../icons/QuestionIcon.vue';
 
 
 const form = reactive({
@@ -98,7 +99,7 @@ const resizeTextarea = (event) => {
     <main>
         <section class="row justify-content-center">
             <article class="p-3 mt-3 mb-3 form-wrapper">
-                <h2 class="text-center">Fragenkatalog</h2>
+                <h2 class="text-center">Neuer Fragenkatalog</h2>
             </article>
         </section>
         <!-- Kopfbereich: Modul -->
@@ -128,23 +129,22 @@ const resizeTextarea = (event) => {
 
             <!-- Bauchdaten: Fragen & Antworten -->
             <fieldset class="card border-info mb-3" v-for="(question, index) in form.questions" :key="index">
-                <legend class="card-header bg-info bg-opacity-50 border-info"><strong>{{ index + 1 }}. Frage</strong>
+                <legend class="card-header bg-info bg-opacity-50 border-info">
+                    <strong>{{ index + 1 }}. Frage</strong>
                 </legend>
                 <!-- #. Frage -->
                 <div class="row card-body">
+                    <legend><small>Fragestellung</small></legend>
                     <div class="input-group input-group-sm mb-1">
-                        <small class="input-group-text">Frage</small>
+                        <div class="input-group-text">
+                            <QuestionIcon />
+                        </div>
                         <div class="form-floating">
                             <textarea class="form-control" :id="'question' + index" v-model="question.text"
                                 placeholder="Quizfrage (max. 300 Zeichen)" maxlength="300" required
                                 @input="resizeTextarea"></textarea>
                             <label :for="'question' + index" class="form-label">(max. 300 Zeichen)</label>
                         </div>
-                        <!-- <span class="input-group-text">
-                            <button type="button" class="btn btn-outline-danger" @click="removeQuestion(index)">
-                                <TrashCanIcon />
-                            </button>
-                        </span> -->
                     </div>
                 </div>
                 <!-- Antwortoptionen -->
@@ -205,10 +205,6 @@ const resizeTextarea = (event) => {
 <style scoped>
 .form-wrapper {
     width: 100%;
-    max-width: 800px;
-}
-
-.option {
-    height: auto;
+    max-width: 700px;
 }
 </style>

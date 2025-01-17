@@ -9,10 +9,12 @@ import Modules from '@/views/Modules.vue';
 import Help from '@/views/Help.vue';
 import Questionnaires from '@/views/Questionnaires.vue';
 import EditQuestionnaire from '@/views/EditQuestionnaire.vue';
-import CreateQuestionnaire from '@/views/CreateQuestionnaire.vue';
 import ActiveQuizzes from '@/views/ActiveQuizzes.vue';
 import CompetitiveGamemodes from '@/views/CompetitiveGamemodes.vue';
 import Game from '@/views/Game.vue';
+import DisplayQuestionnaireForm from '@/components/questionnaires/DisplayQuestionnaireForm.vue';
+import CreateQuestionnaireForm from '@/components/questionnaires/CreateQuestionnaireForm.vue';
+import Questionnaire from '@/views/Questionnaire.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,15 +60,10 @@ const router = createRouter({
             component: Questionnaires
         },
         {
-            path: "/editquestionnaire/:moduleid",
-            name: "editquestionnaire",
-            component: EditQuestionnaire,
+            path: "/questionnaire/:action/:moduleid",
+            name: "questionnaire",
+            component: Questionnaire,
             props: true
-        },
-        {
-            path: '/createquestionnaire',
-            name: 'createquestionnaire',
-            component: CreateQuestionnaire
         },
         {
             path: '/activequizzes',

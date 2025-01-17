@@ -9,14 +9,6 @@ const modules = ref([]);
 const search = ref("");
 
 onMounted(() => {
-    /** check whether user is logged in when loading this view*/
-    // Reicht im AppHeader aus
-    // onAuthStateChanged(getAuth(), function (user) {
-    //     if (!user) {
-    //         router.push("/");
-    //     }
-    // });
-
     getDocs(collection(getFirestore(), 'module'))
         .then((moduleSnapshot) => {
             modules.value = moduleSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -32,11 +24,6 @@ const filteredModules = computed(() => {
         );
     });
 });
-
-// Erstellen
-const createQuestionnaire = () => {
-    router.push('/createquestionnaire');
-};
 
 // Löschen
 const deleteQuestionnaire = async (moduleId) => {
@@ -87,9 +74,11 @@ const deleteQuestionnaire = async (moduleId) => {
                         <datalist id="datalistOptions">
                             <option v-for="module in filteredModules.slice(0, 3)" :value="module.longname"></option>
                         </datalist>
-                        <button type="button" class="btn btn-outline-success" @click="createQuestionnaire" title="Neues Modul anlegen">
+                        <router-link type="button" class="btn btn-outline-success"
+                            :to="{ name: 'questionnaire', params: { action: 'create', moduleid: 0 } }"
+                            title="Neues Modul anlegen">
                             <PlusIcon />
-                        </button>
+                        </router-link>
                     </div>
                 </div>
             </div>

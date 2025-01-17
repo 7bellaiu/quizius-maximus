@@ -30,7 +30,7 @@ const emit = defineEmits(['delete-questionnaire']);
             <div class="row mb-2 align-items-center">
                 <div class="col-2">
                     <router-link class="btn btn-sm btn-outline-primary w-100 mx-2"
-                        :to="{ name: 'displayquestionnaire', params: { moduleid: props.moduleid } }"
+                        :to="{ name: 'questionnaire', params: { action: 'display', moduleid: props.moduleid } }"
                         title="Fragenkatalog anzeigen">
                         <EyeIcon />
                     </router-link>
@@ -44,7 +44,7 @@ const emit = defineEmits(['delete-questionnaire']);
             <div class="row mb-2 align-items-center">
                 <div class="col-2">
                     <router-link class="btn btn-sm btn-outline-warning w-100 mx-2"
-                        :to="{ name: 'editquestionnaire', params: { moduleid: props.moduleid } }"
+                        :to="{ name: 'questionnaire', params: { action: 'change', moduleid: props.moduleid } }"
                         title="Fragenkatalog bearbeiten">
                         <PencilIcon />
                     </router-link>
