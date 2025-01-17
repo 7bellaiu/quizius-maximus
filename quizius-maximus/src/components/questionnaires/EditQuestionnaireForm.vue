@@ -1,29 +1,25 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import { firestoreDB } from '@/main';
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
-import router from '@/router';
+import { collection, query, where, getDocs, doc, getDoc, updateDoc, addDoc, deleteDoc } from 'firebase/firestore';
+import QuestionIcon from '@/components/icons/QuestionIcon.vue'
 import TrashCanIcon from '@/components/icons/TrashCanIcon.vue'
+import PencilIcon from '@/components/icons/PencilIcon.vue'
 import PlusIcon from '../icons/PlusIcon.vue';
 import DiskIcon from '../icons/DiskIcon.vue';
-import QuestionIcon from '../icons/QuestionIcon.vue';
+import router from '@/router';
 
+const props = defineProps({
+    moduleid: {
+        type: String,
+        required: true
+    }
+})
 
 const form = reactive({
-    moduleShortname: '',
-    moduleLongname: '',
-    questions: [
-        {
-            text: '',
-            answers: [
-                { text: '' },
-                { text: '' },
-                { text: '' },
-                { text: '' }
-            ],
-            correctAnswer: null
-        }
-    ]
+    shortname: '',
+    longname: '',
+    questions: []
 });
 
 const addQuestion = () => {
@@ -43,28 +39,69 @@ const removeQuestion = (index) => {
     form.questions.splice(index, 1);
 };
 
-const saveQuestionnaire = async () => {
+const loadModuleData = async () => {
     try {
-        // 1. Überprüfung auf ein bereits existierendes Modul mit gleichen Modulkürzel
-        if (!(await getDocs(query(collection(firestoreDB, 'module'), where('shortname', '==', shortname.value)))).empty) {
-            alert('Dieses Modulkürzel existiert bereits. Bitte ein anderes Kürzel vergeben.');
-            return;
+        // Lade Modul-Daten
+        const moduleDoc = await getDoc(doc(firestoreDB, 'module', props.moduleid));
+        if (moduleDoc.exists()) {
+            form.shortname = moduleDoc.data().shortname;
+            form.longname = moduleDoc.data().longname;
         }
 
-        // 2. Speichern in der Collection module
-        const moduleDoc = await addDoc(collection(firestoreDB, 'module'), {
-            shortname: shortname.value,
-            longname: longname.value
+        // Lade Fragen-Daten
+        const questionnairesQuery = query(collection(firestoreDB, 'questionnaires'), where('moduleID', '==', props.moduleid));
+        const questionnairesDoc = await getDocs(questionnairesQuery);
+
+        form.questions = [];
+        for (const questionnaireDoc of questionnairesDoc.docs) {
+            const questionsDoc = await getDocs(collection(questionnaireDoc.ref, 'questions'));
+            for (const questionDoc of questionsDoc.docs) {
+                form.questions.push({
+                    text: questionDoc.data().question,
+                    answers: [
+                        { text: questionDoc.data().option1 },
+                        { text: questionDoc.data().option2 },
+                        { text: questionDoc.data().option3 },
+                        { text: questionDoc.data().option4 }
+                    ],
+                    correctAnswer: parseInt(questionDoc.data().correctAnswer.replace('option', '')) - 1
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Fehler beim Laden der Daten: ', error);
+    }
+};
+
+const saveQuestionnaire = async () => {
+    try {
+        // Aktualisiere Modul-Daten
+        await updateDoc(doc(firestoreDB, 'module', props.moduleid), {
+            shortname: form.shortname,
+            longname: form.longname
         });
 
-        // 3. Speichern in der Collection questionnaires
-        const questionnaireDoc = await addDoc(collection(firestoreDB, 'questionnaires'), {
-            moduleID: moduleDoc.id
+        // Abfrage der bestehenden Fragebögen in der Collection 'questionnaires'
+        const questionnairesQuery = query(collection(firestoreDB, 'questionnaires'), where('moduleID', '==', props.moduleid));
+        const questionnairesDoc = await getDocs(questionnairesQuery);
+
+        // Lösche bestehende Fragen
+        for (const questionnaireDoc of questionnairesDoc.docs) {
+            const questionsDoc = await getDocs(collection(questionnaireDoc.ref, 'questions'));
+            for (const questionDoc of questionsDoc.docs) {
+                await deleteDoc(questionDoc.ref);
+            }
+            await deleteDoc(questionnaireDoc.ref);
+        }
+
+        // Speichere neuen Fragebogen
+        const questionnaireDocRef = await addDoc(collection(firestoreDB, 'questionnaires'), {
+            moduleID: props.moduleid
         });
 
-        // 4. Speichern der Fragen als Subcollection questions
-        const questionDoc = form.questions.map((question, index) => {
-            return addDoc(collection(questionnaireDoc, 'questions'), {
+        // Speichere neue Fragen
+        const questionChanges = form.questions.map((question) => {
+            return addDoc(collection(questionnaireDocRef, 'questions'), {
                 question: question.text,
                 option1: question.answers[0].text,
                 option2: question.answers[1].text,
@@ -74,7 +111,7 @@ const saveQuestionnaire = async () => {
             });
         });
 
-        await Promise.all(questionDoc);
+        await Promise.all(questionChanges);
         alert('Fragenkatalog erfolgreich gespeichert!');
         router.push("/questionnaires");
     } catch (error) {
@@ -83,16 +120,13 @@ const saveQuestionnaire = async () => {
     }
 };
 
-// automatisch Höhe anhand des Inhalts anpassen
-const resizeTextarea = (event) => {
-    event.target.style.height = "auto"; // Höhe zurücksetzen
-    event.target.style.height = event.target.scrollHeight + "px";
-}
+onMounted(() => {
+    loadModuleData();
+});
 </script>
 
 <template>
-    <h1 class="fw-light text-center mb-3">Fragenkatalog erstellen</h1>
-    <!-- Kopfbereich: Modul -->
+    <h1 class="fw-light text-center mb-3">Fragenkatalog bearbeiten</h1>
     <form class="m-2" @submit.prevent="saveQuestionnaire">
         <!-- Kopfdaten: Modul -->
         <fieldset class="card border-info mb-5">
@@ -101,7 +135,7 @@ const resizeTextarea = (event) => {
                 <div class="input-group input-group-sm mb-1">
                     <span class="input-group-text bg-info bg-opacity-25">Kürzel</span>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="shortname" v-model="shortname" maxlength="40"
+                        <input type="text" class="form-control" id="shortname" v-model="form.shortname" maxlength="40"
                             placeholder="Trage hier das Modulkürzel ein" required>
                         <label for="shortname">(max. 40 Zeichen)</label>
                     </div>
@@ -109,7 +143,7 @@ const resizeTextarea = (event) => {
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-info bg-opacity-25">Name</span>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="longname" v-model="longname" maxlength="120"
+                        <input type="text" class="form-control" id="longname" v-model="form.longname" maxlength="120"
                             placeholder="Modulname" required>
                         <label for="longname" class="form-label">(max. 120 Zeichen)</label>
                     </div>
@@ -189,10 +223,3 @@ const resizeTextarea = (event) => {
         </div>
     </form>
 </template>
-
-<style scoped>
-.form-wrapper {
-    width: 100%;
-    max-width: 700px;
-}
-</style>

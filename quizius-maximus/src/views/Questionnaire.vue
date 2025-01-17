@@ -25,26 +25,17 @@ const createQuestionnaire = computed(() => props.action === 'create');
 </script>
 
 <template>
-    <main>
-        <section class="row justify-content-center">
-            <article class="p-3 mt-3 mb-3 form-wrapper">
-                <h2 class="mb-3 text-center">Fragenkatalog</h2>
-                <DisplayQuestionnaireForm v-if="displayQuestionnaire" />
-                <EditQuestionnaireForm v-else-if="changeQuestionnaire" @success="handleSuccessEmit" @cancel="handleCancelEmit" />
-                <CreateQuestionnaireForm v-else-if="createQuestionnaire" @success="handleSuccessEmit" @cancel="handleCancelEmit" />
-                <!-- <div v-if="!changeUsername && !changePassword" class="d-flex justify-content-between mt-3">
-                    <button @click="" class="btn btn-secondary">Passwort
-                        ändern</button>
-                    <button @click="" class="btn btn-primary" :disabled="changeUsername">Benutzername
-                        ändern</button>
-                </div>
-                <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" /> -->
-            </article>
+    <main class="pt-4 row justify-content-center">
+        <section class="p-3 mt-3 mb-3 form-wrapper">
+            <DisplayQuestionnaireForm v-if="displayQuestionnaire" :moduleid="props.moduleid" />
+            <EditQuestionnaireForm v-else-if="changeQuestionnaire" :moduleid="props.moduleid" />
+            <CreateQuestionnaireForm v-else-if="createQuestionnaire" />
         </section>
     </main>
 </template>
 
 <style scoped>
+/* TODO: form-wrapper stattdessen als generellen wrapper für die gesamte App verwenden? */
 .form-wrapper {
     width: 100%;
     max-width: 800px;
