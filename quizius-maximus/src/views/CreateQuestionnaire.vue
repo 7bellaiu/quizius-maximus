@@ -114,7 +114,7 @@ const resizeTextarea = (event) => {
             <!-- Kopfdaten: Modul -->
             <fieldset class="mb-3">
                 <legend>Modulkürzel und Modulname</legend>
-                <div class="input-group">
+                <div class="input-group input-group-sm mb-1">
                     <span class="input-group-text">Modulkürzel</span>
                     <div class="form-floating">
                         <input type="text" class="form-control" id="shortname" v-model="shortname" maxlength="40"
@@ -122,7 +122,7 @@ const resizeTextarea = (event) => {
                         <label for="shortname">(max. 40 Zeichen)</label>
                     </div>
                 </div>
-                <div class="input-group">
+                <div class="input-group input-group-sm">
                     <span class="input-group-text">Modulkürzel</span>
                     <div class="form-floating">
                         <input type="text" class="form-control" id="longname" v-model="longname" maxlength="120"
@@ -137,7 +137,7 @@ const resizeTextarea = (event) => {
                 <legend>{{ index + 1 }}. Frage</legend>
                 <!-- #. Frage -->
                 <div class="row">
-                    <div class="input-group mb-1">
+                    <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text">Frage</span>
                         <div class="form-floating">
                             <textarea class="form-control" :id="'question' + index" v-model="question.text"
@@ -161,8 +161,9 @@ const resizeTextarea = (event) => {
                 <!-- Antwortoptionen -->
                 <!-- TODO: Statt statisches Limit anzuzeigen dynamisch die Rest-Zeichen anzeigen? -->
                 <div class="row">
-                    <div class="input-group mb-1" v-for="(answer, aIndex) in question.answers" :key="aIndex">
-                        <span class="input-group-text">Antwortmöglichkeit {{ aIndex + 1 }}</span>
+                    <div class="input-group input-group-sm mb-1" v-for="(answer, aIndex) in question.answers"
+                        :key="aIndex">
+                        <span class="input-group-text">Option {{ aIndex + 1 }}</span>
                         <div class="form-floating">
                             <textarea class="form-control me-2" v-model="answer.text"
                                 :id="'answertext' + index + aIndex" placeholder="Antwortmöglichkeit (max. 150 Zeichen)"
@@ -174,7 +175,7 @@ const resizeTextarea = (event) => {
                                 <input class="form-check-input" type="radio" :name="'correctAnswer' + index"
                                     :id="'answercheck' + index + aIndex" v-model="question.correctAnswer"
                                     :value="aIndex" required>
-                                <label class="form-check-label" :for="'answercheck' + index + aIndex">Antwort
+                                <label class="form-check-label" :for="'answercheck' + index + aIndex">
                                     korrekt</label>
                             </div>
                         </div>
