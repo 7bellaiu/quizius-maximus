@@ -8,12 +8,9 @@ import Profile from '@/views/Profile.vue';
 import Modules from '@/views/Modules.vue';
 import Help from '@/views/Help.vue';
 import Questionnaires from '@/views/Questionnaires.vue';
-import EditQuestionnaire from '@/views/EditQuestionnaire.vue';
 import ActiveQuizzes from '@/views/ActiveQuizzes.vue';
 import CompetitiveGamemodes from '@/views/CompetitiveGamemodes.vue';
 import Game from '@/views/Game.vue';
-import DisplayQuestionnaireForm from '@/components/questionnaires/DisplayQuestionnaireForm.vue';
-import CreateQuestionnaireForm from '@/components/questionnaires/CreateQuestionnaireForm.vue';
 import Questionnaire from '@/views/Questionnaire.vue';
 
 const router = createRouter({
