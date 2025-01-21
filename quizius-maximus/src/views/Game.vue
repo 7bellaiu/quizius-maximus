@@ -150,10 +150,13 @@ onMounted(() => {
         if (user) {
             state.value.userUID = user.uid;
             state.value.userUsername = user.displayName;
-            findOrCreateGame();
         }
     });
 });
+
+// TODO: Implementieren, dass Methode nur ausgeführt wird, wenn von Modules.vue geroutet wurde
+findOrCreateGame();
+
 </script>
 
 <template>
