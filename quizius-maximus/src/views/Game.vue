@@ -147,10 +147,8 @@ const createNewGame = async () => {
 onMounted(() => {
     const auth = getAuth();
     auth.onAuthStateChanged(user => {
-        if (user) {
-            state.value.userUID = user.uid;
-            state.value.userUsername = user.displayName;
-        }
+        state.value.userUID = user.uid;
+        state.value.userUsername = user.displayName;
     });
 });
 
