@@ -1,45 +1,46 @@
 <script setup>
+import { ref } from 'vue';
 
+const FAQ_CONTENT = ref([
+    {
+        // TODO: Hier die Icons einbauen -> KI fragen
+        question: "Was ist ein schnelles Quiz?"
+        , answer1: "Hier kannst du dein Wissen im 1 vs. 1 (kompetitiv     ) oder gemeinsam mit deinen Komiliton:innen (kooperativ       ) in 5 zufälligen Fragen unter Beweis stellen, wenn mal nur ein kurzer Zeit-Slot zur Verfügung steht."
+        , answer2: "Einfach das gewünschte Modul auswählen und schon kann es losgehen!"
+    },
+    {
+        question: "Was ist ein themenbasiertes Quiz?"
+        , answer1: "Hier kannst du dir wertvolles Wissen entweder zu kompletten Modulen oder einzelnen Lektionen der Module allein (komperativ     ) oder gemeinsam mit deinen Komiliton:innen (kooperativ       ) aneignen."
+        , answer2: "Einfach das gewünschte Modul oder die gewünschte Lektion auswählen und schon kann es losgehen!"
+    },
+    {
+        question: "Was ist der Lernmodus?"
+        , answer1: "Hier kannst du dir in gemeinsamen Lern-Sessions mit deinen Komiliton:innen wertvolles Wissen entweder zu kompletten Modulen oder einzelnen Lektionen der Module ohne Zeitdruck aneignen."
+        , answer2: "Einfach das gewünschte Modul auswählen und schon kann es losgehen!"
+    },
+    {
+        question: "Was ist ein schnelles Quiz?"
+        , answer1: "Hier kannst du testen, ob du bereit bist für die Klausur. Wer von euch hat mehr von den 20 gestellten Fragen richtig beantwortet und somit die bessere Note erzielt? Schaffst du die 50%-Hürde?"
+        , answer2: "Einfach das gewünschte Modul auswählen und schon kann es losgehen!"
+    }
+]);
+
+// TODO: Legende der Symbole einbauen (wsl am besten hardcoded?)
 </script>
 
 <template>
     <div class="accordion w-100" id="faqAccordion">
-        <div class="accordion-item mb-2">
+        <div v-for="(content, index) in FAQ_CONTENT" class="accordion-item mb-2">
             <h2 class="accordion-header">
-                <button class="accordion-button bg-info bg-opacity-50" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    Die am häufigsten gestellte Frage ist natürlich diese hier.
+                <button type="button" class="accordion-button bg-info bg-opacity-50" data-bs-toggle="collapse"
+                    :data-bs-target="'#collapse' + index">
+                    {{ content.question }}
                 </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show bg-info bg-opacity-10" data-bs-parent="#faqAccordion">
+            <div :id="'collapse' + index" class="accordion-collapse collapse bg-info bg-opacity-25">
                 <div class="accordion-body">
-                    <strong>Die am häufigsten gestellte Frage ist natürlich diese hier. </strong>
-                    Diese Antwort wird standardmäßig angezeigt, bis das Collapse-Plugin die entsprechenden Klassen
-                    hinzufügt,
-                    die wir verwenden, um jedes Element zu stylen. Diese Klassen steuern das gesamte
-                    Erscheinungsbild sowie das Ein- und Ausblenden über CSS-Übergänge. Du kannst dies mit
-                    benutzerdefiniertem CSS oder durch Überschreiben unserer Standard-Variablen anpassen. Es ist
-                    auch erwähnenswert, dass nahezu jedes HTML innerhalb des <code>.accordion-body</code> platziert
-                    werden kann, obwohl die Übergänge den Überlauf (Overflow) einschränken.
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item mb-2">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed bg-info bg-opacity-50" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Die zweithäufigste Frage ist diese.
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse bg-info bg-opacity-10" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                    <strong>Die zweithäufigste Frage ist diese.</strong>
-                    Es ist standardmäßig ausgeblendet, bis das Collapse-Plugin die entsprechenden Klassen hinzufügt,
-                    die wir verwenden, um jedes Element zu stylen. Diese Klassen steuern das gesamte
-                    Erscheinungsbild sowie das Ein- und Ausblenden über CSS-Übergänge. Du kannst dies mit
-                    benutzerdefiniertem CSS oder durch Überschreiben unserer Standard-Variablen anpassen. Es ist
-                    auch erwähnenswert, dass nahezu jedes HTML innerhalb des <code>.accordion-body</code> platziert
-                    werden kann, obwohl die Übergänge den Überlauf (Overflow) einschränken.
+                    {{ content.answer1 }} <br>
+                    <strong>{{ content.answer2 }}</strong>
                 </div>
             </div>
         </div>
