@@ -24,22 +24,22 @@ const props = defineProps({
     },
 });
 
-const userUID = ref(null);
-const userUsername = ref(null);
-const message = ref("");
-const currentQuestion = ref(0);
-const questionData = ref(null);
-const gameDocId = ref(null);
+const state = ref({
+    userUID: null,
+    userUsername: null,
+    message: "",
+    currentQuestion: 0,
+    questionData: null,
+    gameDocId: null,
+});
+
+const handleError = (error, customMessage) => {
+    console.error(customMessage, error);
+    state.value.message = `${customMessage}: ${error.message}`;
+};
 
 const findOrCreateGame = async () => {
     try {
-        const auth = getAuth();
-        const user = auth.currentUser;
-
-        userUID.value = user.uid;
-        userUsername.value = user.displayName;
-
-        // Überprüfung, ob laufendes Spiel existiert
         const existingGames = query(
             collection(firestoreDB, "games"),
             where("gameMode", "==", props.gameMode),
@@ -50,95 +50,107 @@ const findOrCreateGame = async () => {
         const existingGamesData = await getDocs(existingGames);
 
         if (!existingGamesData.empty) {
-            // laufendes Spiel existiert => Überprüfung, ob aktueller Benutzer bereits als player1 eingetragen ist
-            const existingGameDoc = existingGamesData.docs[0]; //Später als Schleife?
-            const existingGameData = existingGameDoc.data();
-
-            if (existingGameData.player1UID !== userUID.value) {
-                // Benutzer ist nicht player1 => wird als player2 dem Spiel zugewiesen
-                gameDocId.value = existingGameDoc.id;
-                await updateDoc(existingGameDoc.ref, {
-                    player2UID: userUID.value,
-                    player2Username: userUsername.value,
-                    player2Status: 1
-                });
-
-                // Erste Frage aus bestehenden Spiel abrufen
-                const questionsData = await getDocs(collection(existingGameDoc.ref, "questions"));
-                questionData.value = questionsData.docs[currentQuestion.value].data();
-                message.value = "Sie wurden einem bestehenden Spiel zugewiesen.";
-            } else {
-                // Benutzer ist bereits player1 => neues Spiel erstellen
-                await createNewGame();
-            }
+            await joinExistingGame(existingGamesData.docs[0]); //Später als Schleife?
         } else {
-            // Kein laufendes Spiel existiert => neues Spiel erstellen
             await createNewGame();
         }
     } catch (error) {
-        console.error("Fehler beim Erstellen des Spiels: ", error);
-        message.value = `Fehler beim Erstellen des Spiels: ${error.message}`;
+        handleError(error, "Fehler beim Erstellen des Spiels");
+    }
+};
+
+const joinExistingGame = async (existingGameDoc) => {
+    try {
+        const { userUID, userUsername, currentQuestion } = state.value; //Destrukturierung für weniger const Anweisungen
+        const existingGameData = existingGameDoc.data();
+
+        // laufendes Spiel existiert => Überprüfung, ob aktueller Benutzer bereits als player1 eingetragen ist
+        if (existingGameData.player1UID !== userUID) {
+            // Benutzer ist nicht player1 => wird als player2 dem Spiel zugewiesen
+            state.value.gameDocId = existingGameDoc.id;
+            await updateDoc(existingGameDoc.ref, {
+                player2UID: userUID,
+                player2Username: userUsername,
+                player2Status: 1
+            });
+
+            const questionsData = await getDocs(collection(existingGameDoc.ref, "questions"));
+            state.value.questionData = questionsData.docs[currentQuestion].data();
+            state.value.message = "Du wurdenst einem bestehenden Spiel zugewiesen.";
+        } else {
+            // Benutzer ist bereits player1 => neues Spiel erstellen
+            await createNewGame();
+        }
+    } catch (error) {
+        handleError(error, "Fehler beim Spielbeitritt.");
     }
 };
 
 const createNewGame = async () => {
-    await runTransaction(firestoreDB, async (transaction) => {
-        const newGameDoc = doc(collection(firestoreDB, "games"));
-        gameDocId.value = newGameDoc.id;
-        transaction.set(newGameDoc, {
-            currentQuestion: currentQuestion.value,
-            gameMode: props.gameMode,
-            moduleID: props.moduleId,
-            moduleLongname: props.moduleLongname,
-            moduleShortname: props.moduleShortname,
-            player1Status: 1,
-            player1UID: userUID.value,
-            player1Username: userUsername.value,
-            player2Status: 0,
-            player2UID: "",
-            player2Username: ""
-        });
+    try {
+        await runTransaction(firestoreDB, async (transaction) => {
+            const newGameDoc = doc(collection(firestoreDB, "games"));
+            state.value.gameDocId = newGameDoc.id;
+            const { currentQuestion, userUID, userUsername } = state.value;
+            const { gameMode, moduleId, moduleLongname, moduleShortname } = props;
 
-        const questionnairesModuleID = await getDocs(query(
-            collection(firestoreDB, "questionnaires"),
-            where("moduleID", "==", props.moduleId)
-        ));
-
-        const moduleID = questionnairesModuleID.docs[0].id;
-
-        const questionnairesQuestions = await getDocs(query(
-            collection(firestoreDB, "questionnaires", moduleID, "questions")
-        ));
-
-        const randomQuestions = questionnairesQuestions.docs
-            .map(doc => ({ ...doc.data() }))
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 5);
-
-        randomQuestions.forEach((question, index) => {
-            const gamesQuestions = doc(collection(newGameDoc, "questions"));
-            transaction.set(gamesQuestions, {
-                ...question,
-                player1IsCorrect: false,
-                player2IsCorrect: false
+            transaction.set(newGameDoc, {
+                currentQuestion,
+                gameMode,
+                moduleID: moduleId,
+                moduleLongname,
+                moduleShortname,
+                player1Status: 1,
+                player1UID: userUID,
+                player1Username: userUsername,
+                player2Status: 0,
+                player2UID: "",
+                player2Username: ""
             });
 
-            if (index === 0) {
-                questionData.value = question;
-            }
-        });
-    });
+            const questionnairesModuleID = await getDocs(query(
+                collection(firestoreDB, "questionnaires"),
+                where("moduleID", "==", moduleId)
+            ));
 
-    message.value = "Neues Spiel erstellt.";
+            const moduleID = questionnairesModuleID.docs[0].id;
+
+            const questionnairesQuestions = await getDocs(query(
+                collection(firestoreDB, "questionnaires", moduleID, "questions")
+            ));
+
+            const randomQuestions = questionnairesQuestions.docs
+                .map(doc => ({ ...doc.data() }))
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 5);
+
+            randomQuestions.forEach((question, index) => {
+                const gamesQuestions = doc(collection(newGameDoc, "questions"));
+                transaction.set(gamesQuestions, {
+                    ...question,
+                    player1IsCorrect: false,
+                    player2IsCorrect: false
+                });
+
+                if (index === 0) {
+                    state.value.questionData = question;
+                }
+            });
+        });
+
+        state.value.message = "Neues Spiel erstellt.";
+    } catch (error) {
+        handleError(error, "Fehler der Spielerstellung.");
+    }
 };
 
 onMounted(() => {
     const auth = getAuth();
     auth.onAuthStateChanged(user => {
         if (user) {
-            userUID.value = user.uid;
-            userUsername.value = user.displayName;
-            findOrCreateGame(); // Methode wird autom. ausgeführt, wenn Games.vue durchlaufen wird
+            state.value.userUID = user.uid;
+            state.value.userUsername = user.displayName;
+            findOrCreateGame();
         }
     });
 });
@@ -146,7 +158,8 @@ onMounted(() => {
 
 <template>
     <main>
-        <p>{{ message }}</p>
-        <Quiz :currentQuestionData="questionData" :currentQuestion="currentQuestion" :gameDocId="gameDocId" />
+        <p>{{ state.message }}</p>
+        <Quiz :currentQuestionData="state.questionData" :currentQuestion="state.currentQuestion"
+            :gameDocId="state.gameDocId" />
     </main>
 </template>
