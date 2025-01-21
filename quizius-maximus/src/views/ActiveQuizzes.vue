@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { firestoreDB } from "@/main";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, or } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import ActiveQuizCard from "@/components/ActiveQuizCard.vue";
 
@@ -11,8 +11,13 @@ const userUID = ref(null);
 const loadGames = async () => {
     if (userUID.value) {
         try {
-            const gamesQuery = query(collection(firestoreDB, "games"),
-                where("player1UID", "==", userUID.value));
+            const gamesQuery = query(
+                collection(firestoreDB, "games"),
+                or(
+                    where("player1UID", "==", userUID.value),
+                    where("player2UID", "==", userUID.value)
+                )
+            );
             const gamesDoc = await getDocs(gamesQuery);
             games.value = gamesDoc.docs.map(doc => ({ id: doc.id, ...doc.data() }))
                 .filter(game => game.player1Status !== 5);

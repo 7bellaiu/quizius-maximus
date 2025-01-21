@@ -8,6 +8,7 @@ const userUID = ref(null);
 const userUsername = ref(null);
 const message = ref("");
 
+
 const createGame = async () => {
     try {
         const auth = getAuth();

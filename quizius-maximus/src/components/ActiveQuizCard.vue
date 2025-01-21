@@ -26,13 +26,12 @@ const getStatusText = (status, player2Username) => {
             <div class="card border-primary bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">
-                        <span v-if="game.gameMode === 'competitive'">Kompetitiv</span>
-                        <span v-if="game.gameType === 'schnell'"> - Schnelles Spiel</span>
+                        <span v-if="game.gameMode === 'schnell_comp'">Kompetitiv - Schnelles Spiel</span>
                     </h5>
                     <p class="card-text">
                         ({{ game.moduleShortname }}) {{ game.moduleLongname }}<br>
                         {{ game.player1Username }}
-                        <span v-if="game.gameMode === 'competitive'">VS</span>
+                        <span v-if="game.gameMode.includes('comp') && game.player1Status !== 1">VS</span>
                         {{ game.player2Username }}<br>
                         Status: {{ getStatusText(game.player1Status, game.player2Username) }}
                     </p>
