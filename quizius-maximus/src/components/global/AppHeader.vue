@@ -53,6 +53,8 @@ onMounted(() => {
                     </li>
                     <li v-if="userLoggedIn"><router-link class="dropdown-item" to="/modules">Quiz starten</router-link>
                     </li>
+                    <li v-if="userLoggedIn"><router-link class="dropdown-item" to="/activequizzes">Laufende Quizes</router-link>
+                    </li>
                     <li v-if="userLoggedIn"><router-link class="dropdown-item"
                             to="/questionnaires">Fragenkataloge</router-link></li>
                     <li v-if="!userLoggedIn">
