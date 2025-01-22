@@ -76,7 +76,7 @@ const joinExistingGame = async (existingGameDoc) => {
 
             const questionsData = await getDocs(collection(existingGameDoc.ref, "questions"));
             state.value.questionData = questionsData.docs[currentQuestion].data();
-            state.value.message = "Du wurdenst einem bestehenden Spiel zugewiesen.";
+            state.value.message = "Du wurdest einem bestehenden Spiel zugewiesen.";
         } else {
             // Benutzer ist bereits player1 => neues Spiel erstellen
             await createNewGame();
@@ -145,20 +145,26 @@ const createNewGame = async () => {
 };
 
 onMounted(() => {
-    const auth = getAuth();
-    auth.onAuthStateChanged(user => {
-        state.value.userUID = user.uid;
-        state.value.userUsername = user.displayName;
-    });
-});
+    const user = getAuth().currentUser;
 
-// TODO: Implementieren, dass Methode nur ausgeführt wird, wenn von Modules.vue geroutet wurde
-findOrCreateGame();
+    if (!user) {
+        //Login anfordern
+        // TODO: Weiterleitung auf Login-Fenster?
+        alert('bitte neu einloggen!');
+    }
+
+    state.value.userUID = user.uid;
+    state.value.userUsername = user.displayName;
+
+    // TODO: Implementieren, dass Methode nur ausgeführt wird, wenn von Modules.vue geroutet wurde
+    findOrCreateGame();
+});
 
 </script>
 
 <template>
     <main>
+        <p>{{ state.userUID }}</p>
         <p>{{ state.message }}</p>
         <Quiz :currentQuestionData="state.questionData" :currentQuestion="state.currentQuestion"
             :gameDocId="state.gameDocId" />
