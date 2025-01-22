@@ -12,14 +12,14 @@ import TrashCanIcon from '../icons/TrashCanIcon.vue';
 <template>
     <div class="accordion-item mb-2">
         <h2 class="accordion-header">
-            <button type="button" class="accordion-button bg-info bg-opacity-50" data-bs-toggle="collapse"
+            <button type="button" class="accordion-button bg-info bg-opacity-25" data-bs-toggle="collapse"
                 data-bs-target="#collapseLegend">
                 <strong>
                     Welche Bedeutung haben die Icons und Buttons von Quizius Maximus?
                 </strong>
             </button>
         </h2>
-        <div id="collapseLegend" class="accordion-collapse collapse bg-info bg-opacity-25">
+        <div id="collapseLegend" class="accordion-collapse collapse bg-info bg-opacity-10">
             <div class="accordion-body">
                 <div class="container">
                     <!-- comp -->

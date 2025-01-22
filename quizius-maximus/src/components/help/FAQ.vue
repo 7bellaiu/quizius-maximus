@@ -1,3 +1,4 @@
+<!-- TODO: Icons in Text einbinden und Text-Struktur ggfs. anpassen -->
 <script setup>
 import { ref } from 'vue';
 import FAQLegend from './FAQLegend.vue';
@@ -44,14 +45,14 @@ const FAQ_CONTENT = ref([
         <FAQLegend />
         <div v-for="(content, index) in FAQ_CONTENT" class="accordion-item mb-2">
             <h2 class="accordion-header">
-                <button type="button" class="accordion-button bg-info bg-opacity-50" data-bs-toggle="collapse"
+                <button type="button" class="accordion-button bg-info bg-opacity-25" data-bs-toggle="collapse"
                     :data-bs-target="'#collapse' + index">
                     <strong>
                         {{ content.question }}
                     </strong>
                 </button>
             </h2>
-            <div :id="'collapse' + index" class="accordion-collapse collapse bg-info bg-opacity-25">
+            <div :id="'collapse' + index" class="accordion-collapse collapse bg-info bg-opacity-10">
                 <div class="accordion-body">
                     {{ content.answer1 }} <br>
                     <strong>
