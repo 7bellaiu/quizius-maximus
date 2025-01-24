@@ -153,14 +153,15 @@ const handleMatchmakingFailed = (message) => {
         <!-- TODO: Matchmaking -->
         <div class="row">
             <CreateNewGame v-if="!gameFound && !isMatchmakingCompleted" @success="handleMatchmakingSuccess"
-                @failed="handleMatchmakingFailed" />
-            <JoinExistingGame v-if="gameFound && !isMatchmakingCompleted" :gameDocId="gameDocId"
-                @success="handleMatchmakingSuccess" @failed="handleMatchmakingFailed" />
+                @failed="handleMatchmakingFailed" :gameMode="props.gameMode" :moduleId="props.moduleId"
+                :moduleShortname="props.moduleShortname" :moduleLongname="props.moduleLongname" />
+            <JoinExistingGame v-if="gameFound && !isMatchmakingCompleted" @success="handleMatchmakingSuccess"
+                @failed="handleMatchmakingFailed" :gameDocId="gameDocId" />
         </div>
 
         <!-- Weiterleiten zum Spiel-Controller -->
         <div class="row">
-            <SchnellComp v-if="displaySchnellComp" :gameDocId="matchmakingGameDocId" />
+            <SchnellComp v-if="displaySchnellComp && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId" />
             <!-- <SchnellCoop v-if="displaySchnellCoop" :gameDocId="matchmakingGameDocId" /> -->
             <!-- <ThemeComp v-if="displayThemeComp" :gameDocId="matchmakingGameDocId" /> -->
             <!-- <ThemeCoop v-if="displayThemeCoop" :gameDocId="matchmakingGameDocId" /> -->

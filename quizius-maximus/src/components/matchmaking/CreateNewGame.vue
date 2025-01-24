@@ -1,15 +1,143 @@
 <script setup>
-import { onMounted } from 'vue';
-
+import { getAuth } from 'firebase/auth';
+import { collection, doc, getDocs, query, runTransaction, where } from 'firebase/firestore';
+import { firestoreDB } from "@/main";
+import { onMounted, ref } from 'vue';
 //wird von Game angesteuert, um ein neues Spiel in Firebase anzulegen
 //liefert via emit die Id des entsprechenden Document an Game zurück
 
-// for tests
-const createdGameDocId = "BKsysKXVT2zooj1AAtty";
-
-// Definition der Emits
+// Definition der Props & Emits von/für Parent
+const props = defineProps({
+    gameMode: {
+        type: String,
+        required: true
+    },
+    moduleId: {
+        type: String,
+        required: true
+    },
+    moduleLongname: {
+        type: String,
+        required: true
+    },
+    moduleShortname: {
+        type: String,
+        required: true
+    },
+});
 const emit = defineEmits(["success", "failed"]);
 
+// state
+const state = ref({
+    createdGameDocId: "BKsysKXVT2zooj1AAtty",
+    questionData: null,
+    message: "",
+    userUID: null,
+    userUsername: null,
+});
+
+const QUESTIONS_PER_GAMEMODE = {
+    schnell: 5,
+    theme: 5,
+    simul: 10,
+    learn: 10
+}
+
+// Spiel erstellen
+// 1. User-Daten sammeln (UID, displayName)
+const collectUserData = () => {
+    const auth = getAuth(); // Auth holen
+    const user = auth.currentUser; // Aktuellen Benutzer holen
+
+    if (user) {
+        state.value.userUID = user.uid;
+        state.value.userUsername = user.displayName || "Unbekannter Spieler";
+        return true; // Erfolgreich
+    } else {
+        console.error("Kein Benutzer eingeloggt");
+        return false; // Fehler, falls kein User eingeloggt
+    }
+};
+
+// 2 Fragen zum Modul lesen  &  X Fragen je nach Spielmodus auswählen
+const fetchQuestionsForModule = () => {
+    const { moduleId, gameMode } = props;
+    const numQuestions = QUESTIONS_PER_GAMEMODE[gameMode] || 5; // Standard auf 5 Fragen
+
+    return getDocs(query(collection(firestoreDB, "questionnaires"), where("moduleID", "==", moduleId)))
+        .then((questionnaires) => {
+            if (questionnaires.empty) throw new Error("Kein Fragebogen gefunden!");
+            const moduleID = questionnaires.docs[0].id;
+
+            return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions")));
+        })
+        .then((questions) => {
+            if (questions.empty) throw new Error("Keine Fragen gefunden!");
+
+            // Zufällige X Fragen auswählen, basierend auf Spielmodus
+            const selectedQuestions = questions.docs
+                .map((doc) => ({ ...doc.data() }))
+                .sort(() => 0.5 - Math.random()) // Shuffle
+                .slice(0, numQuestions);
+
+            state.value.questionData = selectedQuestions[0]; // Erste Frage speichern
+            return selectedQuestions; // Gibt die Fragen zurück
+        });
+};
+
+// 3. Neues GameDoc anlagen
+const createNewGame = () => {
+    const newGameDoc = doc(collection(firestoreDB, "games"));
+    state.value.gameDocId = newGameDoc.id;
+
+    runTransaction(firestoreDB, (transaction) => {
+        const { gameMode, moduleId, moduleLongname, moduleShortname } = props;
+        const { userUID, userUsername } = state.value;
+
+        transaction.set(newGameDoc, {
+            currentQuestion: 0, // Erste Frage als Startfrage
+            gameMode: props.gameMode,
+            moduleID: props.moduleId,
+            moduleLongname: props.moduleLongname,
+            moduleShortname: props.moduleShortname,
+            player1Status: 1,
+            player1UID: state.value.userUID,
+            player1Username: state.value.userUsername,
+            player2Status: 0,
+            player2UID: "",
+            player2Username: "",
+        });
+
+        return fetchQuestionsForModule().then((selectedQuestions) => {
+            selectedQuestions.forEach((question) => {
+                const gamesQuestions = doc(collection(newGameDoc, "questions"));
+                transaction.set(gamesQuestions, {
+                    ...question,
+                    player1IsCorrect: false,
+                    player2IsCorrect: false,
+                });
+            });
+        });
+    })
+        .then(() => {
+            state.value.message = "Neues Spiel erstellt.";
+            emit("success", state.value.gameDocId);
+        })
+        .catch((error) => {
+            console.error("Fehler bei der Spiel-Erstellung:", error);
+            state.value.message = "Fehler bei der Spiel-Erstellung.";
+            emit("failed", error);
+        });
+};
+
+onMounted(() => {
+    if (collectUserData()) { // Wenn Benutzerdaten erfolgreich gesammelt
+        createNewGame(); // Spiel erstellen
+    } else {
+        state.value.message = "Benutzerdaten konnten nicht geladen werden.";
+        emit("failed", "Benutzerdaten fehlen");
+    }
+});
 
 // const createNewGame = async () => {
 //     try {
@@ -68,14 +196,9 @@ const emit = defineEmits(["success", "failed"]);
 //         handleError(error, "Fehler der Spielerstellung.");
 //     }
 // };
-
-onMounted(() => {
-    // TODO: Übergabe der DocId nach erfolgreichem erstellen eines Spiels
-    emit("success", createdGameDocId);
-});
-
 </script>
 
 <template>
     <h1>Creating new Game</h1>
+    <p>{{ state.message }}</p>
 </template>
