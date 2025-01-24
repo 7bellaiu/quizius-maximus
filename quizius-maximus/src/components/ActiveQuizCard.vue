@@ -22,7 +22,7 @@ const getStatusText = (status, player2Username) => {
 
 <template>
     <div class="col">
-        <button type="button" class="btn w-100 p-0">
+        <button type="button" class="btn w-100 p-0" @click="">
             <div class="card border-primary bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">
