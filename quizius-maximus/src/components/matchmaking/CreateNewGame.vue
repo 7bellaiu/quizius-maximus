@@ -24,6 +24,14 @@ const props = defineProps({
         type: String,
         required: true
     },
+    userUID: {
+        type: String,
+        required: true
+    },
+    userUsername: {
+        type: String,
+        required: true
+    }
 });
 const emit = defineEmits(["success", "failed"]);
 
@@ -43,23 +51,7 @@ const QUESTIONS_PER_GAMEMODE = {
     learn: 10
 }
 
-// Spiel erstellen
-// 1. User-Daten sammeln (UID, displayName)
-const collectUserData = () => {
-    const auth = getAuth(); // Auth holen
-    const user = auth.currentUser; // Aktuellen Benutzer holen
-
-    if (user) {
-        state.value.userUID = user.uid;
-        state.value.userUsername = user.displayName || "Unbekannter Spieler";
-        return true; // Erfolgreich
-    } else {
-        console.error("Kein Benutzer eingeloggt");
-        return false; // Fehler, falls kein User eingeloggt
-    }
-};
-
-// 2 Fragen zum Modul lesen  &  X Fragen je nach Spielmodus auswählen
+// Fragen zum Modul lesen  &  X Fragen je nach Spielmodus auswählen
 const fetchQuestionsForModule = () => {
     const { moduleId, gameMode } = props;
     const numQuestions = QUESTIONS_PER_GAMEMODE[gameMode] || 5; // Standard auf 5 Fragen
@@ -85,15 +77,12 @@ const fetchQuestionsForModule = () => {
         });
 };
 
-// 3. Neues GameDoc anlagen
+// Neues GameDoc anlagen
 const createNewGame = () => {
     const newGameDoc = doc(collection(firestoreDB, "games"));
     state.value.gameDocId = newGameDoc.id;
 
     runTransaction(firestoreDB, (transaction) => {
-        const { gameMode, moduleId, moduleLongname, moduleShortname } = props;
-        const { userUID, userUsername } = state.value;
-
         transaction.set(newGameDoc, {
             currentQuestion: 0, // Erste Frage als Startfrage
             gameMode: props.gameMode,
@@ -131,11 +120,11 @@ const createNewGame = () => {
 };
 
 onMounted(() => {
-    if (collectUserData()) { // Wenn Benutzerdaten erfolgreich gesammelt
-        createNewGame(); // Spiel erstellen
-    } else {
+    if (!props.userUID || !props.userUsername) { // Wenn Benutzerdaten erfolgreich gesammelt
         state.value.message = "Benutzerdaten konnten nicht geladen werden.";
         emit("failed", "Benutzerdaten fehlen");
+    } else {
+        createNewGame(); // Spiel erstellen
     }
 });
 
