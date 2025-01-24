@@ -1,6 +1,16 @@
 <script setup>
+import { onMounted } from 'vue';
+
 //wird von Game angesteuert, um ein neues Spiel in Firebase anzulegen
 //liefert via emit die Id des entsprechenden Document an Game zurück
+
+// for tests
+const createdGameDocId = "BKsysKXVT2zooj1AAtty";
+
+// Definition der Emits
+const emit = defineEmits(["success", "failed"]);
+
+
 // const createNewGame = async () => {
 //     try {
 //         await runTransaction(firestoreDB, async (transaction) => {
@@ -58,6 +68,12 @@
 //         handleError(error, "Fehler der Spielerstellung.");
 //     }
 // };
+
+onMounted(() => {
+    // TODO: Übergabe der DocId nach erfolgreichem erstellen eines Spiels
+    emit("success", createdGameDocId);
+});
+
 </script>
 
 <template>

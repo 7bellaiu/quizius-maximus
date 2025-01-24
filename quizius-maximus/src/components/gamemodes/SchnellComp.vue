@@ -1,7 +1,7 @@
 <script setup>
 // Steuert ein Schnelles Spiel im Competitive Mode
 const props = defineProps({
-    gameId: {
+    gameDocId: {
         type: String,
         required: true
     }
@@ -9,5 +9,5 @@ const props = defineProps({
 </script>
 
 <template>
-    <h1> SchnellComp: {{ props.gameId }}</h1>
+    <h1> SchnellComp: {{ props.gameDocId }}</h1>
 </template>

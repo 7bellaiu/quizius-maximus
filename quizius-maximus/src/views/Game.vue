@@ -6,7 +6,7 @@
 import { ref, onMounted, computed } from "vue";
 import { firestoreDB } from "@/main";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import CreateNewGame from "@/components/CreateNewGame.vue";
+import CreateNewGame from "@/components/matchmaking/CreateNewGame.vue";
 import JoinExistingGame from "@/components/matchmaking/JoinExistingGame.vue";
 import SchnellComp from "@/components/gamemodes/SchnellComp.vue";
 
@@ -32,10 +32,8 @@ const props = defineProps({
 // Reaktive Variablen für den Zustand
 const gameFound = ref(false);
 const gameDocId = ref(null);
-
-
-// TODO: Matchmaking
-const isMatchmakingCompleted = computed(() => true)
+const isMatchmakingCompleted = ref(false)
+const matchmakingGameDocId = ref("");
 
 // Steuerung welche Spielmodus-Component getriggert wird
 const displaySchnellComp = computed(() => props.gameMode == 'schnell_comp' && isMatchmakingCompleted)
@@ -68,6 +66,17 @@ const fetchRunningGameDocId = () => {
 onMounted(() => {
     fetchRunningGameDocId();
 });
+
+const handleMatchmakingSuccess = (createdGameDocId) => {
+    matchmakingGameDocId.value = createdGameDocId;
+    console.log("Matchmaking successfull: ", matchmakingGameDocId.value);
+    isMatchmakingCompleted.value = true;
+}
+
+const handleMatchmakingFailed = (message) => {
+    // TODO: Fehlermeldung an Spieler
+    console.error(message);
+}
 
 // const state = ref({
 //     userUID: null,
@@ -143,13 +152,20 @@ onMounted(() => {
 
         <!-- TODO: Matchmaking -->
         <div class="row">
-            <CreateNewGame v-if="!gameFound" />
-            <JoinExistingGame v-else />
+            <CreateNewGame v-if="!gameFound && !isMatchmakingCompleted" @success="handleMatchmakingSuccess"
+                @failed="handleMatchmakingFailed" />
+            <JoinExistingGame v-if="gameFound && !isMatchmakingCompleted" :gameDocId="gameDocId"
+                @success="handleMatchmakingSuccess" @failed="handleMatchmakingFailed" />
         </div>
 
         <!-- Weiterleiten zum Spiel-Controller -->
         <div class="row">
-            <!-- <SchnellComp v-if="schnellCompGame" /> -->
+            <SchnellComp v-if="displaySchnellComp" :gameDocId="matchmakingGameDocId" />
+            <!-- <SchnellCoop v-if="displaySchnellCoop" :gameDocId="matchmakingGameDocId" /> -->
+            <!-- <ThemeComp v-if="displayThemeComp" :gameDocId="matchmakingGameDocId" /> -->
+            <!-- <ThemeCoop v-if="displayThemeCoop" :gameDocId="matchmakingGameDocId" /> -->
+            <!-- <Simulation v-if="displaySimul" :gameDocId="matchmakingGameDocId" /> -->
+            <!-- <Learning v-if="displayLearn" :gameDocId="matchmakingGameDocId" /> -->
         </div>
     </main>
 </template>
