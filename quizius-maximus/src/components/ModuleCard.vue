@@ -32,12 +32,12 @@ const props = defineProps({
                 </div>
                 <!-- Rechter Bereich: 25% -->
                 <div class="col-3 d-flex justify-content-end">
-                    <router-link class="btn btn-sm btn-outline-danger mx-1" title="Schnelles Quiz - kooperativ"
-                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'schnell_coop' } }">
+                    <router-link class="btn btn-sm btn-outline-danger mx-1" title="Schnelles Quiz - kompetitiv"
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'schnell_comp' } }">
                         <PersonIcon />
                     </router-link>
-                    <router-link class="btn btn-sm btn-outline-success mx-1" title="Schnelles Quiz - kompetitiv"
-                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'schnell_comp' } }">
+                    <router-link class="btn btn-sm btn-outline-success mx-1" title="Schnelles Quiz - kooperativ"
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'schnell_coop' } }">
                         <PeopleIcon />
                     </router-link>
                 </div>
@@ -48,12 +48,12 @@ const props = defineProps({
                 </div>
                 <div class="col-3 d-flex justify-content-end">
                     <router-link class="btn btn-sm btn-outline-danger mx-1" title="Themenbasiertes Quiz - kompetitiv"
-                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_coop' } }">
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_comp' } }">
                         <PersonIcon />
                     </router-link>
                     <router-link type="button" class="btn btn-sm btn-outline-success mx-1"
                         title="Themenbasiertes Quiz - kompetitiv"
-                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_comp' } }">
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_coop' } }">
                         <PeopleIcon />
                     </router-link>
                 </div>
@@ -68,7 +68,7 @@ const props = defineProps({
                     </button>
                     <router-link type="button" class="btn btn-sm btn-outline-success mx-1"
                         title="Prüfungssimulation - kompetitiv"
-                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'simul_comp' } }">
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'simul' } }">
                         <PeopleIcon />
                     </router-link>
                 </div>
@@ -79,7 +79,7 @@ const props = defineProps({
                 </div>
                 <div class="col-3 d-flex justify-content-end">
                     <router-link class="btn btn-sm btn-outline-danger mx-1" title="Lernmodus - kooperativ"
-                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'learn_coop' } }">
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'learn' } }">
                         <PersonIcon />
                     </router-link>
                     <button type="button" class="btn btn-sm btn-secondary mx-1" disabled>
