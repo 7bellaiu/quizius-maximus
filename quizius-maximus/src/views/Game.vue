@@ -69,7 +69,8 @@ const fetchRunningGameDocId = () => {
         where("gameMode", "==", props.gameMode),
         where("moduleID", "==", props.moduleId),
         where("player2Status", "==", 0),
-        where("player1UID", "!=", 'dfyxoVBXi7MXCZH53B27c4tRtEn2')
+        // TODO: username aus state
+        where("player1UID", "!=", userUID.value)
     );
 
     getDocs(existingGames)
@@ -93,7 +94,6 @@ onMounted(() => {
     } else {
         fetchRunningGameDocId();
     }
-
 });
 
 const handleMatchmakingSuccess = (createdGameDocId) => {
