@@ -1,9 +1,15 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { firestoreDB } from "@/main";
-import { collection, query, where, getDocs, runTransaction, doc, updateDoc } from "firebase/firestore";
+// Diese View prüft zunächst, ob es schon ein Spiel für das gewählte Modul gibt, bei dem ein zweiter SPieler gesucht wird (und der erste spieler nicht der angemeldete User ist)
+// gibt eines: JoinGame Component ausführen
+// gibt keins: CreateGame Component ausführen
+//immer: gameDocumentId zurückbekommen und damit je nach gewähltem Spielmodus die entsprechende Component aufrufen
 import { getAuth } from "firebase/auth";
-import Quiz from '@/components/quiz/Quiz.vue';
+import { ref, onMounted, computed } from "vue";
+import { firestoreDB } from "@/main";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import CreateNewGame from "@/components/matchmaking/CreateNewGame.vue";
+import JoinExistingGame from "@/components/matchmaking/JoinExistingGame.vue";
+import SchnellComp from "@/components/gamemodes/SchnellComp.vue";
 
 const props = defineProps({
     moduleId: {
@@ -24,143 +30,119 @@ const props = defineProps({
     },
 });
 
-const state = ref({
-    userUID: null,
-    userUsername: null,
-    message: "",
-    currentQuestion: 0,
-    questionData: null,
-    gameDocId: null,
-});
+// Reaktive Variablen für den Zustand
+const gameFound = ref(false);
+const gameDocId = ref(null);
+const isMatchmakingCompleted = ref(false)
+const matchmakingGameDocId = ref("");
+const userUID = ref(null);
+const userUsername = ref(null);
 
-const handleError = (error, customMessage) => {
-    console.error(customMessage, error);
-    state.value.message = `${customMessage}: ${error.message}`;
-};
+// Steuerung welche Spielmodus-Component getriggert wird
+const displaySchnellComp = computed(() => props.gameMode == 'schnell_comp' && isMatchmakingCompleted)
+const displaySchnellCoop = computed(() => props.gameMode == 'schnell_coop' && isMatchmakingCompleted)
+const displayThemeComp = computed(() => props.gameMode == 'theme_comp' && isMatchmakingCompleted)
+const displayThemeCoop = computed(() => props.gameMode == 'theme_coop' && isMatchmakingCompleted)
+const displaySimul = computed(() => props.gameMode == 'simul' && isMatchmakingCompleted)
+const displayLearn = computed(() => props.gameMode == 'learn' && isMatchmakingCompleted)
+const isUserDataFetched = computed(() => userUID.value && userUsername.value);
 
-const findOrCreateGame = async () => {
-    try {
-        const existingGames = query(
-            collection(firestoreDB, "games"),
-            where("gameMode", "==", props.gameMode),
-            where("moduleID", "==", props.moduleId),
-            where("player2Status", "==", 0)
-        );
-
-        const existingGamesData = await getDocs(existingGames);
-
-        if (!existingGamesData.empty) {
-            await joinExistingGame(existingGamesData.docs[0]); //Später als Schleife?
-        } else {
-            await createNewGame();
-        }
-    } catch (error) {
-        handleError(error, "Fehler beim Erstellen des Spiels");
-    }
-};
-
-const joinExistingGame = async (existingGameDoc) => {
-    try {
-        const { userUID, userUsername, currentQuestion } = state.value; //Destrukturierung für weniger const Anweisungen
-        const existingGameData = existingGameDoc.data();
-
-        // laufendes Spiel existiert => Überprüfung, ob aktueller Benutzer bereits als player1 eingetragen ist
-        if (existingGameData.player1UID !== userUID) {
-            // Benutzer ist nicht player1 => wird als player2 dem Spiel zugewiesen
-            state.value.gameDocId = existingGameDoc.id;
-            await updateDoc(existingGameDoc.ref, {
-                player2UID: userUID,
-                player2Username: userUsername,
-                player2Status: 1
-            });
-
-            const questionsData = await getDocs(collection(existingGameDoc.ref, "questions"));
-            state.value.questionData = questionsData.docs[currentQuestion].data();
-            state.value.message = "Du wurdenst einem bestehenden Spiel zugewiesen.";
-        } else {
-            // Benutzer ist bereits player1 => neues Spiel erstellen
-            await createNewGame();
-        }
-    } catch (error) {
-        handleError(error, "Fehler beim Spielbeitritt.");
-    }
-};
-
-const createNewGame = async () => {
-    try {
-        await runTransaction(firestoreDB, async (transaction) => {
-            const newGameDoc = doc(collection(firestoreDB, "games"));
-            state.value.gameDocId = newGameDoc.id;
-            const { currentQuestion, userUID, userUsername } = state.value;
-            const { gameMode, moduleId, moduleLongname, moduleShortname } = props;
-
-            transaction.set(newGameDoc, {
-                currentQuestion,
-                gameMode,
-                moduleID: moduleId,
-                moduleLongname,
-                moduleShortname,
-                player1Status: 1,
-                player1UID: userUID,
-                player1Username: userUsername,
-                player2Status: 0,
-                player2UID: "",
-                player2Username: ""
-            });
-
-            const questionnairesModuleID = await getDocs(query(
-                collection(firestoreDB, "questionnaires"),
-                where("moduleID", "==", moduleId)
-            ));
-
-            const moduleID = questionnairesModuleID.docs[0].id;
-
-            const questionnairesQuestions = await getDocs(query(
-                collection(firestoreDB, "questionnaires", moduleID, "questions")
-            ));
-
-            const randomQuestions = questionnairesQuestions.docs
-                .map(doc => ({ ...doc.data() }))
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 5);
-
-            randomQuestions.forEach((question, index) => {
-                const gamesQuestions = doc(collection(newGameDoc, "questions"));
-                transaction.set(gamesQuestions, {
-                    ...question,
-                    player1IsCorrect: false,
-                    player2IsCorrect: false
-                });
-
-                if (index === 0) {
-                    state.value.questionData = question;
-                }
-            });
-        });
-
-        state.value.message = "Neues Spiel erstellt.";
-    } catch (error) {
-        handleError(error, "Fehler der Spielerstellung.");
-    }
-};
-
-onMounted(() => {
+// Funktion, um Benutzerdaten zu sammeln
+const collectUserData = () => {
     const auth = getAuth();
-    auth.onAuthStateChanged(user => {
-        state.value.userUID = user.uid;
-        state.value.userUsername = user.displayName;
-    });
+    const user = auth.currentUser;
+
+    if (user) {
+        userUID.value = user.uid;
+        userUsername.value = user.displayName || "Unbekannter Spieler";
+        return true;
+    } else {
+        console.error("Kein Benutzer eingeloggt");
+        return false;
+    }
+};
+
+// Funktion zum Abrufen der Game-Daten
+const fetchRunningGameDocId = () => {
+    const existingGames = query(
+        collection(firestoreDB, "games"),
+        where("gameMode", "==", props.gameMode),
+        where("moduleID", "==", props.moduleId),
+        where("player2Status", "==", 0),
+        // TODO: username aus state
+        where("player1UID", "!=", userUID.value)
+    );
+
+    getDocs(existingGames)
+        .then((existingGamesData) => {
+            gameFound.value = !existingGamesData.empty; // Setzt gameFound auf true oder false
+            gameDocId.value = existingGamesData.empty ? null : existingGamesData.docs[0].id; // Speichert die ID, falls vorhanden
+        })
+        .catch((error) => {
+            console.error("Fehler beim Abrufen des Spiels:", error);
+        });
+};
+
+// Firestore-Daten abrufen, sobald die Komponente geladen wird
+onMounted(() => {
+    if (!collectUserData()) {
+        console.error("Benutzerdaten konnten nicht geladen werden!");
+        //TODO: verzögerter push to Login-Site?
+    } else if (!props.moduleId) {
+        console.error("Keine moduleId übergeben!");
+        // TODO: Routing zu Modulübersicht?
+    } else {
+        fetchRunningGameDocId();
+    }
 });
 
-// TODO: Implementieren, dass Methode nur ausgeführt wird, wenn von Modules.vue geroutet wurde
-findOrCreateGame();
+const handleMatchmakingSuccess = (createdGameDocId) => {
+    matchmakingGameDocId.value = createdGameDocId;
+    console.log("Matchmaking successfull: ", matchmakingGameDocId.value);
+    isMatchmakingCompleted.value = true;
+}
 
+const handleMatchmakingFailed = (message) => {
+    // TODO: Fehlermeldung an Spieler
+    console.error(message);
+}
 </script>
 
 <template>
     <main>
-        <p>{{ state.message }}</p>
-        <Quiz :currentQuestionData="state.questionData" :currentQuestion="state.currentQuestion"
-            :gameDocId="state.gameDocId" />
+        <div class="row">
+            <h1>{{ moduleId }}</h1>
+            <p>
+                {{ moduleShortname }} <br>
+                {{ moduleLongname }} <br>
+                {{ gameMode }}
+            </p>
+            <p>SchnellComp: {{ displaySchnellComp }}</p>
+            <p>SchnellCoop: {{ displaySchnellCoop }}</p>
+            <p>ThemeComp: {{ displayThemeComp }}</p>
+            <p>ThemeCoop: {{ displayThemeCoop }}</p>
+            <p>Simul: {{ displaySimul }}</p>
+            <p>Learn: {{ displayLearn }}</p>
+        </div>
+
+        <!-- TODO: Matchmaking -->
+        <div class="row">
+            <CreateNewGame v-if="isUserDataFetched && !gameFound && !isMatchmakingCompleted"
+                @success="handleMatchmakingSuccess" @failed="handleMatchmakingFailed" :gameMode="props.gameMode"
+                :moduleId="props.moduleId" :moduleShortname="props.moduleShortname"
+                :moduleLongname="props.moduleLongname" :userUID="userUID" :userUsername="userUsername" />
+            <JoinExistingGame v-if="isUserDataFetched && gameFound && !isMatchmakingCompleted"
+                @success="handleMatchmakingSuccess" @failed="handleMatchmakingFailed" :gameDocId="gameDocId" />
+        </div>
+
+        <!-- Weiterleiten zum Spiel-Controller -->
+        <div class="row">
+            <SchnellComp v-if="displaySchnellComp && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId" />
+            <!-- <SchnellCoop v-if="displaySchnellCoop" :gameDocId="matchmakingGameDocId" /> -->
+            <!-- <ThemeComp v-if="displayThemeComp" :gameDocId="matchmakingGameDocId" /> -->
+            <!-- <ThemeCoop v-if="displayThemeCoop" :gameDocId="matchmakingGameDocId" /> -->
+            <!-- <Simulation v-if="displaySimul" :gameDocId="matchmakingGameDocId" /> -->
+            <!-- <Learning v-if="displayLearn" :gameDocId="matchmakingGameDocId" /> -->
+        </div>
     </main>
 </template>

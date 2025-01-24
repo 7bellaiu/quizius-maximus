@@ -1,6 +1,6 @@
 <script setup>
 import ContactForm from "../components/ContactForm.vue";
-import FAQ from "../components/FAQ.vue"
+import FAQ from "@/components/help/FAQ.vue";
 import router from '@/router'
 import { ref } from "vue";
 
@@ -42,7 +42,7 @@ const triggerToast = () => {
                         <div :class="{
                             'card': true,
                             'border-info': displayContactForm,
-                            'bg-info bg-opacity-75': !displayContactForm
+                            'bg-info bg-opacity-50': !displayContactForm
                         }" class="m-0">
                             <div class="card-body">
                                 <h5 class="card-title">FAQ</h5>
@@ -57,7 +57,7 @@ const triggerToast = () => {
                         <div :class="{
                             'card': true,
                             'border-info': !displayContactForm,
-                            'bg-info bg-opacity-75': displayContactForm
+                            'bg-info bg-opacity-50': displayContactForm
                         }" class="m-0">
                             <div class="card-body">
                                 <h5 class="card-title">Kontaktanfrage</h5>
