@@ -20,7 +20,7 @@ const loadGames = async () => {
             );
             const gamesDoc = await getDocs(gamesQuery);
             games.value = gamesDoc.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-                .filter(game => game.player1Status !== 5);
+                .filter(game => game.player1Status !== 5); // TODO: validieren, ob UID in player1 oder player2 steht & dann filtern
         } catch (error) {
             console.error("Fehler beim Laden der Quizze: ", error);
         }
@@ -35,6 +35,7 @@ onMounted(() => {
         }
     });
 });
+
 </script>
 
 <template>

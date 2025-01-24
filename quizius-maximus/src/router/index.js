@@ -12,6 +12,7 @@ import ActiveQuizzes from '@/views/ActiveQuizzes.vue';
 import CompetitiveGamemodes from '@/views/CompetitiveGamemodes.vue';
 import Game from '@/views/Game.vue';
 import Questionnaire from '@/views/Questionnaire.vue';
+import Result from '@/views/Result.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,6 +67,12 @@ const router = createRouter({
             path: '/activequizzes',
             name: 'activequizzes',
             component: ActiveQuizzes
+        },
+        {
+            path: '/result/:gameMode/:moduleShortname/:moduleLongname/:gameId',
+            name: 'result',
+            component: Result,
+            props: true
         },
         {
             path: "/support",
