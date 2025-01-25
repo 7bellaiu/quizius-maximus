@@ -110,23 +110,8 @@ const handleMatchmakingFailed = (message) => {
 
 <template>
     <main>
-        <div class="row">
-            <h1>{{ moduleId }}</h1>
-            <p>
-                {{ moduleShortname }} <br>
-                {{ moduleLongname }} <br>
-                {{ gameMode }}
-            </p>
-            <p>SchnellComp: {{ displaySchnellComp }}</p>
-            <p>SchnellCoop: {{ displaySchnellCoop }}</p>
-            <p>ThemeComp: {{ displayThemeComp }}</p>
-            <p>ThemeCoop: {{ displayThemeCoop }}</p>
-            <p>Simul: {{ displaySimul }}</p>
-            <p>Learn: {{ displayLearn }}</p>
-        </div>
-
         <!-- TODO: Matchmaking -->
-        <div class="row">
+        <div class="row align-content-center">
             <CreateNewGame v-if="isUserDataFetched && !gameFound && !isMatchmakingCompleted"
                 @success="handleMatchmakingSuccess" @failed="handleMatchmakingFailed" :gameMode="props.gameMode"
                 :moduleId="props.moduleId" :moduleShortname="props.moduleShortname"

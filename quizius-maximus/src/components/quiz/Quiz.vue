@@ -4,53 +4,37 @@ import Progress from '@/components/quiz/Progress.vue';
 import Question from '@/components/quiz/Question.vue';
 import { ref, computed } from 'vue';
 
-// Zustand für Fragen und Optionen
-
-// TODO: Werte dynamisieren
 const props = defineProps(["questions", "currentQuestion", "totalQuestions", "gameMode"]);
 
-// const currentQuestion = ref(1);
-// const totalQuestions = 5;
-// const questionText = ref('Was ist 2 + 2?');
-// const answerOptions = ref([
-//     { text: '3', correct: false, selected: false },
-//     { text: '4', correct: true, selected: false },
-//     { text: '5', correct: false, selected: false },
-//     { text: '6', correct: false, selected: false }
-// ]);
+const questionText = computed(() => props.questions[props.currentQuestion]?.question || "Keine Frage gefunden");
+const answerOptions = computed(() => {
+    const q = props.questions[props.currentQuestion];
+    const options = [
+        { text: q?.option1, selected: false, correct: q?.correctAnswer === 'option1' },
+        { text: q?.option2, selected: false, correct: q?.correctAnswer === 'option2' },
+        { text: q?.option3, selected: false, correct: q?.correctAnswer === 'option3' },
+        { text: q?.option4, selected: false, correct: q?.correctAnswer === 'option4' }
+    ];
+    return options;
+});
 
 // Handhabung der Antwortwahl
-// const handleAnswerSelected = (index) => {
-//     const selectedOption = answerOptions.value[index];
-//     // TODO: Verarbeitungslogik, um zu prüfen, ob die Antwort korrekt ist.
-// };
-
-// Nächste Frage laden
-// const nextQuestion = () => {
-//     currentQuestion.value += 1;
-//     // TODO: Logik zum Laden der nächsten Frage
-//     if (currentQuestion.value > totalQuestions) {
-//         currentQuestion.value = 1; // Reset bei Ende
-//     }
-// };
+const handleAnswerSelected = (index) => {
+    const selectedOption = answerOptions.value[index];
+    // TODO: Verarbeitungslogik, um zu prüfen, ob die Antwort korrekt ist.
+};
 </script>
 
 <template>
     <section>
         <!-- Fortschritt -->
-        <Progress :currentQuestion="props.currentQuestion" :totalQuestions="props.totalQuestions" :game-mode="props.gameMode" />
+        <Progress :currentQuestion="props.currentQuestion" :totalQuestions="props.totalQuestions"
+            :game-mode="props.gameMode" />
 
         <!-- Frage -->
-        <!-- <Question :questionText="'PLACEHOLDER'" /> -->
+        <Question v-if="questionText" :questionText="questionText" />
 
         <!-- Antwortoptionen -->
-        <!-- <AnswerOptions :options="['O1', 'O2', 'O3', 'O4']" @answerSelected="handleAnswerSelected" /> -->
-
-        <!-- Button: "Nächste Frage" -->
-        <!-- <div class="row row-cols-1 mx-2 mt-2">
-            <div class="col w-100 d-flex justify-content-end">
-                <button class="btn btn-secondary" @click="nextQuestion">Nächste Frage</button>
-            </div>
-        </div> -->
+        <AnswerOptions v-if="answerOptions.length > 0" :options="answerOptions" />
     </section>
 </template>

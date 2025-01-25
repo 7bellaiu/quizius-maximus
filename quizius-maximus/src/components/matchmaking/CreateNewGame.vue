@@ -127,6 +127,4 @@ onMounted(() => {
 </script>
 
 <template>
-    <h1>Creating new Game</h1>
-    <p>{{ props.userUID }} {{ props.userUsername }}</p>
 </template>

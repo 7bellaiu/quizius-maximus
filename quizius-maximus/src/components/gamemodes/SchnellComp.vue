@@ -19,7 +19,7 @@ const props = defineProps({
 // state
 const MAX_QUESTIONS_SCHNELL_COMP = 5;
 const GAMEMODE_SCHNELL_COMP = "Kompetitiv - Schnelles Spiel";
-const quizData = ref(null)
+const quizData = ref(null);
 const questionsData = ref([]); // Speichert die Fragen
 const isPlayer1 = computed(() => player1UID.value == props.userUID);
 const player1UID = computed(() => quizData.value?.player1UID);
@@ -27,13 +27,13 @@ const player2UID = computed(() => quizData.value?.player2UID);
 const player1Status = computed(() => quizData.value?.player1Status);
 const player2Status = computed(() => quizData.value?.player2Status);
 const currentQuestion = computed(() => quizData.value?.currentQuestion);
-
+const isDataFetchCompleted = computed(() => quizData.value && questionsData.value.length > 0);
 
 // Methode zum Abrufen der Spiel-Kopfdaten mit einer Spiel-ID
 const fetchQuizDataById = (documentId) => {
     const gameDocRef = doc(firestoreDB, "games", documentId);
 
-    getDoc(gameDocRef)
+    return getDoc(gameDocRef)  // Rückgabe des Promises
         .then((gameDocSnap) => {
             if (gameDocSnap.exists()) {
                 quizData.value = gameDocSnap.data(); // Speichert die Spieldaten
@@ -51,7 +51,7 @@ const fetchQuizDataById = (documentId) => {
 const fetchQuestions = (documentId) => {
     const questionsRef = collection(firestoreDB, "games", documentId, "questions");
 
-    getDocs(questionsRef)
+    return getDocs(questionsRef)  // Rückgabe des Promises
         .then((querySnapshot) => {
             questionsData.value = querySnapshot.docs.map(doc => ({
                 id: doc.id,
@@ -65,15 +65,16 @@ const fetchQuestions = (documentId) => {
 };
 
 onMounted(() => {
-    //Spiel-Daten aus Firestore laden
-    fetchQuizDataById(props.gameDocId);
-
-    //Fragen-Daten aus Firestore laden
-    fetchQuestions(props.gameDocId);
+    // Zuerst Spiel-Daten abrufen, dann Fragen-Daten abrufen
+    fetchQuizDataById(props.gameDocId)
+        .then(() => {
+            // Nur aufrufen, wenn fetchQuizDataById erfolgreich war
+            fetchQuestions(props.gameDocId);
+        });
 });
 </script>
 
 <template>
-    <Quiz v-if="quizData && questionsData" :questions="questionsData" :current-question="1"
+    <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :current-question="currentQuestion"
         :total-questions="MAX_QUESTIONS_SCHNELL_COMP" :game-mode="GAMEMODE_SCHNELL_COMP" />
 </template>

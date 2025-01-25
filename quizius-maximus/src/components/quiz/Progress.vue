@@ -21,7 +21,7 @@
       <p>
         <strong>{{ gameMode }}</strong>
         <br />
-        <small>Frage {{ currentQuestion }} von {{ totalQuestions }}</small>
+        <small>Frage {{ currentQuestion + 1 }} von {{ totalQuestions }}</small>
       </p>
     </div>
   </div>
