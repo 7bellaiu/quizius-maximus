@@ -5,18 +5,9 @@ import Question from '@/components/quiz/Question.vue';
 import { ref, computed } from 'vue';
 
 // Zustand für Fragen und Optionen
-// TODO: Neue Komponente pro Spielmodus, die anhand übergebener gameDocId die Daten liest und die Quiz-Komponente steuert
-
-
-
 
 // TODO: Werte dynamisieren
-const props = defineProps({
-    gameDocId: {
-        type: String,
-        required: true
-    }
-})
+const props = defineProps(["questions", "currentQuestion", "totalQuestions", "gameMode"]);
 
 // const currentQuestion = ref(1);
 // const totalQuestions = 5;
@@ -47,19 +38,19 @@ const props = defineProps({
 <template>
     <section>
         <!-- Fortschritt -->
-        <Progress :currentQuestion="'1'" :totalQuestions="'5'" :game-mode="'PLACEHOLDER'" />
+        <Progress :currentQuestion="props.currentQuestion" :totalQuestions="props.totalQuestions" :game-mode="props.gameMode" />
 
         <!-- Frage -->
-        <Question :questionText="currentQuestionData.question" />
+        <!-- <Question :questionText="'PLACEHOLDER'" /> -->
 
         <!-- Antwortoptionen -->
-        <AnswerOptions :options="currentQuestionData.answerOptions" @answerSelected="handleAnswerSelected" />
+        <!-- <AnswerOptions :options="['O1', 'O2', 'O3', 'O4']" @answerSelected="handleAnswerSelected" /> -->
 
         <!-- Button: "Nächste Frage" -->
-        <div class="row row-cols-1 mx-2 mt-2">
+        <!-- <div class="row row-cols-1 mx-2 mt-2">
             <div class="col w-100 d-flex justify-content-end">
                 <button class="btn btn-secondary" @click="nextQuestion">Nächste Frage</button>
             </div>
-        </div>
+        </div> -->
     </section>
 </template>

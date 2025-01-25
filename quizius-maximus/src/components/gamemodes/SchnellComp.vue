@@ -1,7 +1,8 @@
 <script setup>
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { firestoreDB } from "@/main";
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import Quiz from '../quiz/Quiz.vue';
 
 // Steuert ein Schnelles Spiel im Competitive Mode
 const props = defineProps({
@@ -17,13 +18,18 @@ const props = defineProps({
 
 // state
 const MAX_QUESTIONS_SCHNELL_COMP = 5;
-const isPlayer1 = ref(false);
-const isPlaying = ref(false);
-const currentQuestion = ref(0);
+const GAMEMODE_SCHNELL_COMP = "Kompetitiv - Schnelles Spiel";
 const quizData = ref(null)
+const questionsData = ref([]); // Speichert die Fragen
+const isPlayer1 = computed(() => player1UID.value == props.userUID);
+const player1UID = computed(() => quizData.value?.player1UID);
+const player2UID = computed(() => quizData.value?.player2UID);
+const player1Status = computed(() => quizData.value?.player1Status);
+const player2Status = computed(() => quizData.value?.player2Status);
+const currentQuestion = computed(() => quizData.value?.currentQuestion);
 
 
-// Methode zum Abrufen der Spieldaten mit einer Spiel-ID
+// Methode zum Abrufen der Spiel-Kopfdaten mit einer Spiel-ID
 const fetchQuizDataById = (documentId) => {
     const gameDocRef = doc(firestoreDB, "games", documentId);
 
@@ -41,20 +47,33 @@ const fetchQuizDataById = (documentId) => {
         });
 };
 
+// Methode zum Abrufen der Fragen aus der Unterkollektion "questions"
+const fetchQuestions = (documentId) => {
+    const questionsRef = collection(firestoreDB, "games", documentId, "questions");
+
+    getDocs(questionsRef)
+        .then((querySnapshot) => {
+            questionsData.value = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            console.log("Fragen:", questionsData.value);
+        })
+        .catch((error) => {
+            console.error("Fehler beim Abrufen der Fragen:", error);
+        });
+};
+
 onMounted(() => {
     //Spiel-Daten aus Firestore laden
     fetchQuizDataById(props.gameDocId);
 
-    // 1 Who am I? -> S1 || S2
-    // Mein Status?
-    // CurrentQuestion?
-
+    //Fragen-Daten aus Firestore laden
+    fetchQuestions(props.gameDocId);
 });
 </script>
 
 <template>
-    <h1> SchnellComp: {{ props.gameDocId }}</h1>
-    <h2> Spieler: {{ props.userUID }}</h2>
-    <p v-if="!quizData">No Quiz Data found</p>
-    <p v-else>{{ quizData }}</p>
+    <Quiz v-if="quizData && questionsData" :questions="questionsData" :current-question="1"
+        :total-questions="MAX_QUESTIONS_SCHNELL_COMP" :game-mode="GAMEMODE_SCHNELL_COMP" />
 </template>
