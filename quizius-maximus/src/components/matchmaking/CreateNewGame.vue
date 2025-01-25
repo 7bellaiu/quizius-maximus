@@ -39,8 +39,6 @@ const state = ref({
     createdGameDocId: "",
     questionData: null,
     message: "",
-    userUID: null,
-    userUsername: null,
 });
 
 const QUESTIONS_PER_GAMEMODE = {
@@ -88,9 +86,9 @@ const createNewGame = () => {
             moduleID: props.moduleId,
             moduleLongname: props.moduleLongname,
             moduleShortname: props.moduleShortname,
-            player1Status: 1,
-            player1UID: state.value.userUID,
-            player1Username: state.value.userUsername,
+            player1Status: 2,
+            player1UID: props.userUID,
+            player1Username: props.userUsername,
             player2Status: 0,
             player2UID: "",
             player2Username: "",
@@ -119,7 +117,7 @@ const createNewGame = () => {
 };
 
 onMounted(() => {
-    if (!props.userUID || !props.userUsername) { // Wenn Benutzerdaten erfolgreich gesammelt
+    if (!props.userUID || !props.userUsername) { // Wenn Benutzerdaten nicht erfolgreich gesammelt
         state.value.message = "Benutzerdaten konnten nicht geladen werden.";
         emit("failed", "Benutzerdaten fehlen");
     } else {
@@ -130,5 +128,5 @@ onMounted(() => {
 
 <template>
     <h1>Creating new Game</h1>
-    <p>{{ state.message }}</p>
+    <p>{{ props.userUID }} {{ props.userUsername }}</p>
 </template>
