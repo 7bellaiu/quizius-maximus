@@ -117,7 +117,8 @@ const handleMatchmakingFailed = (message) => {
                 :moduleId="props.moduleId" :moduleShortname="props.moduleShortname"
                 :moduleLongname="props.moduleLongname" :userUID="userUID" :userUsername="userUsername" />
             <JoinExistingGame v-if="isUserDataFetched && gameFound && !isMatchmakingCompleted"
-                @success="handleMatchmakingSuccess" @failed="handleMatchmakingFailed" :gameDocId="gameDocId" />
+                @success="handleMatchmakingSuccess" @failed="handleMatchmakingFailed" :gameDocId="gameDocId"
+                :userUID="userUID" :userUsername="userUsername" />
         </div>
 
         <!-- Weiterleiten zum Spiel-Controller -->
