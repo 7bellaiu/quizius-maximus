@@ -14,6 +14,9 @@ const props = defineProps({
     }
 });
 
+const clickTarget = ref(null);
+const isTargetDefined = ref(false);
+
 const getStatusText = (status, player2Username) => { // TODO: Status validieren, je nachdem ob UID in player1UID oder in Player2UID
     switch (status) {
         case 1:
