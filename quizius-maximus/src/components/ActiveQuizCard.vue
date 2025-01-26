@@ -33,7 +33,11 @@ const getStatusText = (status, player2Username) => { // TODO: Status validieren,
 onMounted(() => {
     switch (props.game.gameMode) {
         case 'schnell_comp':
-            clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
+            if (props.game.player1Status == 4 && props.game.player2Status == 4) {
+                clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, moduleShortname: props.game.moduleShortname, moduleLongname: props.game.moduleLongname, gameId: props.game.id } };
+            } else {
+                clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
+            }
             isTargetDefined.value = true;
             break;
         default: console.error('Zugriff auf gameMode fehlgeschlagen oder ungültiger gameMode: ', props.game);
