@@ -13,6 +13,7 @@ import CompetitiveGamemodes from '@/views/CompetitiveGamemodes.vue';
 import Game from '@/views/Game.vue';
 import Questionnaire from '@/views/Questionnaire.vue';
 import Result from '@/views/Result.vue';
+import SchnellComp from '@/components/gamemodes/SchnellComp.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,6 +68,12 @@ const router = createRouter({
             path: '/activequizzes',
             name: 'activequizzes',
             component: ActiveQuizzes
+        },
+        {
+            path: "/schnellcomp/:gameDocId/:userUID",
+            name: "schnellcomp",
+            component: SchnellComp,
+            props: true
         },
         {
             path: '/result/:gameMode/:moduleShortname/:moduleLongname/:gameId',

@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted, ref } from 'vue';
 import FireIcon from './icons/FireIcon.vue';
 import GearIcon from './icons/GearIcon.vue';
 
@@ -6,8 +7,15 @@ const props = defineProps({
     game: {
         type: Object,
         required: true
+    },
+    userUID: {  //der angemeldete Spieler
+        type: String,
+        required: true
     }
 });
+
+const clickTarget = ref(null);
+const isTargetDefined = ref(false);
 
 const getStatusText = (status, player2Username) => {
     switch (status) {
@@ -22,11 +30,22 @@ const getStatusText = (status, player2Username) => {
     }
 };
 
+onMounted(() => {
+    switch (props.game.gameMode) {
+        case 'schnell_comp':
+            clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
+            isTargetDefined.value = true;
+            break;
+        default: console.error('Zugriff auf gameMode fehlgeschlagen oder ungültiger gameMode: ', props.game);
+            isTargetDefined.value = false;
+            break;
+    }
+})
 </script>
 
 <template>
     <div class="col">
-        <button type="button" class="btn w-100 p-0">
+        <router-link v-if="isTargetDefined" class="btn w-100 p-0" :to="clickTarget">
             <div class="card border-info">
                 <div class="card-header bg-info bg-opacity-50 text-bg-info">
                     <h5 class="card-title">
@@ -38,15 +57,17 @@ const getStatusText = (status, player2Username) => {
                     <p class="card-text">
                         ({{ game.moduleShortname }}) {{ game.moduleLongname }}<br>
                         {{ game.player1Username }}
-                            <FireIcon class="text-danger" v-if="game.gameMode.includes('comp') && game.player1Status !== 1"/>
-                            <GearIcon class="text-danger" v-if="game.gameMode.includes('coop') && game.player1Status !== 1"/>
-                            {{ game.player2Username }}
+                        <FireIcon class="text-danger"
+                            v-if="game.gameMode.includes('comp') && game.player1Status !== 1" />
+                        <GearIcon class="text-danger"
+                            v-if="game.gameMode.includes('coop') && game.player1Status !== 1" />
+                        {{ game.player2Username }}
                     </p>
                 </div>
                 <div class="card-footer bg-info bg-opacity-25 text-bg-info border-info">
                     <strong>Status:</strong> {{ getStatusText(game.player1Status, game.player2Username) }}
                 </div>
             </div>
-        </button>
+        </router-link>
     </div>
 </template>
