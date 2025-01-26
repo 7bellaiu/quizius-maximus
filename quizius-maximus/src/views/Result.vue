@@ -1,30 +1,43 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import ResultCard from '@/components/ResultCard.vue';
+import { useRouter } from 'vue-router';
+import { doc, getDoc } from 'firebase/firestore';
+import { firestoreDB } from "@/main";
 
-const route = useRoute();
+const props = defineProps({
+    gameMode: {
+        type: String,
+        required: true
+    },
+    moduleShortname: {
+        type: String,
+        required: true
+    },
+    moduleLongname: {
+        type: String,
+        required: true
+    },
+    gameId: {
+        type: String,
+        required: true
+    }
+});
+
 const router = useRouter();
-
-const gameMode = route.params.gameMode;
-const moduleShortname = route.params.moduleShortname;
-const moduleLongname = route.params.moduleLongname;
-const gameId = route.params.gameId;
-
 const gameData = ref(null);
 const player1Score = ref(0);
 const player2Score = ref(0);
 
 const buildResult = async () => {
-    // TODO: Daten aus collection games selektieren
-    gameData.value = {
-        player1Username: 'Player1',
-        player2Username: 'Player2',
-        player1IsCorrect: [true, false, true],
-        player2IsCorrect: [true, true, false]
-    };
-    player1Score.value = gameData.value.player1IsCorrect.filter(correct => correct).length;
-    player2Score.value = gameData.value.player2IsCorrect.filter(correct => correct).length;
+    const gameDocRef = doc(firestoreDB, "games", props.gameId);
+    const gameDoc = await getDoc(gameDocRef);
+    if (gameDoc.exists()) {
+        gameData.value = gameDoc.data();
+        player1Score.value = gameData.value.player1IsCorrect.filter(correct => correct).length;
+        player2Score.value = gameData.value.player2IsCorrect.filter(correct => correct).length;
+    } else {
+        console.error("Spiel nicht gefunden!");
+    }
 };
 
 onMounted(buildResult);
@@ -36,12 +49,23 @@ const goBack = () => {
 
 <template>
     <div class="container mt-5">
-        <h1>{{ gameMode }} - {{ moduleShortname }} {{ moduleLongname }} - Auswertung</h1>
-        <ResultCard :username="gameData.player1Username" :score="player1Score" />
-        <ResultCard :username="gameData.player2Username" :score="player2Score" />
+        <h1>{{ props.gameMode }} - {{ props.moduleShortname }} {{ props.moduleLongname }} - Auswertung</h1>
+        <div class="card mb-3">
+            <div class="card border-info">
+                <div class="card-header bg-info bg-opacity-50 text-bg-info">
+                    <h5 class="card-title">Benutzername Punktzahl</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text" v-if="gameData">
+                        {{ gameData.player1Username }}: {{ player1Score }}<br>
+                        {{ gameData.player2Username }}: {{ player2Score }}
+                    </p>
+                </div>
+            </div>
+        </div>
         <div class="d-flex justify-content-between mt-3">
             <button class="btn btn-secondary" @click="goBack">Zurück</button>
-            <button class="btn btn-danger">Quiz beenden</button>
+            <button class="btn btn-danger">Quiz abschließen</button>
         </div>
     </div>
 </template>

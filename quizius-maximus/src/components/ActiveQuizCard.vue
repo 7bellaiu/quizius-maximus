@@ -9,7 +9,7 @@ const props = defineProps({
     }
 });
 
-const getStatusText = (status, player2Username) => {
+const getStatusText = (status, player2Username) => { // TODO: Status validieren, je nachdem ob UID in player1UID oder in Player2UID
     switch (status) {
         case 1:
             return "Suche Gegenspieler";
@@ -31,6 +31,7 @@ const getStatusText = (status, player2Username) => {
                 <div class="card-header bg-info bg-opacity-50 text-bg-info">
                     <h5 class="card-title">
                         <span v-if="game.gameMode === 'schnell_comp'">Kompetitiv - Schnelles Spiel</span>
+                        <span v-if="game.gameMode === 'schnell_coop'">Kooperativ - Schnelles Spiel</span>
                     </h5>
 
                 </div>
@@ -38,9 +39,9 @@ const getStatusText = (status, player2Username) => {
                     <p class="card-text">
                         ({{ game.moduleShortname }}) {{ game.moduleLongname }}<br>
                         {{ game.player1Username }}
-                            <FireIcon class="text-danger" v-if="game.gameMode.includes('comp') && game.player1Status !== 1"/>
-                            <GearIcon class="text-danger" v-if="game.gameMode.includes('coop') && game.player1Status !== 1"/>
-                            {{ game.player2Username }}
+                        <FireIcon class="text-danger" v-if="game.gameMode.includes('comp')" />
+                        <GearIcon class="text-success" v-if="game.gameMode.includes('coop')" />
+                        {{ game.player2Username }}
                     </p>
                 </div>
                 <div class="card-footer bg-info bg-opacity-25 text-bg-info border-info">

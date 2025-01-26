@@ -1,6 +1,74 @@
 <script setup>
+import { doc, runTransaction } from 'firebase/firestore';
+import { firestoreDB } from "@/main";
+import { onMounted, ref } from 'vue';
 //wird von Game angesteuert, um den SPieler einem bestehenden Spiel zuzuweisen
 //liefert via emit die Id des entsprechenden Spiel-Documents an Game zurück
+
+// Definition der Props & Emits von/für Parent
+const props = defineProps({
+    gameDocId: {
+        type: String,
+        required: true
+    },
+    userUID: {
+        type: String,
+        required: true
+    },
+    userUsername: {
+        type: String,
+        required: true
+    }
+});
+const emit = defineEmits(["success", "failed"]);
+
+// state
+const state = ref({
+    message: "",
+});
+
+// Bestehendes Spiel beitreten
+const joinExistingGame = () => {
+    const gameDocId = doc(firestoreDB, "games", props.gameDocId);
+
+    // Spiel zur GameId lesen
+    getDoc(gameDocId)
+        .then((game) => {
+            if (game.empty) throw new Error("Spiel existiert nicht!");
+
+            const gameData = game.data();
+            if (gameData.player2Status !== 0) throw new Error("Spiel ist bereits voll!");
+
+            if (gameData.player1UID === props.userUID) throw new Error("Du kannst nicht gegen dich selbst spielen!");
+
+            return runTransaction(firestoreDB, (transaction) => {
+                transaction.update(gameDocId, {
+                    player2UID: props.userUID,
+                    player2Username: props.userUsername,
+                    player2Status: 2 // Status auf Laufend setzen
+                });
+            });
+        })
+        .then(() => {
+            state.value.message = "Erfolgreich dem Spiel beigetreten.";
+            emit("success", props.gameDocId);
+        })
+        .catch((error) => {
+            console.error("Fehler beim Beitreten des Spiels:", error);
+            state.value.message = "Fehler beim Beitreten des Spiels.";
+            emit("failed", error);
+        });
+};
+
+onMounted(() => {
+    if (!props.userUID || !props.userUsername) { // Wenn Benutzerdaten nicht erfolgreich gesammelt
+        state.value.message = "Benutzerdaten konnten nicht geladen werden.";
+        emit("failed", "Benutzerdaten fehlen");
+    } else {
+        joinExistingGame(); // Spiel beitreten
+    }
+});
+
 // const joinExistingGame = async (existingGameDoc) => {
 //     try {
 //         const { userUID, userUsername, currentQuestion } = state.value; //Destrukturierung für weniger const Anweisungen
@@ -31,4 +99,5 @@
 
 <template>
     <h1>Joining existing Game</h1>
+        <p>{{ state.message }}</p>
 </template>

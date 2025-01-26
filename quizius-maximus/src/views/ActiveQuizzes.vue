@@ -3,28 +3,57 @@ import { ref, onMounted } from "vue";
 import { firestoreDB } from "@/main";
 import { collection, query, where, getDocs, or } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useRouter } from 'vue-router';
 import ActiveQuizCard from "@/components/ActiveQuizCard.vue";
 
 const games = ref([]);
 const userUID = ref(null);
+const router = useRouter();
 
-const loadGames = async () => {
+const loadGames = () => {
     if (userUID.value) {
-        try {
-            const gamesQuery = query(
-                collection(firestoreDB, "games"),
-                or(
-                    where("player1UID", "==", userUID.value),
-                    where("player2UID", "==", userUID.value)
-                )
-            );
-            const gamesDoc = await getDocs(gamesQuery);
-            games.value = gamesDoc.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-                .filter(game => game.player1Status !== 5); // TODO: validieren, ob UID in player1 oder player2 steht & dann filtern
-        } catch (error) {
-            console.error("Fehler beim Laden der Quizze: ", error);
-        }
+        const gamesQuery = query(
+            collection(firestoreDB, "games"),
+            or(
+                where("player1UID", "==", userUID.value),
+                where("player2UID", "==", userUID.value)
+            )
+        );
+
+        getDocs(gamesQuery)
+            .then((gamesDoc) => {
+                games.value = gamesDoc.docs.map(doc => {
+                    const gameData = doc.data();
+                    if (!gameData.player2Username) {
+                        gameData.player2Username = "Unbekannter Spieler";
+                    }
+                    return { id: doc.id, ...gameData };
+                }).filter(game => {
+                    if (game.player1UID === userUID.value && game.player1Status === 5) {
+                        return false;
+                    }
+                    if (game.player2UID === userUID.value && game.player2Status === 5) {
+                        return false;
+                    }
+                    return true;
+                });
+            })
+            .catch((error) => {
+                console.error("Fehler beim Laden der Quizze: ", error);
+            });
     }
+};
+
+const showResult = (game) => {
+    router.push({
+        name: 'result',
+        params: {
+            gameMode: game.gameMode,
+            moduleShortname: game.moduleShortname,
+            moduleLongname: game.moduleLongname,
+            gameId: game.id
+        }
+    });
 };
 
 onMounted(() => {
@@ -35,7 +64,6 @@ onMounted(() => {
         }
     });
 });
-
 </script>
 
 <template>
@@ -45,7 +73,7 @@ onMounted(() => {
                 <h2 class="text-center">Meine Quizze</h2>
                 <div class="container">
                     <div class="row row-cols-1 row-cols-md-2 g-4">
-                        <ActiveQuizCard v-for="game in games" :key="game.id" :game="game" />
+                        <ActiveQuizCard v-for="game in games" :key="game.id" :game="game" @click="showResult(game)" />
                     </div>
                 </div>
             </article>
