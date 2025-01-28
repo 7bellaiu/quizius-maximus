@@ -147,9 +147,9 @@ const resizeTextarea = (event) => {
                     </div>
                     <div class="form-floating">
                         <textarea class="form-control me-2" v-model="answer.text" :id="'answertext' + index + aIndex"
-                            placeholder="Antwortmöglichkeit (max. 150 Zeichen)" maxlength="150" required
+                            placeholder="Antwortmöglichkeit (max. 300 Zeichen)" maxlength="300" required
                             @input="resizeTextarea"></textarea>
-                        <label :for="'answertext' + index + aIndex" class="form-label">(max. 150
+                        <label :for="'answertext' + index + aIndex" class="form-label">(max. 300
                             Zeichen)</label>
                     </div>
                     <div class="input-group-text">

@@ -24,6 +24,8 @@ const emit = defineEmits(["success", "failed"]);
 
 // state
 const state = ref({
+    createdGameDocId: "",
+    questionData: null,
     message: "",
 });
 

@@ -105,7 +105,7 @@ onMounted(() => {
                         {{ aIndex + 1 }}
                     </div>
                     <textarea class="form-control me-2" v-model="answer.text" :id="'answertext' + index + aIndex"
-                        maxlength="150" disabled></textarea>
+                        maxlength="300" disabled></textarea>
                     <div class="input-group-text">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" :name="'correctAnswer' + index"
