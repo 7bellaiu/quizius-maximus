@@ -165,9 +165,9 @@ onMounted(() => {
                     </div>
                     <div class="form-floating">
                         <textarea class="form-control" :id="'question' + index" v-model="question.text"
-                            placeholder="Quizfrage (max. 300 Zeichen)" maxlength="300" required
+                            placeholder="Quizfrage (max. 512 Zeichen)" maxlength="512" required
                             @input="resizeTextarea"></textarea>
-                        <label :for="'question' + index" class="form-label">(max. 300 Zeichen)</label>
+                        <label :for="'question' + index" class="form-label">(max. 512 Zeichen)</label>
                     </div>
                 </div>
             </div>
@@ -181,9 +181,9 @@ onMounted(() => {
                     </div>
                     <div class="form-floating">
                         <textarea class="form-control me-2" v-model="answer.text" :id="'answertext' + index + aIndex"
-                            placeholder="Antwortmöglichkeit (max. 300 Zeichen)" maxlength="300" required
+                            placeholder="Antwortmöglichkeit (max. 512 Zeichen)" maxlength="512" required
                             @input="resizeTextarea"></textarea>
-                        <label :for="'answertext' + index + aIndex" class="form-label">(max. 300
+                        <label :for="'answertext' + index + aIndex" class="form-label">(max. 512
                             Zeichen)</label>
                     </div>
                     <div class="input-group-text">

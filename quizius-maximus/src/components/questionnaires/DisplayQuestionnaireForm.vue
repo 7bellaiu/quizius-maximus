@@ -94,7 +94,7 @@ onMounted(() => {
                         <QuestionIcon />
                     </div>
                     <textarea class="form-control" :id="'question' + index" v-model="question.text"
-                        placeholder="Quizfrage (max. 300 Zeichen)" maxlength="300" disabled></textarea>
+                        placeholder="Quizfrage (max. 512 Zeichen)" maxlength="512" disabled></textarea>
                 </div>
             </div>
             <!-- Antwortoptionen -->
@@ -105,7 +105,7 @@ onMounted(() => {
                         {{ aIndex + 1 }}
                     </div>
                     <textarea class="form-control me-2" v-model="answer.text" :id="'answertext' + index + aIndex"
-                        maxlength="300" disabled></textarea>
+                        maxlength="512" disabled></textarea>
                     <div class="input-group-text">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" :name="'correctAnswer' + index"

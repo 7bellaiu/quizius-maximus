@@ -86,7 +86,7 @@ const triggerToast = () => {
 
             <!-- Kontaktformular-Bereich -->
             <article class="row row-cols-1 justify-content-center" v-if="displayContactForm">
-                <h2 class="text-center mt-5">Kontaktanfrage</h2>
+                <h2 class="text-center mt-5">Kontaktformular</h2>
                 <ContactForm @cancel="handleContactCancel" @success="handleContactSuccess" />
             </article>
         </section>
