@@ -46,6 +46,7 @@ const displayThemeCoop = computed(() => props.gameMode == 'theme_coop' && isMatc
 const displaySimul = computed(() => props.gameMode == 'simul' && isMatchmakingCompleted)
 const displayLearn = computed(() => props.gameMode == 'learn' && isMatchmakingCompleted)
 const isUserDataFetched = computed(() => userUID.value && userUsername.value);
+const isFetchingGame = ref(true); // Variable, um den Abrufstatus zu verfolgen
 
 // Funktion, um Benutzerdaten zu sammeln
 const collectUserData = () => {
@@ -63,7 +64,9 @@ const collectUserData = () => {
 };
 
 // Funktion zum Abrufen der Game-Daten
-const fetchRunningGameDocId = () => {
+//Async & await => Sicherstellen, dass die fetchRunningGameDocId-Funktion abgeschlossen ist, bevor entschieden wird
+// ob ein neues Spiel erstellt oder einem bestehenden Spiel beigetreten wird
+const fetchRunningGameDocId = async () => {
     const existingGames = query(
         collection(firestoreDB, "games"),
         where("gameMode", "==", props.gameMode),
@@ -73,18 +76,19 @@ const fetchRunningGameDocId = () => {
         where("player1UID", "!=", userUID.value)
     );
 
-    getDocs(existingGames)
-        .then((existingGamesData) => {
-            gameFound.value = !existingGamesData.empty; // Setzt gameFound auf true oder false
-            gameDocId.value = existingGamesData.empty ? null : existingGamesData.docs[0].id; // Speichert die ID, falls vorhanden
-        })
-        .catch((error) => {
-            console.error("Fehler beim Abrufen des Spiels:", error);
-        });
+    try {
+        const existingGamesData = await getDocs(existingGames); //await => Sichergehen, dass gameFound-Variable korrekt gesetzt wird, bevor die Entscheidung getroffen wird
+        gameFound.value = !existingGamesData.empty; // Setzt gameFound auf true oder false
+        gameDocId.value = existingGamesData.empty ? null : existingGamesData.docs[0].id; // Speichert die ID, falls vorhanden
+    } catch (error) {
+        console.error("Fehler beim Abrufen des Spiels:", error);
+    } finally {
+        isFetchingGame.value = false; // fetchRunningGameDocId-Funktion abgeschlossen
+    }
 };
 
 // Firestore-Daten abrufen, sobald die Komponente geladen wird
-onMounted(() => {
+onMounted(async () => {
     if (!collectUserData()) {
         console.error("Benutzerdaten konnten nicht geladen werden!");
         //TODO: verzögerter push to Login-Site?
@@ -92,7 +96,7 @@ onMounted(() => {
         console.error("Keine moduleId übergeben!");
         // TODO: Routing zu Modulübersicht?
     } else {
-        fetchRunningGameDocId();
+        await fetchRunningGameDocId();
     }
 });
 
@@ -112,11 +116,11 @@ const handleMatchmakingFailed = (message) => {
     <main>
         <!-- TODO: Matchmaking -->
         <div class="row align-content-center">
-            <CreateNewGame v-if="isUserDataFetched && !gameFound && !isMatchmakingCompleted"
+            <CreateNewGame v-if="isUserDataFetched && !gameFound && !isMatchmakingCompleted && !isFetchingGame"
                 @success="handleMatchmakingSuccess" @failed="handleMatchmakingFailed" :gameMode="props.gameMode"
                 :moduleId="props.moduleId" :moduleShortname="props.moduleShortname"
                 :moduleLongname="props.moduleLongname" :userUID="userUID" :userUsername="userUsername" />
-            <JoinExistingGame v-if="isUserDataFetched && gameFound && !isMatchmakingCompleted"
+            <JoinExistingGame v-if="isUserDataFetched && gameFound && !isMatchmakingCompleted && !isFetchingGame"
                 @success="handleMatchmakingSuccess" @failed="handleMatchmakingFailed" :gameDocId="gameDocId"
                 :userUID="userUID" :userUsername="userUsername" />
         </div>

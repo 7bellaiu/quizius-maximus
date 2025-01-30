@@ -46,7 +46,8 @@ const joinExistingGame = () => {
             return updateDoc(gameDocId, { //TODO: mit Transaction durchführen
                 player2UID: props.userUID,
                 player2Username: props.userUsername,
-                player2Status: 2 // Status auf Laufend setzen
+                player2Status: 2, // Status auf Laufend setzen
+                player1Status: 3 // Status auf Wartet setzen
             });
         })
         .then(() => {
