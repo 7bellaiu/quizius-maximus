@@ -27,7 +27,10 @@ const player2UID = computed(() => quizData.value?.player2UID);
 const player1Status = computed(() => quizData.value?.player1Status);
 const player2Status = computed(() => quizData.value?.player2Status);
 const currentQuestion = computed(() => quizData.value?.currentQuestion);
-const isDataFetchCompleted = computed(() => quizData.value && questionsData.value.length > 0);
+// const isDataFetchCompleted = computed(() => quizData.value && questionsData.value.length > 0);
+const isDataFetchCompleted = ref(false);
+
+const currentQuestionId = ref(null);
 
 // Methode zum Abrufen der Spiel-Kopfdaten mit einer Spiel-ID
 const fetchQuizDataById = (documentId) => {
@@ -69,12 +72,23 @@ onMounted(() => {
     fetchQuizDataById(props.gameDocId)
         .then(() => {
             // Nur aufrufen, wenn fetchQuizDataById erfolgreich war
-            fetchQuestions(props.gameDocId);
+            fetchQuestions(props.gameDocId)
+                .then(() => {
+                    //Fall1: Spieler 1
+                    // 5 Fragen der Reihe nach beantworten
+                    // am Ende DB-Update & Status-Update
+
+                    //Fall2: Spieler 2
+                    // 5 Fragen der Reihe nach beantworten
+                    // am Ende DB-Update & Status-Update
+                });
         });
 });
 </script>
 
 <template>
-    <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :current-question="currentQuestion"
+    <!-- <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :current-question="currentQuestion"
+        :total-questions="MAX_QUESTIONS_SCHNELL_COMP" :game-mode="GAMEMODE_SCHNELL_COMP" /> -->
+    <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :current-question="currentQuestionId"
         :total-questions="MAX_QUESTIONS_SCHNELL_COMP" :game-mode="GAMEMODE_SCHNELL_COMP" />
 </template>
