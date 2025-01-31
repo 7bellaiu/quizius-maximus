@@ -1,4 +1,33 @@
 <script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import ResultSchnellComp from '@/components/results/ResultSchnellComp.vue';
+import ResultSchnellCoop from '@/components/results/ResultSchnellCoop.vue';
+
+const route = useRoute();
+const gameMode = route.params.gameMode;
+const gameId = route.params.gameId;
+
+// Je nach übergebenen Spielmodi an die entsprechende Komponente weiterleiten
+const currentComponent = computed(() => {
+    switch (gameMode) {
+        case 'schnell_comp':
+            return ResultSchnellComp;
+        case 'schnell_coop':
+            return ResultSchnellCoop;
+        default:
+            return null;
+    }
+});
+</script>
+
+<template>
+    <component :is="currentComponent" :gameId="gameId" />
+</template>
+
+
+
+<!-- <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
@@ -161,4 +190,4 @@ onMounted(() => {
         <router-link class="btn btn-outline-primary m-1" to="/activequizzes">Zurück</router-link>
         <button class="btn btn-primary m-1" @click="completeQuiz">Quiz abschließen</button>
     </div>
-</template>
+</template> -->

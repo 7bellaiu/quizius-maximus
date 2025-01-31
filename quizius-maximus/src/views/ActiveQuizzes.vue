@@ -26,7 +26,7 @@ const loadGames = () => {
                 games.value = gamesDoc.docs.map(doc => {
                     const gameData = doc.data();
                     if (!gameData.player2Username) {
-                        gameData.player2Username = "Unbekannter Spieler"; 
+                        gameData.player2Username = "Unbekannter Spieler";
                     }
                     return { id: doc.id, ...gameData };
                 }).filter(game => {
@@ -50,8 +50,6 @@ const showResult = (game) => {
         name: 'result',
         params: {
             gameMode: game.gameMode,
-            moduleShortname: game.moduleShortname,
-            moduleLongname: game.moduleLongname,
             gameId: game.id
         }
     });
