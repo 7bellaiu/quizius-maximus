@@ -12,6 +12,6 @@
                 <a href="/imprint" class="nav-link px-2 text-white">Impressum</a>
             </li>
         </ul>
-        <p class="text-center text-white mt-2">© 2024 Quizius Maximus</p>
+        <p class="text-center text-white mt-2">© 2025 Quizius Maximus</p>
     </footer>
 </template>

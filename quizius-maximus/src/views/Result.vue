@@ -85,8 +85,25 @@ const determineUserStatus = computed(() => {
     if (userPlayer.rank === otherPlayer.rank) {
         return 'Unentschieden';
     }
-    return userPlayer.rank === 1 ? 'Gewinner' : 'Verlierer';
+    return userPlayer.rank === 1 ? 'Herzlichen Glückwunsch!' : 'Leider hat es diesmal nur für den 2. Platz gereicht!';
 });
+
+// Quiz abschließen Logik
+const completeQuiz = () => {
+   /*  const gameDocRef = doc(firestoreDB, "games", props.gameId);
+    updateDoc(gameDocRef, {
+        // Beispiel: Status des Spiels auf abgeschlossen setzen
+        status: 'completed'
+    })
+        .then(() => {
+            // Nach erfolgreicher Aktualisierung zur gewünschten Route navigieren
+            router.push('/activequizzes');
+        })
+        .catch((error) => {
+            console.error("Fehler beim Aktualisieren des Spiels:", error);
+        }); */
+};
+
 
 onMounted(() => {
     buildResult();
@@ -102,37 +119,46 @@ onMounted(() => {
         {{ props.moduleShortname }} {{ props.moduleLongname }}<br>
         Auswertung
     </h1>
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
-            <div class="card mb-3">
-                <div class="card border-info">
-                    <div class="card-header bg-info bg-opacity-50 border-info">
-                        <div class="row">
-                            <div class="col"><strong>Platzierung</strong></div>
-                            <div class="col"><strong>Benutzername</strong></div>
-                            <div class="col"><strong>Punktzahl</strong></div>
-                        </div>
+
+    <div class="col-lg-6 col-md-8 mx-auto mt-5">
+        <div class="card border-info">
+            <div class="card-header bg-info bg-opacity-50 text-bg-info">
+                <h5 class="card-title">
+                    <div class="row">
+                        <div class="col"><strong>Platzierung</strong></div>
+                        <div class="col"><strong>Benutzername</strong></div>
+                        <div class="col"><strong>Punktzahl</strong></div>
                     </div>
-                    <div class="card-body">
-                        <div class="row" v-for="(player, index) in sortedPlayers" :key="index">
-                            <div class="col d-flex align-items-center">
-                                <TrophyIcon class="text-warning me-2" v-if="player.rank === 1" />
-                                <TrophyIcon class="text-secondary me-2" v-if="player.rank === 2" />
-                                {{ player.rank }}.
-                            </div>
-                            <div class="col">{{ player.username }}</div>
-                            <div class="col">{{ player.score }}</div>
-                        </div>
+                </h5>
+            </div>
+
+            <div class="card-body">
+                <p class="card-text">
+                <div class="row" v-for="(player, index) in sortedPlayers" :key="index">
+                    <div class="col d-flex align-items-center">
+                        <TrophyIcon class="text-warning me-2" v-if="player.rank === 1" />
+                        <TrophyIcon class="text-secondary me-2" v-if="player.rank === 2" />
+                        <strong> {{ player.rank }}. </strong>
                     </div>
+                    <div class="col">{{ player.username }}</div>
+                    <div class="col">{{ player.score }}</div>
                 </div>
+                </p>
+            </div>
+
+            <div class="card-footer bg-info bg-opacity-25 text-bg-info border-info text-center">
+                <strong>
+                    <p v-if="determineUserStatus">{{ determineUserStatus }}</p>
+                    <TrophyIcon
+                        :class="determineUserStatus === 'Herzlichen Glückwunsch!' || determineUserStatus === 'Unentschieden' ? 'text-warning' : 'text-secondary'"
+                        class="me-2" width="100" height="100" />
+                </strong>
             </div>
         </div>
     </div>
-    <div class="text-center mt-3">
-        <p v-if="determineUserStatus">{{ determineUserStatus }}</p>
-    </div>
+
     <div class="d-flex justify-content-center mt-3">
         <router-link class="btn btn-outline-primary m-1" to="/activequizzes">Zurück</router-link>
-        <button class="btn btn-primary m-1">Quiz abschließen</button>
+        <button class="btn btn-primary m-1" @click="completeQuiz">Quiz abschließen</button>
     </div>
 </template>

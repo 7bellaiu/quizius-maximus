@@ -58,7 +58,7 @@ const emit = defineEmits(['delete-questionnaire']);
             <div class="row align-items-center">
                 <div class="col-2">
                     <button type="button" class="btn btn-sm btn-outline-danger w-100 mx-2"
-                        @click="emit('delete-questionnaire', props.moduleid)" title="Fragenkatalog löschen">
+                        @click="emit('delete-questionnaire', props.moduleid)" title="Fragenkatalog löschen"> <!-- TODO: Wenn Fragenkatalog in games in einem dok mit player1Status <> 5 && player2Status <> 5 ist, dann kann Fragenkatalog nicht geloescht werden. -->
                         <TrashCanIcon />
                     </button>
                 </div>
