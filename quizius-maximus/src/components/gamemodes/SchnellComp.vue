@@ -89,6 +89,6 @@ onMounted(() => {
 <template>
     <!-- <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :current-question="currentQuestion"
         :total-questions="MAX_QUESTIONS_SCHNELL_COMP" :game-mode="GAMEMODE_SCHNELL_COMP" /> -->
-    <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :current-question="currentQuestionId"
+    <Quiz :questions="questionsData" :current-question="currentQuestionId"
         :total-questions="MAX_QUESTIONS_SCHNELL_COMP" :game-mode="GAMEMODE_SCHNELL_COMP" />
 </template>

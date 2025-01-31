@@ -71,8 +71,7 @@ const fetchRunningGameDocId = async () => {
         collection(firestoreDB, "games"),
         where("gameMode", "==", props.gameMode),
         where("moduleID", "==", props.moduleId),
-        where("player2Status", "==", 0),
-        // TODO: username aus state
+        where("gameState", "==", 2),
         where("player1UID", "!=", userUID.value)
     );
 

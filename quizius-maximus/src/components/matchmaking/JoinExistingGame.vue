@@ -39,15 +39,14 @@ const joinExistingGame = () => {
             if (game.empty) throw new Error("Spiel existiert nicht!");
 
             const gameData = game.data();
-            if (gameData.player2Status !== 0) throw new Error("Spiel ist bereits voll!");
+            // if (gameData.player2Status !== 0) throw new Error("Spiel ist bereits voll!");
 
             if (gameData.player1UID === props.userUID) throw new Error("Du kannst nicht gegen dich selbst spielen!");
 
             return updateDoc(gameDocId, { //TODO: mit Transaction durchführen
                 player2UID: props.userUID,
                 player2Username: props.userUsername,
-                player2Status: 2, // Status auf Laufend setzen
-                player1Status: 3 // Status auf Wartet setzen
+                gameState: 3, // 1 Spieler1 spielt, 2 Spieler1 sucht Gegenspieler, 3 Spieler2 spielt, 4 Spiel beendet
             });
         })
         .then(() => {

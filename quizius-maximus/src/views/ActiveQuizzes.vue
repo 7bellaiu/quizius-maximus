@@ -29,10 +29,10 @@ const loadGames = () => {
                     }
                     return { id: doc.id, ...gameData };
                 }).filter(game => {
-                    if (game.player1UID === userUID.value && game.player1Status === 5) {
+                    if (game.player1UID === userUID.value && game.player1Finished) {
                         return false;
                     }
-                    if (game.player2UID === userUID.value && game.player2Status === 5) {
+                    if (game.player2UID === userUID.value && game.player2Finished) {
                         return false;
                     }
                     return true;

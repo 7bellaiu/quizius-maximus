@@ -81,26 +81,26 @@ const createNewGame = () => {
 
     runTransaction(firestoreDB, (transaction) => {
         transaction.set(newGameDoc, {
-            currentQuestion: 0, // Erste Frage als Startfrage
             gameMode: props.gameMode,
             moduleID: props.moduleId,
             moduleLongname: props.moduleLongname,
             moduleShortname: props.moduleShortname,
-            player1Status: 2,
             player1UID: props.userUID,
             player1Username: props.userUsername,
-            player2Status: 0,
             player2UID: "",
             player2Username: "",
+            gameState: 1,   //1 Spieler1 spielt, 2 Spieler1 sucht Gegenspieler, 3 Spieler2 spielt, 4 Spiel beendet
+            player1Finished: false,
+            player2Finished: false,
+            player1Score: 0,
+            player2Score: 0
         });
 
         return fetchQuestionsForModule().then((selectedQuestions) => {
             selectedQuestions.forEach((question) => {
                 const gamesQuestions = doc(collection(newGameDoc, "questions"));
                 transaction.set(gamesQuestions, {
-                    ...question,
-                    player1IsCorrect: false,
-                    player2IsCorrect: false,
+                    ...question
                 });
             });
         });
