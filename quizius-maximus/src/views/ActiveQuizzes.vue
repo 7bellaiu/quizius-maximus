@@ -26,7 +26,7 @@ const loadGames = () => {
                 games.value = gamesDoc.docs.map(doc => {
                     const gameData = doc.data();
                     if (!gameData.player2Username) {
-                        gameData.player2Username = "Unbekannter Spieler"; 
+                        gameData.player2Username = "Unbekannter Spieler";
                     }
                     return { id: doc.id, ...gameData };
                 }).filter(game => {
@@ -34,6 +34,9 @@ const loadGames = () => {
                         return false;
                     }
                     if (game.player2UID === userUID.value && game.player2Finished) {
+                        return false;
+                    }
+                    if (game.player1UID !== userUID.value && game.player2UID !== userUID.value) {
                         return false;
                     }
                     return true;
