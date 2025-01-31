@@ -12,6 +12,7 @@ const router = useRouter();
 
 const loadGames = () => {
     if (userUID.value) {
+        // Alle Spiele laden, bei denen der aktuelle User in player1 oder p layer2 steht
         const gamesQuery = query(
             collection(firestoreDB, "games"),
             or(
@@ -25,7 +26,7 @@ const loadGames = () => {
                 games.value = gamesDoc.docs.map(doc => {
                     const gameData = doc.data();
                     if (!gameData.player2Username) {
-                        gameData.player2Username = "Unbekannter Spieler";
+                        gameData.player2Username = "Unbekannter Spieler"; 
                     }
                     return { id: doc.id, ...gameData };
                 }).filter(game => {
@@ -71,7 +72,7 @@ onMounted(() => {
         <section class="album py-3 container">
             <article class="row justify-content-center">
                 <h2 class="text-center">Meine Quizze</h2>
-                <div class="container">
+                <div class="container mt-5">
                     <div class="row row-cols-1 row-cols-md-2 g-4">
                         <ActiveQuizCard v-for="game in games" :key="game.id" :game="game" :userUID="userUID" />
                     </div>

@@ -8,7 +8,7 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    userUID: {  //der angemeldete Spieler
+    userUID: { //der angemeldete Spieler
         type: String,
         required: true
     }
@@ -16,35 +16,39 @@ const props = defineProps({
 
 const clickTarget = ref(null);
 const isTargetDefined = ref(false);
+const playerStatus = ref(null);
 
-const getStatusText = (status, player2Username) => { // TODO: Status validieren, je nachdem ob UID in player1UID oder in Player2UID
+const getStatusText = (status) => {
     switch (status) {
         case 1:
-            return "Suche Gegenspieler";
+            return "Spieler 1 spielt";
         case 2:
-            return "Du bist dran!";
+            return "Suche Gegenspieler";
         case 3:
-            return `Warte auf den Zug von ${player2Username}`;
+            return "Spieler 2 spielt";
         case 4:
             return "Ergebnisse anzeigen";
+        default:
+            return "Unbekannter Status";
     }
 };
 
 onMounted(() => {
     switch (props.game.gameMode) {
         case 'schnell_comp':
-            if (props.game.player1Status == 4 && props.game.player2Status == 4) {
+            if (props.game.player1Finished && props.game.player2Finished) {
                 clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, moduleShortname: props.game.moduleShortname, moduleLongname: props.game.moduleLongname, gameId: props.game.id } };
             } else {
                 clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
             }
             isTargetDefined.value = true;
             break;
-        default: console.error('Zugriff auf gameMode fehlgeschlagen oder ungültiger gameMode: ', props.game);
+        default:
+            console.error('Zugriff auf gameMode fehlgeschlagen oder ungültiger gameMode: ', props.game);
             isTargetDefined.value = false;
             break;
     }
-})
+});
 </script>
 
 <template>
@@ -56,7 +60,6 @@ onMounted(() => {
                         <span v-if="game.gameMode === 'schnell_comp'">Kompetitiv - Schnelles Spiel</span>
                         <span v-if="game.gameMode === 'schnell_coop'">Kooperativ - Schnelles Spiel</span>
                     </h5>
-
                 </div>
                 <div class="card-body">
                     <p class="card-text">
@@ -68,7 +71,7 @@ onMounted(() => {
                     </p>
                 </div>
                 <div class="card-footer bg-info bg-opacity-25 text-bg-info border-info">
-                    <strong>Status:</strong> {{ getStatusText(game.player1Status, game.player2Username) }}
+                    <strong>Status:</strong> {{ getStatusText(game.gameState) }}
                 </div>
             </div>
         </router-link>
