@@ -36,6 +36,9 @@ const loadGames = () => {
                     if (game.player2UID === userUID.value && game.player2Finished) {
                         return false;
                     }
+                    if (game.player1UID !== userUID.value && game.player2UID !== userUID.value) {
+                        return false;
+                    }
                     return true;
                 });
             })
