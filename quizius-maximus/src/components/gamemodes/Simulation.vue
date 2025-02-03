@@ -4,7 +4,7 @@ import { firestoreDB } from "@/main";
 import { computed, onMounted, ref } from 'vue';
 import Quiz from '../quiz/Quiz.vue';
 
-// Steuert ein Schnelles Spiel im Cooperative Mode
+// Steuert ein Spiel im Prüfungssimulation Mode
 const props = defineProps({
     gameDocId: {
         type: String,
@@ -17,8 +17,8 @@ const props = defineProps({
 });
 
 // state
-const MAX_QUESTIONS_SCHNELL_COOP = 5;
-const GAMEMODE_SCHNELL_COOP = "Kooperativ - Schnelles Spiel";
+const MAX_QUESTIONS_SIMUL = 20;
+const GAMEMODE_SIMUL = "Kompetitiv - Prüfungssimulation";
 
 const quizData = ref(null);
 const questionsData = ref([]); // Speichert die Fragen
@@ -90,9 +90,9 @@ onMounted(() => {
 
 <template>
     <!-- <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :current-question="currentQuestion"
-        :total-questions="MAX_QUESTIONS_SCHNELL_COOP" :game-mode="GAMEMODE_SCHNELL_COOP" /> -->
+        :total-questions="MAX_QUESTIONS_SIMUL" :game-mode="GAMEMODE_SIMUL" /> -->
     <!-- <Quiz :questions="questionsData" :current-question="currentQuestionId"
-        :total-questions="MAX_QUESTIONS_SCHNELL_COOP" :game-mode="GAMEMODE_SCHNELL_COOP" /> -->
-    <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :game-mode-longtext="GAMEMODE_SCHNELL_COOP"
+        :total-questions="MAX_QUESTIONS_SIMUL" :game-mode="GAMEMODE_SIMUL" /> -->
+    <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :game-mode-longtext="GAMEMODE_SIMUL"
         @player-score="handleFinished" />
 </template>

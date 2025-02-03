@@ -44,7 +44,7 @@ const state = ref({
 const QUESTIONS_PER_GAMEMODE = {
     schnell: 5,
     theme: 5,
-    simul: 10,
+    simul: 20,
     learn: 10
 }
 

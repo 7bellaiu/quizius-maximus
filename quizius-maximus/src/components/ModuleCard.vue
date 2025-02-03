@@ -52,7 +52,7 @@ const props = defineProps({
                         <PersonIcon />
                     </router-link>
                     <router-link type="button" class="btn btn-sm btn-outline-success mx-1"
-                        title="Themenbasiertes Quiz - kompetitiv"
+                        title="Themenbasiertes Quiz - kooperativ"
                         :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_coop' } }">
                         <PeopleIcon />
                     </router-link>
@@ -63,14 +63,14 @@ const props = defineProps({
                     <FAQLink text="Prüfungssimulation" />
                 </div>
                 <div class="col-3 d-flex justify-content-end">
-                    <button class="btn btn-sm btn-secondary mx-1" disabled>
-                        <PersonIcon />
-                    </button>
-                    <router-link type="button" class="btn btn-sm btn-outline-success mx-1"
+                    <router-link type="button" class="btn btn-sm btn-outline-danger mx-1"
                         title="Prüfungssimulation - kompetitiv"
                         :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'simul' } }">
-                        <PeopleIcon />
+                        <PersonIcon />
                     </router-link>
+                    <button class="btn btn-sm btn-secondary mx-1" disabled>
+                        <PeopleIcon />
+                    </button>
                 </div>
             </div>
             <div class="row mb-1 align-items-center">
@@ -78,13 +78,13 @@ const props = defineProps({
                     <FAQLink text="Lernmodus" />
                 </div>
                 <div class="col-3 d-flex justify-content-end">
-                    <router-link class="btn btn-sm btn-outline-danger mx-1" title="Lernmodus - kooperativ"
-                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'learn' } }">
-                        <PersonIcon />
-                    </router-link>
                     <button type="button" class="btn btn-sm btn-secondary mx-1" disabled>
-                        <PeopleIcon />
+                        <PersonIcon />
                     </button>
+                    <router-link class="btn btn-sm btn-outline-success mx-1" title="Lernmodus - kooperativ"
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'learn' } }">
+                        <PeopleIcon />
+                    </router-link>
                 </div>
             </div>
         </div>
