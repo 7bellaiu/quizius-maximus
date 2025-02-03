@@ -1,17 +1,163 @@
 <script setup>
+import { ref, onMounted, computed } from 'vue';
+import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { firestoreDB } from "@/main";
+import TrophyIcon from '@/components/icons/TrophyIcon.vue';
+import { useRouter } from 'vue-router';
+import PersonArmsUpIcon from '../icons/PersonArmsUpIcon.vue';
+import EmojiTearIcon from '../icons/EmojiTearIcon.vue';
+
 const props = defineProps({
-    gameId: {
+    gameDocId: {
         type: String,
         required: true
     }
 });
 
-// Deine spezifische Logik für Schnell-Coop
+const gameData = ref(null);
+const currentUser = ref(null);
+const router = useRouter();
+
+const buildResult = () => {
+    getDoc(doc(firestoreDB, "games", props.gameDocId))
+        .then(gameDoc => {
+            if (gameDoc.exists()) {
+                gameData.value = gameDoc.data();
+            } else {
+                throw new Error("Spiel nicht gefunden!");
+            }
+        })
+        .catch(error => {
+            console.error("Fehler beim Laden der Spiel-Daten: ", error);
+        });
+};
+
+// Prozentanteil der gemeinsam erzielten Punkte errechnen
+const totalQuestions = 10;
+const correctAnswers = computed(() => {
+    if (gameData.value) {
+        return gameData.value.player1Score + gameData.value.player2Score;
+    }
+    return 0;
+});
+const correctPercentage = computed(() => {
+    return (correctAnswers.value / totalQuestions) * 100;
+});
+const resultMessage = computed(() => {
+    if (correctPercentage.value >= 50) {
+        return `Herzlichen Glückwunsch! Ihr habt ${correctPercentage.value}% erreicht!`;
+    } else {
+        return `Oh nein! Ihr habt leider nur ${correctPercentage.value}% erreicht!`;
+    }
+});
+
+// Quiz abschließen Logik
+const completeQuiz = () => {
+    const gameDocRef = doc(firestoreDB, "games", props.gameDocId);
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    // Status des Spiels für aktuellen User auf abgeschlossen setzen
+    const updateData = {};
+    if (user.uid === gameData.value.player1UID) {
+        updateData.player1Finished = true;
+    } else if (user.uid === gameData.value.player2UID) {
+        updateData.player2Finished = true;
+    }
+
+    updateDoc(gameDocRef, updateData)
+        .then(() => {
+            // collection statistics aktualisieren
+            if (updateData.player1Finished || updateData.player2Finished) { // wenn ein User-Status finished ist -> Statistics nicht aktualisieren
+                const statsDocRef = doc(firestoreDB, "statistics", user.uid);
+                return getDoc(statsDocRef)
+                    .then(statsDoc => {
+                        // neues Objekt: standardmäßig alle Werte auf 0 setzen
+                        const newStatsData = {
+                            userUID: user.uid,
+                            compCorrectAnswers: 0,
+                            compFalseAnswers: 0,
+                            coopCorrectAnswers: 0,
+                            coopFalseAnswers: 0
+                        };
+
+                        if (statsDoc.exists()) {
+                            const statsData = statsDoc.data();
+                            newStatsData.coopCorrectAnswers = statsData.coopCorrectAnswers;
+                            newStatsData.coopFalseAnswers = statsData.coopFalseAnswers;
+                            newStatsData.compCorrectAnswers = statsData.compCorrectAnswers;
+                            newStatsData.compFalseAnswers = statsData.compFalseAnswers;
+                        }
+
+                        if (user.uid === gameData.value.player1UID) {
+                            newStatsData.coopCorrectAnswers += gameData.value.player1Score;
+                            newStatsData.coopFalseAnswers += (5 - gameData.value.player1Score);
+                        } else if (user.uid === gameData.value.player2UID) {
+                            newStatsData.coopCorrectAnswers += gameData.value.player2Score;
+                            newStatsData.coopFalseAnswers += (5 - gameData.value.player2Score);
+                        }
+
+                        return setDoc(statsDocRef, newStatsData, { merge: true });
+                    });
+            }
+        })
+        .then(() => {
+            // Nach erfolgreicher Aktualisierung zur ActiveQuizzes zurück navigieren
+            router.push('/activequizzes');
+        })
+        .catch(error => {
+            console.error("Fehler beim Aktualisieren des Spiels:", error);
+        });
+};
+
+onMounted(async () => {
+    await buildResult();
+    const auth = getAuth();
+    currentUser.value = auth.currentUser;
+});
 </script>
 
 <template>
-    <div>
-        <h1>Ergebnisse für Schnell-Coop</h1>
-        <!-- Deine spezifische Logik und Darstellung für Schnell-Coop -->
+    <h2 class="fw-light text-center mb-3 mt-5">
+        <span>Kooperativ - Schnelles Spiel</span><br>
+        Auswertung
+    </h2>
+
+    <div v-if="gameData" class="d-flex justify-content-center mt-5">
+        <div class="card border-info m-2"
+            v-for="(player, index) in [gameData.player1Username, gameData.player2Username]" :key="index"
+            style="width: 18rem;">
+            <div class="card-header bg-info bg-opacity-50 text-bg-info">
+                <h6 class="card-title">
+                    <div class="row">
+                        <div class="col"><strong>Benutzername</strong></div>
+                        <div class="col"><strong>Punktzahl</strong></div>
+                    </div>
+                </h6>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">{{ player }}</div>
+                    <div class="col">{{ index === 0 ? gameData.player1Score : gameData.player2Score }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div v-if="gameData" class="bg-opacity-25 text-center mt-3">
+        <strong>
+            <p>{{ resultMessage }}</p>
+            <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" />
+            <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" />
+            <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" />
+            <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" />
+        </strong>
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+        <router-link class="btn btn-outline-primary m-1" to="/activequizzes">Zurück</router-link>
+        <button class="btn btn-primary m-1" @click="completeQuiz">Quiz abschließen</button>
     </div>
 </template>

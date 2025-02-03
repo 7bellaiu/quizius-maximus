@@ -6,9 +6,9 @@ import ResultSchnellCoop from '@/components/results/ResultSchnellCoop.vue';
 
 const route = useRoute();
 const gameMode = route.params.gameMode;
-const gameId = route.params.gameId;
+const gameDocId = route.params.gameDocId;
 
-// Je nach übergebenen Spielmodi an die entsprechende Komponente weiterleiten
+// Dynamisches Rendering der entsprechenden Komponente basierend auf dem gameMode
 const currentComponent = computed(() => {
     switch (gameMode) {
         case 'schnell_comp':
@@ -22,7 +22,7 @@ const currentComponent = computed(() => {
 </script>
 
 <template>
-    <component :is="currentComponent" :gameId="gameId" />
+    <component :is="currentComponent" :gameDocId="gameDocId" />
 </template>
 
 

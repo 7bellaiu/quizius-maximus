@@ -10,6 +10,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import CreateNewGame from "@/components/matchmaking/CreateNewGame.vue";
 import JoinExistingGame from "@/components/matchmaking/JoinExistingGame.vue";
 import SchnellComp from "@/components/gamemodes/SchnellComp.vue";
+import SchnellCoop from "@/components/gamemodes/SchnellCoop.vue";
 
 const props = defineProps({
     moduleId: {
@@ -128,7 +129,8 @@ const handleMatchmakingFailed = (message) => {
         <div class="row">
             <SchnellComp v-if="displaySchnellComp && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId"
                 :userUID="userUID" />
-            <!-- <SchnellCoop v-if="displaySchnellCoop" :gameDocId="matchmakingGameDocId" /> -->
+            <SchnellCoop v-if="displaySchnellCoop && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId"
+                :userUID="userUID" />
             <!-- <ThemeComp v-if="displayThemeComp" :gameDocId="matchmakingGameDocId" /> -->
             <!-- <ThemeCoop v-if="displayThemeCoop" :gameDocId="matchmakingGameDocId" /> -->
             <!-- <Simulation v-if="displaySimul" :gameDocId="matchmakingGameDocId" /> -->

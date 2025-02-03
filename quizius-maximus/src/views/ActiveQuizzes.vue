@@ -53,7 +53,7 @@ const showResult = (game) => {
         name: 'result',
         params: {
             gameMode: game.gameMode,
-            gameId: game.id
+            gameDocId: game.id
         }
     });
 };

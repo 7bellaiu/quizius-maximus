@@ -34,21 +34,14 @@ const getStatusText = (status) => {
 };
 
 onMounted(() => {
-    switch (props.game.gameMode) {
-        case 'schnell_comp':
-            if (props.game.player1Finished && props.game.player2Finished) {
-                clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, moduleShortname: props.game.moduleShortname, moduleLongname: props.game.moduleLongname, gameId: props.game.id } };
-            } else {
-                clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
-            }
-            isTargetDefined.value = true;
-            break;
-        default:
-            console.error('Zugriff auf gameMode fehlgeschlagen oder ungültiger gameMode: ', props.game);
-            isTargetDefined.value = false;
-            break;
+    if (props.game.gameState === 4) { // egal welcher gamemode, es wird immer auf Result.vue geroutet
+        clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, gameDocId: props.game.id } };
+    } else {
+        clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
     }
-});
+    isTargetDefined.value = true;
+}
+);
 </script>
 
 <template>
