@@ -52,14 +52,18 @@ onMounted(() => {
                     <h5 class="card-title">
                         <span v-if="game.gameMode === 'schnell_comp'">Kompetitiv - Schnelles Spiel</span>
                         <span v-if="game.gameMode === 'schnell_coop'">Kooperativ - Schnelles Spiel</span>
+                        <span v-if="game.gameMode === 'simul'">Kompetitiv - Prüfungssimulation</span>
+                        <span v-if="game.gameMode === 'learn'">Kooperativ - Lernmodus</span>
                     </h5>
                 </div>
                 <div class="card-body">
                     <p class="card-text">
                         ({{ game.moduleShortname }}) {{ game.moduleLongname }}<br>
                         {{ game.player1Username }}
-                        <FireIcon class="text-danger" v-if="game.gameMode.includes('comp')" />
-                        <GearIcon class="text-success" v-if="game.gameMode.includes('coop')" />
+                        <FireIcon class="text-danger"
+                            v-if="game.gameMode.includes('comp') || game.gameMode === 'simul'" />
+                        <GearIcon class="text-success"
+                            v-if="game.gameMode.includes('coop') || game.gameMode === 'learn'" />
                         {{ game.player2Username }}
                     </p>
                 </div>

@@ -7,12 +7,12 @@ const FAQ_CONTENT = ref([
     {
         // TODO: Hier die Icons einbauen -> KI fragen
         question: "Was ist ein schnelles Quiz?"
-        , answer1: "Hier kannst du dein Wissen im 1 vs. 1 (kompetitiv     ) oder gemeinsam mit deinen Komiliton:innen (kooperativ       ) in 5 zufälligen Fragen unter Beweis stellen, wenn mal nur ein kurzer Zeit-Slot zur Verfügung steht."
+        , answer1: "Hier kannst du dein Wissen im 1 vs. 1 (kompetitiv) oder gemeinsam mit deinen Komiliton:innen (kooperativ) in 5 zufälligen Fragen unter Beweis stellen, wenn mal nur ein kurzer Zeit-Slot zur Verfügung steht."
         , answer2: "Einfach das gewünschte Modul auswählen und schon kann es losgehen!"
     },
     {
         question: "Was ist ein themenbasiertes Quiz?"
-        , answer1: "Hier kannst du dir wertvolles Wissen entweder zu kompletten Modulen oder einzelnen Lektionen der Module allein (komperativ     ) oder gemeinsam mit deinen Komiliton:innen (kooperativ       ) aneignen."
+        , answer1: "Hier kannst du dir wertvolles Wissen entweder zu kompletten Modulen oder einzelnen Lektionen der Module allein (kompetitiv) oder gemeinsam mit deinen Komiliton:innen (kooperativ) aneignen."
         , answer2: "Einfach das gewünschte Modul oder die gewünschte Lektion auswählen und schon kann es losgehen!"
     },
     {

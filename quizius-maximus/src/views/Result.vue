@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import ResultSchnellComp from '@/components/results/ResultSchnellComp.vue';
 import ResultSchnellCoop from '@/components/results/ResultSchnellCoop.vue';
+import ResultSimulation from '@/components/results/ResultSimulation.vue';
 
 const route = useRoute();
 const gameMode = route.params.gameMode;
@@ -15,6 +16,8 @@ const currentComponent = computed(() => {
             return ResultSchnellComp;
         case 'schnell_coop':
             return ResultSchnellCoop;
+        case 'simul':
+            return ResultSimulation;
         default:
             return null;
     }

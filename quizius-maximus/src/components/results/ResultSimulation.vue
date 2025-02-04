@@ -5,8 +5,8 @@ import { getAuth } from 'firebase/auth';
 import { firestoreDB } from "@/main";
 import TrophyIcon from '@/components/icons/TrophyIcon.vue';
 import { useRouter } from 'vue-router';
-import PersonArmsUpIcon from '../icons/PersonArmsUpIcon.vue';
-import EmojiTearIcon from '../icons/EmojiTearIcon.vue';
+import EmojiSunglassesIcon from '../icons/EmojiSunglassesIcon.vue';
+import EmojiFrownIcon from '../icons/EmojiFrownIcon.vue';
 
 const props = defineProps({
     gameDocId: {
@@ -16,6 +16,7 @@ const props = defineProps({
 });
 
 const gameData = ref(null);
+const sortedPlayers = ref([]);
 const currentUser = ref(null);
 const router = useRouter();
 
@@ -23,7 +24,21 @@ const buildResult = () => {
     getDoc(doc(firestoreDB, "games", props.gameDocId))
         .then(gameDoc => {
             if (gameDoc.exists()) {
+                // Spieldaten sortieren für die Platzierungsvalidierung
                 gameData.value = gameDoc.data();
+                sortedPlayers.value = [
+                    { username: gameData.value.player1Username, score: gameData.value.player1Score },
+                    { username: gameData.value.player2Username, score: gameData.value.player2Score }
+                ].sort((a, b) => b.score - a.score);
+
+                // Platzierungen berechnen
+                sortedPlayers.value.forEach((player, index) => {
+                    if (index > 0 && player.score === sortedPlayers.value[index - 1].score) {
+                        player.rank = sortedPlayers.value[index - 1].rank;
+                    } else {
+                        player.rank = index + 1;
+                    }
+                });
             } else {
                 throw new Error("Spiel nicht gefunden!");
             }
@@ -33,23 +48,16 @@ const buildResult = () => {
         });
 };
 
-// Prozentanteil der gemeinsam erzielten Punkte errechnen
-const totalQuestions = 10;
-const correctAnswers = computed(() => {
-    if (gameData.value) {
-        return gameData.value.player1Score + gameData.value.player2Score;
+const determineUserStatus = computed(() => {
+    if (!currentUser.value) return '';
+    const userPlayer = sortedPlayers.value.find(player => player.username === currentUser.value.displayName);
+    if (!userPlayer) return '';
+
+    const otherPlayer = sortedPlayers.value.find(player => player.username !== currentUser.value.displayName);
+    if (userPlayer.rank === otherPlayer.rank) {
+        return 'Unentschieden';
     }
-    return 0;
-});
-const correctPercentage = computed(() => {
-    return (correctAnswers.value / totalQuestions) * 100;
-});
-const resultMessage = computed(() => {
-    if (correctPercentage.value >= 50) {
-        return `Herzlichen Glückwunsch! Ihr habt ${correctPercentage.value}% erreicht!`;
-    } else {
-        return `Oh nein! Ihr habt leider nur ${correctPercentage.value}% erreicht!`;
-    }
+    return userPlayer.rank === 1 ? 'Herzlichen Glückwunsch!' : 'Leider hat es diesmal nur für den 2. Platz gereicht!';
 });
 
 // Quiz abschließen Logik
@@ -104,18 +112,18 @@ const updateStatistics = (statsDocRef, uid, username) => {
 
             if (statsDoc.exists()) {
                 const statsData = statsDoc.data();
-                newStatsData.coopCorrectAnswers = statsData.coopCorrectAnswers;
-                newStatsData.coopFalseAnswers = statsData.coopFalseAnswers;
                 newStatsData.compCorrectAnswers = statsData.compCorrectAnswers;
                 newStatsData.compFalseAnswers = statsData.compFalseAnswers;
+                newStatsData.coopCorrectAnswers = statsData.coopCorrectAnswers;
+                newStatsData.coopFalseAnswers = statsData.coopFalseAnswers;
             }
 
             if (uid === gameData.value.player1UID) {
-                newStatsData.coopCorrectAnswers += gameData.value.player1Score;
-                newStatsData.coopFalseAnswers += (5 - gameData.value.player1Score);
+                newStatsData.compCorrectAnswers += gameData.value.player1Score;
+                newStatsData.compFalseAnswers += (20 - gameData.value.player1Score);
             } else if (uid === gameData.value.player2UID) {
-                newStatsData.coopCorrectAnswers += gameData.value.player2Score;
-                newStatsData.coopFalseAnswers += (5 - gameData.value.player2Score);
+                newStatsData.compCorrectAnswers += gameData.value.player2Score;
+                newStatsData.compFalseAnswers += (20 - gameData.value.player2Score);
             }
 
             return setDoc(statsDocRef, newStatsData, { merge: true });
@@ -131,17 +139,16 @@ onMounted(async () => {
 
 <template>
     <h2 class="text-center mb-3 mt-4">
-        <span>Kooperativ - Schnelles Spiel</span><br>
+        <span>Kompetitiv - Prüfungssimulation</span><br>
         Auswertung
     </h2>
 
-    <div v-if="gameData" class="d-flex justify-content-center mt-5">
-        <div class="card border-info m-2"
-            v-for="(player, index) in [gameData.player1Username, gameData.player2Username]" :key="index"
-            style="width: 18rem;">
+    <div class="col-lg-6 col-md-8 mx-auto mt-5">
+        <div class="card border-info">
             <div class="card-header bg-info bg-opacity-50 text-bg-info">
                 <h6 class="card-title">
                     <div class="row">
+                        <div class="col"><strong>Platzierung</strong></div>
                         <div class="col"><strong>Benutzername</strong></div>
                         <div class="col"><strong>Punktzahl</strong></div>
                     </div>
@@ -149,22 +156,27 @@ onMounted(async () => {
             </div>
 
             <div class="card-body">
-                <div class="row">
-                    <div class="col">{{ player }}</div>
-                    <div class="col">{{ index === 0 ? gameData.player1Score : gameData.player2Score }}</div>
+                <div class="row" v-for="(player, index) in sortedPlayers" :key="index">
+                    <div class="col d-flex align-items-center">
+                        <TrophyIcon class="text-warning me-2" v-if="player.rank === 1" />
+                        <TrophyIcon class="text-secondary me-2" v-if="player.rank === 2" />
+                        <strong> {{ player.rank }}. </strong>
+                    </div>
+                    <div class="col">{{ player.username }}</div>
+                    <div class="col">{{ player.score }}</div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div v-if="gameData" class="bg-opacity-25 text-center mt-3">
-        <strong>
-            <h4>{{ resultMessage }}</h4>
-            <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" />
-            <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" />
-            <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" />
-            <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" />
-        </strong>
+            <div class="card-footer bg-info bg-opacity-25 text-bg-info border-info text-center">
+                <strong>
+                    <h4 v-if="determineUserStatus">{{ determineUserStatus }}</h4>
+                    <EmojiSunglassesIcon class="me-2" width="100" height="100"
+                        v-if="determineUserStatus === 'Herzlichen Glückwunsch!' || determineUserStatus === 'Unentschieden'" />
+                    <EmojiFrownIcon class="me-2" width="100" height="100"
+                        v-if="determineUserStatus === 'Leider hat es diesmal nur für den 2. Platz gereicht!'" />
+                </strong>
+            </div>
+        </div>
     </div>
 
     <div class="d-flex justify-content-center mt-3">

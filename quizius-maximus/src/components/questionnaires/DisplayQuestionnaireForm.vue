@@ -60,7 +60,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <h1 class="fw-light text-center mb-3">Fragenkatalog anzeigen</h1>
+    <h2 class="text-center mb-3">Fragenkatalog anzeigen</h2>
     <form class="m-2" @submit.prevent="">
         <!-- Kopfdaten: Modul -->
         <fieldset class="card border-info mb-5">

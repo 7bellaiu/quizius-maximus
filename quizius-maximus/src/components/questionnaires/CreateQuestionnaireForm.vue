@@ -91,7 +91,7 @@ const resizeTextarea = (event) => {
 </script>
 
 <template>
-    <h1 class="fw-light text-center mb-3">Fragenkatalog erstellen</h1>
+    <h2 class="text-center mb-3">Fragenkatalog erstellen</h2>
     <!-- Kopfbereich: Modul -->
     <form class="m-2" @submit.prevent="saveQuestionnaire">
         <!-- Kopfdaten: Modul -->
@@ -166,7 +166,7 @@ const resizeTextarea = (event) => {
             </fieldset>
             <div class="card-footer bg-info bg-opacity-25">
                 <button type="button" class="btn btn-danger w-100" @click="removeQuestion(index)">
-                    <TrashCanIcon /> Frage löschen
+                    <TrashCanIcon /> Frage
                 </button>
             </div>
         </fieldset>

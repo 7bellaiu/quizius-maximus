@@ -39,7 +39,7 @@ const filteredModules = computed(() => {
         <section class="pt-4 text-center container">
             <div class="row py-lg-3">
                 <div class="col-lg-6 col-md-8 mx-auto">
-                    <h1 class="fw-light">Module</h1>
+                    <h2 class="mb-3 mt-3 text-center">Module</h2>
                     <div class="lead text-body-secondary py-3 d-flex align-items-center">
                         <input type="search" class="form-control" v-model="search"
                             placeholder="Suche nach einem Modul für ein Quiz..." list="datalistOptions"

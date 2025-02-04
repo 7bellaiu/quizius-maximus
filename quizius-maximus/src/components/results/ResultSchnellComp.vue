@@ -77,35 +77,13 @@ const completeQuiz = () => {
             // collection statistics aktualisieren
             if (updateData.player1Finished || updateData.player2Finished) { // wenn ein User-Status finished ist -> Statistics nicht aktualisieren
                 const statsDocRef = doc(firestoreDB, "statistics", user.uid);
-                return getDoc(statsDocRef)
-                    .then(statsDoc => {
-                        // neues Objekt: standardmäßig alle Werte auf 0 setzen
-                        const newStatsData = {
-                            userUID: user.uid,
-                            compCorrectAnswers: 0,
-                            compFalseAnswers: 0,
-                            coopCorrectAnswers: 0,
-                            coopFalseAnswers: 0
-                        };
+                const opponentUID = user.uid === gameData.value.player1UID ? gameData.value.player2UID : gameData.value.player1UID;
+                const opponentStatsDocRef = doc(firestoreDB, "statistics", opponentUID);
 
-                        if (statsDoc.exists()) {
-                            const statsData = statsDoc.data();
-                            newStatsData.compCorrectAnswers = statsData.compCorrectAnswers;
-                            newStatsData.compFalseAnswers = statsData.compFalseAnswers;
-                            newStatsData.coopCorrectAnswers = statsData.coopCorrectAnswers;
-                            newStatsData.coopFalseAnswers = statsData.coopFalseAnswers;
-                        }
-
-                        if (user.uid === gameData.value.player1UID) {
-                            newStatsData.compCorrectAnswers += gameData.value.player1Score;
-                            newStatsData.compFalseAnswers += (5 - gameData.value.player1Score);
-                        } else if (user.uid === gameData.value.player2UID) {
-                            newStatsData.compCorrectAnswers += gameData.value.player2Score;
-                            newStatsData.compFalseAnswers += (5 - gameData.value.player2Score);
-                        }
-
-                        return setDoc(statsDocRef, newStatsData, { merge: true });
-                    });
+                return Promise.all([
+                    updateStatistics(statsDocRef, user.uid, user.displayName),
+                    updateStatistics(opponentStatsDocRef, opponentUID, user.uid === gameData.value.player1UID ? gameData.value.player2Username : gameData.value.player1Username)
+                ]);
             }
         })
         .then(() => {
@@ -117,6 +95,39 @@ const completeQuiz = () => {
         });
 };
 
+const updateStatistics = (statsDocRef, uid, username) => {
+    return getDoc(statsDocRef)
+        .then(statsDoc => {
+            // neues Objekt: standardmäßig alle Werte auf 0 setzen
+            const newStatsData = {
+                userUID: uid,
+                username: username,
+                compCorrectAnswers: 0,
+                compFalseAnswers: 0,
+                coopCorrectAnswers: 0,
+                coopFalseAnswers: 0
+            };
+
+            if (statsDoc.exists()) {
+                const statsData = statsDoc.data();
+                newStatsData.compCorrectAnswers = statsData.compCorrectAnswers;
+                newStatsData.compFalseAnswers = statsData.compFalseAnswers;
+                newStatsData.coopCorrectAnswers = statsData.coopCorrectAnswers;
+                newStatsData.coopFalseAnswers = statsData.coopFalseAnswers;
+            }
+
+            if (uid === gameData.value.player1UID) {
+                newStatsData.compCorrectAnswers += gameData.value.player1Score;
+                newStatsData.compFalseAnswers += (5 - gameData.value.player1Score);
+            } else if (uid === gameData.value.player2UID) {
+                newStatsData.compCorrectAnswers += gameData.value.player2Score;
+                newStatsData.compFalseAnswers += (5 - gameData.value.player2Score);
+            }
+
+            return setDoc(statsDocRef, newStatsData, { merge: true });
+        });
+};
+
 onMounted(async () => {
     await buildResult();
     const auth = getAuth();
@@ -125,7 +136,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <h2 class="fw-light text-center mb-3 mt-5">
+    <h2 class="text-center mb-3 mt-4">
         <span>Kompetitiv - Schnelles Spiel</span><br>
         Auswertung
     </h2>
@@ -156,7 +167,7 @@ onMounted(async () => {
 
             <div class="card-footer bg-info bg-opacity-25 text-bg-info border-info text-center">
                 <strong>
-                    <p v-if="determineUserStatus">{{ determineUserStatus }}</p>
+                    <h4 v-if="determineUserStatus">{{ determineUserStatus }}</h4>
                     <TrophyIcon
                         :class="determineUserStatus === 'Herzlichen Glückwunsch!' || determineUserStatus === 'Unentschieden' ? 'text-warning' : 'text-secondary'"
                         class="me-2" width="100" height="100" />
