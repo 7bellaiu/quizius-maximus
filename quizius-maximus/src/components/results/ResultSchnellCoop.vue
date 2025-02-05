@@ -160,10 +160,14 @@ onMounted(async () => {
     <div v-if="gameData" class="bg-opacity-25 text-center mt-3">
         <strong>
             <h4>{{ resultMessage }}</h4>
-            <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" />
-            <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" />
-            <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" />
-            <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" />
+            <!--             <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" /> -->
+            <PersonArmsUpIcon class="me-2" width="100" height="100"
+                v-if="resultMessage.includes('Herzlichen Glückwunsch!')" />
+            <PersonArmsUpIcon class="me-2" width="100" height="100"
+                v-if="resultMessage.includes('Herzlichen Glückwunsch!')" />
+            <!--             <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" /> -->
+            <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" />
+            <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" />
         </strong>
     </div>
 

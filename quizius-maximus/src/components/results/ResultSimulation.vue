@@ -7,6 +7,8 @@ import TrophyIcon from '@/components/icons/TrophyIcon.vue';
 import { useRouter } from 'vue-router';
 import EmojiSunglassesIcon from '../icons/EmojiSunglassesIcon.vue';
 import EmojiFrownIcon from '../icons/EmojiFrownIcon.vue';
+import EmojiTearIcon from '../icons/EmojiTearIcon.vue';
+import EmojiSmileIcon from '../icons/EmojiSmileIcon.vue';
 
 const props = defineProps({
     gameDocId: {
@@ -48,16 +50,34 @@ const buildResult = () => {
         });
 };
 
+const calculateGrade = (percentage) => {
+    // iu-Notenschlüssel
+    if (percentage >= 96) return 1.0;
+    if (percentage >= 91) return 1.3;
+    if (percentage >= 86) return 1.7;
+    if (percentage >= 81) return 2.0;
+    if (percentage >= 76) return 2.3;
+    if (percentage >= 71) return 2.7;
+    if (percentage >= 66) return 3.0;
+    if (percentage >= 61) return 3.3;
+    if (percentage >= 56) return 3.7;
+    if (percentage >= 50) return 4.0;
+    return 5.0;
+};
+
 const determineUserStatus = computed(() => {
     if (!currentUser.value) return '';
     const userPlayer = sortedPlayers.value.find(player => player.username === currentUser.value.displayName);
     if (!userPlayer) return '';
 
-    const otherPlayer = sortedPlayers.value.find(player => player.username !== currentUser.value.displayName);
-    if (userPlayer.rank === otherPlayer.rank) {
-        return 'Unentschieden';
+    const percentage = (userPlayer.score / 20) * 100;
+    const grade = calculateGrade(percentage);
+
+    if (grade === 5.0) {
+        return `Oh nein, leider durchgefallen! Du hast nicht bestanden (Note: ${grade})`;
+    } else {
+        return `Herzlichen Glückwunsch! Du hast bestanden (Note: ${grade})`;
     }
-    return userPlayer.rank === 1 ? 'Herzlichen Glückwunsch!' : 'Leider hat es diesmal nur für den 2. Platz gereicht!';
 });
 
 // Quiz abschließen Logik
@@ -170,10 +190,10 @@ onMounted(async () => {
             <div class="card-footer bg-info bg-opacity-25 text-bg-info border-info text-center">
                 <strong>
                     <h4 v-if="determineUserStatus">{{ determineUserStatus }}</h4>
-                    <EmojiSunglassesIcon class="me-2" width="100" height="100"
-                        v-if="determineUserStatus === 'Herzlichen Glückwunsch!' || determineUserStatus === 'Unentschieden'" />
-                    <EmojiFrownIcon class="me-2" width="100" height="100"
-                        v-if="determineUserStatus === 'Leider hat es diesmal nur für den 2. Platz gereicht!'" />
+                    <EmojiSmileIcon class="me-2" width="100" height="100"
+                        v-if="determineUserStatus.includes('Herzlichen Glückwunsch!')" />
+                    <EmojiTearIcon class="me-2" width="100" height="100"
+                        v-if="determineUserStatus.includes('Oh nein, leider durchgefallen!')" />
                 </strong>
             </div>
         </div>
