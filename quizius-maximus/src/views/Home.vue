@@ -1,10 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { firestoreDB } from '@/main';
+import { collection, query, where, getDocs, or } from 'firebase/firestore';
 import router from '@/router';
+import PersonIcon from '@/components/icons/PersonIcon.vue';
+import PeopleIcon from '@/components/icons/PeopleIcon.vue';
 
 const userLoggedIn = ref(false);
 const userName = ref("");
+const userUID = ref(null);
+const games = ref([]);
 
 /** check whether user is logged in when loading this view*/
 onMounted(() => {
@@ -14,12 +20,58 @@ onMounted(() => {
             router.push("/login");
         } else {
             userLoggedIn.value = true;
-            // TODO: Alternative finden, hier ist der Name leer, weil Profil-Update erst nach Auth-Creation ... onAuthStateChanged triggert schneller
-            // => nach initialer Username-Vergabe leer, ab dann immer gefüllt
             userName.value = user.displayName;
+            userUID.value = user.uid;
+            loadGames();
         }
     });
 });
+
+const loadGames = () => {
+    if (userUID.value) {
+        const gamesQuery = query(
+            collection(firestoreDB, "games"),
+            or(
+                where("player1UID", "==", userUID.value),
+                where("player2UID", "==", userUID.value)
+            )
+        );
+
+        getDocs(gamesQuery)
+            .then((gamesDoc) => {
+                games.value = gamesDoc.docs.map(doc => {
+                    const gameData = doc.data();
+                    return { id: doc.id, ...gameData };
+                }).filter(game => {
+                    if (game.player1UID === userUID.value && game.player1Finished) {
+                        return false;
+                    }
+                    if (game.player2UID === userUID.value && game.player2Finished) {
+                        return false;
+                    }
+                    return true;
+                });
+            })
+            .catch((error) => {
+                console.error("Fehler beim Laden der Quizze: ", error);
+            });
+    }
+};
+
+const getStatusText = (status) => {
+    switch (status) {
+        case 1:
+            return "Spieler 1 spielt";
+        case 2:
+            return "Suche Gegenspieler";
+        case 3:
+            return "Spieler 2 spielt";
+        case 4:
+            return "Ergebnisse anzeigen";
+        default:
+            return "Unbekannter Status";
+    }
+};
 </script>
 
 <template>
@@ -69,7 +121,23 @@ onMounted(() => {
                     <div class="card border-info">
                         <div class="card-body bg-info bg-opacity-50 text-bg-info">
                             <h4>Meine Quizze:</h4>
-                            <p>Test</p>
+                            <div v-for="game in games" :key="game.id" class="mb-2">
+                                <p>
+                                    <span v-if="game.gameMode === 'schnell_comp'">
+                                        <PersonIcon class="text-danger me-2" />Schnelles Quiz:
+                                    </span>
+                                    <span v-if="game.gameMode === 'schnell_coop'">
+                                        <PeopleIcon class="text-success me-2" />Schnelles Quiz:
+                                    </span>
+                                    <span v-if="game.gameMode === 'simul'">
+                                        <PersonIcon class="text-danger me-2" />Prüfungssimulation:
+                                    </span>
+                                    <span v-if="game.gameMode === 'learn'">
+                                        <PeopleIcon class="text-success me-2" />Lernmodus:
+                                    </span>({{ game.moduleShortname }}) {{ game.moduleLongname }} <br>
+                                    <strong>Status:</strong> {{ getStatusText(game.gameState) }}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,27 +151,27 @@ onMounted(() => {
                 </div>
             </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-8 mb-3">
-                <div class="card border-info">
-                    <div class="card-body bg-info bg-opacity-10 text-bg-info">
-                        <h4 class="text-center">Coming Soon</h4>
-                        <p><u>Das erwartet dich in den nächsten Updates:</u><br>
-                            <strong>Prüfungssimulation:</strong> Ergänzung von Modulklausuren - Auswahl zwischen 45
-                            min und 90 min<br>
-                            <strong>Gruppenspiele:</strong> Spiele in größeren Gruppen von 3-10 Studierenden <br>
-                            <strong>Avatare:</strong> Erstellung eigener Avatare (besondere Avatare käuflich
-                            erwerblich) <br>
-                            <strong>Einführung von Berechtigungen:</strong> Wer darf was? - Individuelle Einstellung
-                            für jeden Fragenkatalog bereits bei der Erstellung möglich, um festzulegen, wer
-                            angelegte Fragenkataloge bearbeiten und löschen darf <br>
-                            <strong>Personalisierte Fragenkataloge:</strong> Entscheide selbst, wer deine
-                            Fragenkataloge sehen darf - nur du selbst oder auch die Community
-                        </p>
+            <div class="row justify-content-center">
+                <div class="col-md-8 mb-3">
+                    <div class="card border-info">
+                        <div class="card-body bg-info bg-opacity-10 text-bg-info">
+                            <h4 class="text-center">Coming Soon</h4>
+                            <p><u>Das erwartet dich in den nächsten Updates:</u><br>
+                                <strong>Prüfungssimulation:</strong> Ergänzung von Modulklausuren - Auswahl zwischen 45
+                                min und 90 min<br>
+                                <strong>Gruppenspiele:</strong> Spiele in größeren Gruppen von 3-10 Studierenden <br>
+                                <strong>Avatare:</strong> Erstellung eigener Avatare (besondere Avatare käuflich
+                                erwerblich) <br>
+                                <strong>Einführung von Berechtigungen:</strong> Wer darf was? - Individuelle Einstellung
+                                für jeden Fragenkatalog bereits bei der Erstellung möglich, um festzulegen, wer
+                                angelegte Fragenkataloge bearbeiten und löschen darf <br>
+                                <strong>Personalisierte Fragenkataloge:</strong> Entscheide selbst, wer deine
+                                Fragenkataloge sehen darf - nur du selbst oder auch die Community
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
 
         <div class="d-flex align-items-center mt-3 mb-5">
