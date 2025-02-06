@@ -2,6 +2,8 @@
 import { onMounted, ref } from 'vue';
 import FireIcon from './icons/FireIcon.vue';
 import GearIcon from './icons/GearIcon.vue';
+import PersonIcon from './icons/PersonIcon.vue';
+import PeopleIcon from './icons/PeopleIcon.vue';
 
 const props = defineProps({
     game: {
@@ -48,19 +50,27 @@ onMounted(() => {
     <div class="col">
         <router-link v-if="isTargetDefined" class="btn w-100 p-0" :to="clickTarget">
             <div class="card border-info">
-                <div class="card-header bg-info bg-opacity-50 text-bg-info">
+                <div class="card-header shadow-sm">
                     <h5 class="card-title">
-                        <span v-if="game.gameMode === 'schnell_comp'">Kompetitiv - Schnelles Spiel</span>
-                        <span v-if="game.gameMode === 'schnell_coop'">Kooperativ - Schnelles Spiel</span>
-                        <span v-if="game.gameMode === 'simul'">Kompetitiv - Prüfungssimulation</span>
-                        <span v-if="game.gameMode === 'learn'">Kooperativ - Lernmodus</span>
+                        <span v-if="game.gameMode === 'schnell_comp'">
+                            <PersonIcon class="text-danger me-2" />Schnelles Quiz
+                        </span>
+                        <span v-if="game.gameMode === 'schnell_coop'">
+                            <PeopleIcon class="text-success me-2" />Schnelles Quiz
+                        </span>
+                        <span v-if="game.gameMode === 'simul'">
+                            <PersonIcon class="text-danger me-2" />Prüfungssimulation
+                        </span>
+                        <span v-if="game.gameMode === 'learn'">
+                            <PeopleIcon class="text-success me-2" />Lernmodus
+                        </span>
                     </h5>
                 </div>
                 <div class="card-body">
                     <p class="card-text">
                         ({{ game.moduleShortname }}) {{ game.moduleLongname }}<br>
                         {{ game.player1Username }}
-                        <FireIcon class="text-danger"
+                        <FireIcon class="text-warning"
                             v-if="game.gameMode.includes('comp') || game.gameMode === 'simul'" />
                         <GearIcon class="text-success"
                             v-if="game.gameMode.includes('coop') || game.gameMode === 'learn'" />

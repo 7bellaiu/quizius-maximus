@@ -45,7 +45,7 @@ const FAQ_CONTENT = ref([
         <FAQLegend />
         <div v-for="(content, index) in FAQ_CONTENT" class="accordion-item mb-2">
             <h2 class="accordion-header">
-                <button type="button" class="accordion-button bg-info bg-opacity-25" data-bs-toggle="collapse"
+                <button type="button" class="accordion-button collapsed bg-info bg-opacity-25" data-bs-toggle="collapse"
                     :data-bs-target="'#collapse' + index">
                     <strong>
                         {{ content.question }}

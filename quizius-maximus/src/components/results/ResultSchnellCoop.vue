@@ -7,6 +7,7 @@ import TrophyIcon from '@/components/icons/TrophyIcon.vue';
 import { useRouter } from 'vue-router';
 import PersonArmsUpIcon from '../icons/PersonArmsUpIcon.vue';
 import EmojiTearIcon from '../icons/EmojiTearIcon.vue';
+import PeopleIcon from '../icons/PeopleIcon.vue';
 
 const props = defineProps({
     gameDocId: {
@@ -131,7 +132,8 @@ onMounted(async () => {
 
 <template>
     <h2 class="text-center mb-3 mt-4">
-        <span>Kooperativ - Schnelles Spiel</span><br>
+        <PeopleIcon class="me-3 text-success" width="30" height="30" />
+        <span>Schnelles Quiz</span><br>
         Auswertung
     </h2>
 

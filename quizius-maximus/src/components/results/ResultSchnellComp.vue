@@ -5,6 +5,7 @@ import { getAuth } from 'firebase/auth';
 import { firestoreDB } from "@/main";
 import TrophyIcon from '@/components/icons/TrophyIcon.vue';
 import { useRouter } from 'vue-router';
+import PersonIcon from '../icons/PersonIcon.vue';
 
 const props = defineProps({
     gameDocId: {
@@ -137,7 +138,8 @@ onMounted(async () => {
 
 <template>
     <h2 class="text-center mb-3 mt-4">
-        <span>Kompetitiv - Schnelles Spiel</span><br>
+        <PersonIcon class="me-3 text-danger" width="30" height="30" />
+        <span>Schnelles Quiz</span><br>
         Auswertung
     </h2>
 

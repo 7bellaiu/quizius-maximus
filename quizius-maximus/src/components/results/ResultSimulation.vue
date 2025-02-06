@@ -9,6 +9,7 @@ import EmojiSunglassesIcon from '../icons/EmojiSunglassesIcon.vue';
 import EmojiFrownIcon from '../icons/EmojiFrownIcon.vue';
 import EmojiTearIcon from '../icons/EmojiTearIcon.vue';
 import EmojiSmileIcon from '../icons/EmojiSmileIcon.vue';
+import PersonIcon from '../icons/PersonIcon.vue';
 
 const props = defineProps({
     gameDocId: {
@@ -159,7 +160,8 @@ onMounted(async () => {
 
 <template>
     <h2 class="text-center mb-3 mt-4">
-        <span>Kompetitiv - Prüfungssimulation</span><br>
+        <PersonIcon class="me-3 text-danger" width="30" height="30" />
+        <span>Prüfungssimulation</span><br>
         Auswertung
     </h2>
 

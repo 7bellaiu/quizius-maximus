@@ -85,7 +85,7 @@ const triggerToast = () => {
         </div>
 
         <!-- Cards Section -->
-        <div class="container mt-5">
+        <div class="container mt-3">
             <div class="row justify-content-center">
                 <div class="col-md-8 mb-3">
                     <div class="card border-info">
@@ -99,14 +99,14 @@ const triggerToast = () => {
                 <div class="col-md-4 mb-3">
                     <div class="card border-info h-100">
                         <div class="card-body bg-info bg-opacity-25 text-center">
-                            <p>Lerne gemeinsam mit deinen Freund:innen und Komiliton:innen.</p>
+                            <strong>Lerne gemeinsam mit deinen Freund:innen und Komiliton:innen.</strong>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="card border-info h-100">
                         <div class="card-body bg-info bg-opacity-25 text-center">
-                            <p>Stellt euer Wissen gemeinsam oder gegeneinander unter Beweis.</p>
+                            <strong>Stellt euer Wissen gemeinsam oder gegeneinander unter Beweis.</strong>
                         </div>
                     </div>
                 </div>
@@ -115,15 +115,15 @@ const triggerToast = () => {
                 <div class="col-md-4 mb-3">
                     <div class="card border-info h-100">
                         <div class="card-body bg-info bg-opacity-10 text-center">
-                            <p>Wähle zwischen Modulen und Lektionen was du konkret lernen möchtest - die Fragenkataloge
-                                werden kontinuierlich aktualisiert und erweitert.</p>
+                            <strong>Wähle zwischen Modulen und Lektionen was du konkret lernen möchtest - die Fragenkataloge
+                                werden kontinuierlich aktualisiert und erweitert.</strong>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="card border-info h-100">
                         <div class="card-body bg-info bg-opacity-10 text-center">
-                            <p>Überwache deinen Wissensstand mithilfe deiner angezeigten Statistiken.</p>
+                            <strong>Überwache deinen Wissensstand mithilfe deiner angezeigten Statistiken.</strong>
                         </div>
                     </div>
                 </div>
