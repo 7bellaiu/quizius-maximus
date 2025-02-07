@@ -4,6 +4,7 @@ import FireIcon from './icons/FireIcon.vue';
 import GearIcon from './icons/GearIcon.vue';
 import PersonIcon from './icons/PersonIcon.vue';
 import PeopleIcon from './icons/PeopleIcon.vue';
+import WaitingForPlayer2 from './results/WaitingForPlayer2.vue';
 
 const props = defineProps({
     game: {
@@ -23,11 +24,11 @@ const playerStatus = ref(null);
 const getStatusText = (status) => {
     switch (status) {
         case 1:
-            return "Spieler 1 spielt";
+            return props.game.player1Username + " spielt";
         case 2:
             return "Suche Gegenspieler";
         case 3:
-            return "Spieler 2 spielt";
+            return props.game.player2Username + " spielt";
         case 4:
             return "Ergebnisse anzeigen";
         default:
@@ -38,12 +39,13 @@ const getStatusText = (status) => {
 onMounted(() => {
     if (props.game.gameState === 4) { // egal welcher gamemode, es wird immer auf Result.vue geroutet
         clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, gameDocId: props.game.id } };
+    } else if (props.game.gameState === 2) { // TODO: Gegnersuche - Quiz kann abgebrochen werden
+//        return WaitingForPlayer2;
     } else {
         clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
     }
     isTargetDefined.value = true;
-}
-);
+});
 </script>
 
 <template>

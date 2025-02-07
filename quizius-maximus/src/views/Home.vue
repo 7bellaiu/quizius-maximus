@@ -58,14 +58,14 @@ const loadGames = () => {
     }
 };
 
-const getStatusText = (status) => {
+const getStatusText = (game, status) => {
     switch (status) {
         case 1:
-            return "Spieler 1 spielt";
+            return game.player1Username + " spielt";
         case 2:
             return "Suche Gegenspieler";
         case 3:
-            return "Spieler 2 spielt";
+            return game.player2Username + " spielt";
         case 4:
             return "Ergebnisse anzeigen";
         default:
@@ -135,7 +135,7 @@ const getStatusText = (status) => {
                                     <span v-if="game.gameMode === 'learn'">
                                         <PeopleIcon class="text-success me-2" />Lernmodus:
                                     </span>({{ game.moduleShortname }}) {{ game.moduleLongname }} <br>
-                                    <strong>Status:</strong> {{ getStatusText(game.gameState) }}
+                                    <strong>Status:</strong> {{ getStatusText(game, game.gameState) }}
                                 </p>
                             </div>
                         </div>
