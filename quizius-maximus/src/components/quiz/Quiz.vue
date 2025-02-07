@@ -2,7 +2,7 @@
 import AnswerOptions from '@/components/quiz/AnswerOptions.vue';
 import Progress from '@/components/quiz/Progress.vue';
 import Question from '@/components/quiz/Question.vue';
-import { computed, onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 // const props = defineProps(["questions", "currentQuestion", "totalQuestions", "gameMode"]);
 const props = defineProps(["questions", "gameModeLongtext"]);
@@ -65,7 +65,5 @@ const handleFinished = () => {
                     beenden</button>
             </div>
         </div>
-        <!-- Score -->
-        <!-- <div v-if="isLastQuestionAnswered">{{ playerScore }}</div> -->
     </section>
 </template>
