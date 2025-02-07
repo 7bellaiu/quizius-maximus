@@ -101,8 +101,8 @@ const handleFinished = (playerScore) => {
             }
         })
         .catch((error) => {
-            // TODO: Stattdessen Toast
             console.error("Fehler beim Aktualisieren des Dokuments:", error);
+            // TODO: Stattdessen Toast
             errorMessageText.value = "Fehler beim Aktualisieren des Dokuments.";
             displayErrorMessage.value = true;
         });
