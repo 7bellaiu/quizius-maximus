@@ -2,7 +2,7 @@
 import AnswerOptions from '@/components/quiz/AnswerOptions.vue';
 import Progress from '@/components/quiz/Progress.vue';
 import Question from '@/components/quiz/Question.vue';
-import { computed, onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 // const props = defineProps(["questions", "currentQuestion", "totalQuestions", "gameMode"]);
 const props = defineProps(["questions", "gameModeLongtext"]);
@@ -35,6 +35,9 @@ const handleSelected = (isCorrect) => {
         isCurrentQuestionAnswered.value = true;
     }
 }
+const handleFinished = () => {
+    emits("finished", playerScore.value);
+}
 </script>
 
 <template>
@@ -57,11 +60,10 @@ const handleSelected = (isCorrect) => {
                 <button class="btn btn-outline-secondary my-1 w-25" v-if="hasNextQuestion && isCurrentQuestionAnswered"
                     @click="handleNextQuestion">Nächste
                     Frage</button>
-                <button class="btn btn-outline-warning my-1 w-25" v-if="isLastQuestionAnswered">Quiz
+                <button class="btn btn-outline-warning my-1 w-25" v-if="isLastQuestionAnswered"
+                    @click="handleFinished">Quiz
                     beenden</button>
             </div>
         </div>
-        <!-- Score -->
-        <div v-if="isLastQuestionAnswered">{{ playerScore }}</div>
     </section>
 </template>
