@@ -95,6 +95,7 @@ const fetchStatistics = async () => {
     });
 
     // Berechne die Rangliste
+    // TODO: nur Top 10 anzeigen
     const leaderboardData = [];
     querySnapshot.forEach((doc) => {
         const data = doc.data();

@@ -76,7 +76,7 @@ const router = createRouter({
             props: true
         },
         {
-            path: '/result/:gameMode/:gameDocId',
+            path: '/result/:gameMode/:gameDocId/:gameState',
             name: 'result',
             component: Result,
             props: true

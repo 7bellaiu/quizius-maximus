@@ -37,11 +37,9 @@ const getStatusText = (status) => {
 };
 
 onMounted(() => {
-    if (props.game.gameState === 4) { // egal welcher gamemode, es wird immer auf Result.vue geroutet
-        clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, gameDocId: props.game.id } };
-    } else if (props.game.gameState === 2) { // TODO: Gegnersuche - Quiz kann abgebrochen werden
-//        return WaitingForPlayer2;
-    } else {
+    if (props.game.gameState === 4 || props.game.gameState === 2) { // egal welcher gamemode, es wird immer auf Result.vue geroutet
+        clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, gameDocId: props.game.id, gameState: props.game.gameState } };
+    } else if (props.game.gameState === 1) {
         clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
     }
     isTargetDefined.value = true;

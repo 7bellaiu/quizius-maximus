@@ -4,22 +4,31 @@ import { useRoute } from 'vue-router';
 import ResultSchnellComp from '@/components/results/ResultSchnellComp.vue';
 import ResultSchnellCoop from '@/components/results/ResultSchnellCoop.vue';
 import ResultSimulation from '@/components/results/ResultSimulation.vue';
+import WaitingForPlayer2 from '@/components/results/WaitingForPlayer2.vue';
 
 const route = useRoute();
+// TODO: mit define Props umsetzen
 const gameMode = route.params.gameMode;
 const gameDocId = route.params.gameDocId;
+const gameState = route.params.gameState;
 
 // Dynamisches Rendering der entsprechenden Komponente basierend auf dem gameMode
 const currentComponent = computed(() => {
-    switch (gameMode) {
-        case 'schnell_comp':
-            return ResultSchnellComp;
-        case 'schnell_coop':
-            return ResultSchnellCoop;
-        case 'simul':
-            return ResultSimulation;
-        default:
-            return null;
+
+    switch (gameState) {
+        case "2":
+            return WaitingForPlayer2;
+        case "4":
+            switch (gameMode) {
+                case 'schnell_comp':
+                    return ResultSchnellComp;
+                case 'schnell_coop':
+                    return ResultSchnellCoop;
+                case 'simul':
+                    return ResultSimulation;
+                default:
+                    return null;
+            }
     }
 });
 </script>
