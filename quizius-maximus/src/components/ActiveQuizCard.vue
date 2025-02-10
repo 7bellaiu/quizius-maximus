@@ -11,7 +11,7 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    userUID: { //der angemeldete Spieler
+    userUID: { // der angemeldete Spieler
         type: String,
         required: true
     }
@@ -19,7 +19,6 @@ const props = defineProps({
 
 const clickTarget = ref(null);
 const isTargetDefined = ref(false);
-const playerStatus = ref(null);
 
 const getStatusText = (status) => {
     switch (status) {
@@ -37,9 +36,11 @@ const getStatusText = (status) => {
 };
 
 onMounted(() => {
-    if (props.game.gameState === 4 || props.game.gameState === 2) { // egal welcher gamemode, es wird immer auf Result.vue geroutet
+    if (props.game.gameState === 4 || props.game.gameState === 2) {
         clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, gameDocId: props.game.id, gameState: props.game.gameState } };
-    } else if (props.game.gameState === 1) {
+    } else if (props.game.gameState === 1 && props.game.player1UID === props.userUID) {
+        clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
+    } else if (props.game.gameState === 3 && props.game.player2UID === props.userUID) {
         clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
     }
     isTargetDefined.value = true;

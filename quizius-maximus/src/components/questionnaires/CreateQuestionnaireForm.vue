@@ -45,6 +45,12 @@ const removeQuestion = (index) => {
 
 const saveQuestionnaire = async () => {
     try {
+        // Überprüfung, ob mindestens 20 Fragen vorhanden sind
+        if (form.questions.length < 20) {
+            alert('Es müssen mindestens 20 Fragen gepflegt werden.');
+            return;
+        }
+
         // 1. Überprüfung auf ein bereits existierendes Modul mit gleichen Modulkürzel
         if (!(await getDocs(query(collection(firestoreDB, 'module'), where('shortname', '==', shortname.value)))).empty) {
             alert('Dieses Modulkürzel existiert bereits. Bitte ein anderes Kürzel vergeben.');

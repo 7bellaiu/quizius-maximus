@@ -27,8 +27,8 @@ const displayErrorMessage = ref(false);
 const errorMessageText = ref('');
 
 // Erkennen, ob Spieler1 oder Spieler2 angemeldet ist
-const isPlayer1 = computed(() => player1UID.value == props.userUID);
-const player1UID = computed(() => quizData.value?.player1UID);
+const player1UID = ref(null);
+const isPlayer1 = computed(() => player1UID.value === props.userUID);
 
 // Methode zum Abrufen der Spiel-Kopfdaten mit einer Spiel-ID
 const fetchQuizDataById = (documentId) => {
@@ -38,6 +38,7 @@ const fetchQuizDataById = (documentId) => {
         .then((gameDocSnap) => {
             if (gameDocSnap.exists()) {
                 quizData.value = gameDocSnap.data(); // Speichert die Spieldaten
+                player1UID.value = quizData.value.player1UID; // Setzt player1UID
                 console.log("Spieldaten:", quizData.value);
             } else {
                 console.error("Kein Spiel mit dieser ID gefunden.");
@@ -75,7 +76,7 @@ const handleFinished = (playerScore) => {
             if (!gameDoc.exists()) throw new Error("Spiel existiert nicht!");
 
             // Dokument aktualisieren
-            if (!isPlayer1) {
+            if (!isPlayer1.value) {
                 return updateDoc(gameDocRef, {
                     player2Score: playerScore,
                     gameState: 4
@@ -88,16 +89,24 @@ const handleFinished = (playerScore) => {
             }
         })
         .then(() => {
-            if (!isPlayer1) {
+            if (!isPlayer1.value) {
                 router.push({
                     name: 'result',
                     params: {
                         gameMode: quizData.value?.gameMode,
-                        gameDocId: props.gameDocId
+                        gameDocId: props.gameDocId,
+                        gameState: 4
                     }
-                })
+                });
             } else {
-                router.push('/activequizzes');
+                router.push({
+                    name: 'result',
+                    params: {
+                        gameMode: quizData.value?.gameMode,
+                        gameDocId: props.gameDocId,
+                        gameState: 2
+                    }
+                });
             }
         })
         .catch((error) => {
@@ -106,7 +115,7 @@ const handleFinished = (playerScore) => {
             errorMessageText.value = "Fehler beim Aktualisieren des Dokuments.";
             displayErrorMessage.value = true;
         });
-}
+};
 
 onMounted(() => {
     // Zuerst Spiel-Daten abrufen, dann Fragen-Daten abrufen

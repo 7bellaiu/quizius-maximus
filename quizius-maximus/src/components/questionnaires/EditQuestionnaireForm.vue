@@ -75,6 +75,12 @@ const loadModuleData = async () => {
 
 const saveQuestionnaire = async () => {
     try {
+        // Überprüfung, ob mindestens 20 Fragen vorhanden sind
+        if (form.questions.length < 20) {
+            alert('Es müssen mindestens 20 Fragen gepflegt werden.');
+            return;
+        }
+
         // Aktualisiere Modul-Daten
         await updateDoc(doc(firestoreDB, 'module', props.moduleid), {
             shortname: form.shortname,
