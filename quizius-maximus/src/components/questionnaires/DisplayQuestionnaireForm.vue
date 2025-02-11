@@ -1,18 +1,19 @@
 <script setup>
 import { reactive, onMounted } from 'vue';
 import { firestoreDB } from '@/main';
-import { collection, query, where, getDocs, doc, getDoc, updateDoc, addDoc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import router from '@/router';
-import QuestionIcon from '@/components/icons/QuestionIcon.vue'
-import TrashCanIcon from '@/components/icons/TrashCanIcon.vue'
-import PencilIcon from '@/components/icons/PencilIcon.vue'
+import QuestionIcon from '@/components/icons/QuestionIcon.vue';
+import TrashCanIcon from '@/components/icons/TrashCanIcon.vue';
+import PencilIcon from '@/components/icons/PencilIcon.vue';
+import ExclamationIcon from '../icons/ExclamationIcon.vue';
 
 const props = defineProps({
     moduleid: {
         type: String,
         required: true
     }
-})
+});
 
 const form = reactive({
     shortname: '',
@@ -45,7 +46,8 @@ const loadModuleData = async () => {
                         { text: questionDoc.data().option3 },
                         { text: questionDoc.data().option4 }
                     ],
-                    correctAnswer: parseInt(questionDoc.data().correctAnswer.replace('option', '')) - 1
+                    correctAnswer: parseInt(questionDoc.data().correctAnswer.replace('option', '')) - 1,
+                    explanation: questionDoc.data().explanation || ''
                 });
             }
         }
@@ -62,6 +64,7 @@ onMounted(() => {
 <template>
     <h2 class="text-center mb-3">Fragenkatalog anzeigen</h2>
     <form class="m-2" @submit.prevent="">
+
         <!-- Kopfdaten: Modul -->
         <fieldset class="card border-info mb-5">
             <legend class="card-header bg-info bg-opacity-50 border-info">
@@ -118,6 +121,20 @@ onMounted(() => {
                     </div>
                 </div>
             </fieldset>
+            <!-- Erklärung -->
+            <div class="row card-body">
+                <legend><small>Erklärung</small></legend>
+                <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-text">
+                        <ExclamationIcon />
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" :id="'explanation' + index" v-model="question.explanation"
+                            placeholder="Erklärung (max. 512 Zeichen)" maxlength="512" disabled></textarea>
+                        <label :for="'explanation' + index" class="form-label">(max. 512 Zeichen)</label>
+                    </div>
+                </div>
+            </div>
         </fieldset>
 
         <!-- Steuerung -->

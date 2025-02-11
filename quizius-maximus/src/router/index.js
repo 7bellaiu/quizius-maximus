@@ -14,6 +14,8 @@ import Game from '@/views/Game.vue';
 import Questionnaire from '@/views/Questionnaire.vue';
 import Result from '@/views/Result.vue';
 import SchnellComp from '@/components/gamemodes/SchnellComp.vue';
+import SchnellCoop from '@/components/gamemodes/SchnellCoop.vue';
+import Simulation from '@/components/gamemodes/Simulation.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,6 +75,18 @@ const router = createRouter({
             path: "/schnellcomp/:gameDocId/:userUID",
             name: "schnellcomp",
             component: SchnellComp,
+            props: true
+        },
+        {
+            path: "/schnellcoop/:gameDocId/:userUID",
+            name: "schnellcoop",
+            component: SchnellCoop,
+            props: true
+        },
+        {
+            path: "/simulation/:gameDocId/:userUID",
+            name: "simulation",
+            component: Simulation,
             props: true
         },
         {

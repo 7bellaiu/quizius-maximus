@@ -2,19 +2,20 @@
 import { reactive, onMounted } from 'vue';
 import { firestoreDB } from '@/main';
 import { collection, query, where, getDocs, doc, getDoc, updateDoc, addDoc, deleteDoc } from 'firebase/firestore';
-import QuestionIcon from '@/components/icons/QuestionIcon.vue'
-import TrashCanIcon from '@/components/icons/TrashCanIcon.vue'
-import PencilIcon from '@/components/icons/PencilIcon.vue'
+import QuestionIcon from '@/components/icons/QuestionIcon.vue';
+import TrashCanIcon from '@/components/icons/TrashCanIcon.vue';
+import PencilIcon from '@/components/icons/PencilIcon.vue';
 import PlusIcon from '../icons/PlusIcon.vue';
 import DiskIcon from '../icons/DiskIcon.vue';
 import router from '@/router';
+import ExclamationIcon from '../icons/ExclamationIcon.vue';
 
 const props = defineProps({
     moduleid: {
         type: String,
         required: true
     }
-})
+});
 
 const form = reactive({
     shortname: '',
@@ -31,7 +32,8 @@ const addQuestion = () => {
             { text: '' },
             { text: '' }
         ],
-        correctAnswer: null
+        correctAnswer: null,
+        explanation: ''
     });
 };
 
@@ -64,7 +66,8 @@ const loadModuleData = async () => {
                         { text: questionDoc.data().option3 },
                         { text: questionDoc.data().option4 }
                     ],
-                    correctAnswer: parseInt(questionDoc.data().correctAnswer.replace('option', '')) - 1
+                    correctAnswer: parseInt(questionDoc.data().correctAnswer.replace('option', '')) - 1,
+                    explanation: questionDoc.data().explanation || ''
                 });
             }
         }
@@ -113,7 +116,8 @@ const saveQuestionnaire = async () => {
                 option2: question.answers[1].text,
                 option3: question.answers[2].text,
                 option4: question.answers[3].text,
-                correctAnswer: `option${question.correctAnswer + 1}`
+                correctAnswer: `option${question.correctAnswer + 1}`,
+                explanation: question.explanation
             });
         });
 
@@ -129,6 +133,12 @@ const saveQuestionnaire = async () => {
 onMounted(() => {
     loadModuleData();
 });
+
+// automatisch Höhe anhand des Inhalts anpassen
+const resizeTextarea = (event) => {
+    event.target.style.height = "auto"; // Höhe zurücksetzen
+    event.target.style.height = event.target.scrollHeight + "px";
+};
 </script>
 
 <template>
@@ -178,7 +188,6 @@ onMounted(() => {
                 </div>
             </div>
             <!-- Antwortoptionen -->
-            <!-- TODO: Statt statisches Limit anzuzeigen dynamisch die Rest-Zeichen anzeigen? -->
             <fieldset class="row card-body">
                 <legend><small>Antwortmöglichkeiten</small></legend>
                 <div class="input-group input-group-sm mb-1" v-for="(answer, aIndex) in question.answers" :key="aIndex">
@@ -189,8 +198,7 @@ onMounted(() => {
                         <textarea class="form-control me-2" v-model="answer.text" :id="'answertext' + index + aIndex"
                             placeholder="Antwortmöglichkeit (max. 512 Zeichen)" maxlength="512" required
                             @input="resizeTextarea"></textarea>
-                        <label :for="'answertext' + index + aIndex" class="form-label">(max. 512
-                            Zeichen)</label>
+                        <label :for="'answertext' + index + aIndex" class="form-label">(max. 512 Zeichen)</label>
                     </div>
                     <div class="input-group-text">
                         <div class="form-check">
@@ -204,6 +212,21 @@ onMounted(() => {
                     </div>
                 </div>
             </fieldset>
+            <!-- Erklärung -->
+            <div class="row card-body">
+                <legend><small>Erklärung</small></legend>
+                <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-text">
+                        <ExclamationIcon />
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" :id="'explanation' + index" v-model="question.explanation"
+                            placeholder="Erklärung (max. 512 Zeichen)" maxlength="512" required
+                            @input="resizeTextarea"></textarea>
+                        <label :for="'explanation' + index" class="form-label">(max. 512 Zeichen)</label>
+                    </div>
+                </div>
+            </div>
             <div class="card-footer bg-info bg-opacity-25">
                 <button type="button" class="btn btn-danger w-100" @click="removeQuestion(index)">
                     <TrashCanIcon /> Frage

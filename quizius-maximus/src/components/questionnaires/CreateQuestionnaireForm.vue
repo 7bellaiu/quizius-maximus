@@ -3,11 +3,11 @@ import { reactive } from 'vue';
 import { firestoreDB } from '@/main';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import router from '@/router';
-import TrashCanIcon from '@/components/icons/TrashCanIcon.vue'
+import TrashCanIcon from '@/components/icons/TrashCanIcon.vue';
 import PlusIcon from '../icons/PlusIcon.vue';
 import DiskIcon from '../icons/DiskIcon.vue';
 import QuestionIcon from '../icons/QuestionIcon.vue';
-
+import ExclamationIcon from '../icons/ExclamationIcon.vue';
 
 const form = reactive({
     moduleShortname: '',
@@ -21,7 +21,8 @@ const form = reactive({
                 { text: '' },
                 { text: '' }
             ],
-            correctAnswer: null
+            correctAnswer: null,
+            explanation: ''
         }
     ]
 });
@@ -35,7 +36,8 @@ const addQuestion = () => {
             { text: '' },
             { text: '' }
         ],
-        correctAnswer: null
+        correctAnswer: null,
+        explanation: ''
     });
 };
 
@@ -52,15 +54,15 @@ const saveQuestionnaire = async () => {
         }
 
         // 1. Überprüfung auf ein bereits existierendes Modul mit gleichen Modulkürzel
-        if (!(await getDocs(query(collection(firestoreDB, 'module'), where('shortname', '==', shortname.value)))).empty) {
+        if (!(await getDocs(query(collection(firestoreDB, 'module'), where('shortname', '==', form.moduleShortname)))).empty) {
             alert('Dieses Modulkürzel existiert bereits. Bitte ein anderes Kürzel vergeben.');
             return;
         }
 
         // 2. Speichern in der Collection module
         const moduleDoc = await addDoc(collection(firestoreDB, 'module'), {
-            shortname: shortname.value,
-            longname: longname.value
+            shortname: form.moduleShortname,
+            longname: form.moduleLongname
         });
 
         // 3. Speichern in der Collection questionnaires
@@ -76,7 +78,8 @@ const saveQuestionnaire = async () => {
                 option2: question.answers[1].text,
                 option3: question.answers[2].text,
                 option4: question.answers[3].text,
-                correctAnswer: `option${question.correctAnswer + 1}`
+                correctAnswer: `option${question.correctAnswer + 1}`,
+                explanation: question.explanation
             });
         });
 
@@ -93,7 +96,7 @@ const saveQuestionnaire = async () => {
 const resizeTextarea = (event) => {
     event.target.style.height = "auto"; // Höhe zurücksetzen
     event.target.style.height = event.target.scrollHeight + "px";
-}
+};
 </script>
 
 <template>
@@ -107,7 +110,7 @@ const resizeTextarea = (event) => {
                 <div class="input-group input-group-sm mb-1">
                     <span class="input-group-text bg-info bg-opacity-25">Kürzel</span>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="shortname" v-model="shortname" maxlength="40"
+                        <input type="text" class="form-control" id="shortname" v-model="form.moduleShortname" maxlength="40"
                             placeholder="Trage hier das Modulkürzel ein" required>
                         <label for="shortname">(max. 40 Zeichen)</label>
                     </div>
@@ -115,7 +118,7 @@ const resizeTextarea = (event) => {
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-info bg-opacity-25">Name</span>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="longname" v-model="longname" maxlength="120"
+                        <input type="text" class="form-control" id="longname" v-model="form.moduleLongname" maxlength="120"
                             placeholder="Modulname" required>
                         <label for="longname" class="form-label">(max. 120 Zeichen)</label>
                     </div>
@@ -144,7 +147,6 @@ const resizeTextarea = (event) => {
                 </div>
             </div>
             <!-- Antwortoptionen -->
-            <!-- TODO: Statt statisches Limit anzuzeigen dynamisch die Rest-Zeichen anzeigen? -->
             <fieldset class="row card-body">
                 <legend><small>Antwortmöglichkeiten</small></legend>
                 <div class="input-group input-group-sm mb-1" v-for="(answer, aIndex) in question.answers" :key="aIndex">
@@ -155,8 +157,7 @@ const resizeTextarea = (event) => {
                         <textarea class="form-control me-2" v-model="answer.text" :id="'answertext' + index + aIndex"
                             placeholder="Antwortmöglichkeit (max. 512 Zeichen)" maxlength="512" required
                             @input="resizeTextarea"></textarea>
-                        <label :for="'answertext' + index + aIndex" class="form-label">(max. 512
-                            Zeichen)</label>
+                        <label :for="'answertext' + index + aIndex" class="form-label">(max. 512 Zeichen)</label>
                     </div>
                     <div class="input-group-text">
                         <div class="form-check">
@@ -170,6 +171,21 @@ const resizeTextarea = (event) => {
                     </div>
                 </div>
             </fieldset>
+            <!-- Erklärung -->
+            <div class="row card-body">
+                <legend><small>Erklärung</small></legend>
+                <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-text">
+                        <ExclamationIcon />
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" :id="'explanation' + index" v-model="question.explanation"
+                            placeholder="Erklärung (max. 512 Zeichen)" maxlength="512" required
+                            @input="resizeTextarea"></textarea>
+                        <label :for="'explanation' + index" class="form-label">(max. 512 Zeichen)</label>
+                    </div>
+                </div>
+            </div>
             <div class="card-footer bg-info bg-opacity-25">
                 <button type="button" class="btn btn-danger w-100" @click="removeQuestion(index)">
                     <TrashCanIcon /> Frage

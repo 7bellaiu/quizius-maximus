@@ -5,6 +5,8 @@ import GearIcon from './icons/GearIcon.vue';
 import PersonIcon from './icons/PersonIcon.vue';
 import PeopleIcon from './icons/PeopleIcon.vue';
 import WaitingForPlayer2 from './results/WaitingForPlayer2.vue';
+import SchnellComp from './gamemodes/SchnellComp.vue';
+import SchnellCoop from './gamemodes/SchnellCoop.vue';
 
 const props = defineProps({
     game: {
@@ -19,6 +21,7 @@ const props = defineProps({
 
 const clickTarget = ref(null);
 const isTargetDefined = ref(false);
+const targetName = ref('');
 
 const getStatusText = (status) => {
     switch (status) {
@@ -36,12 +39,27 @@ const getStatusText = (status) => {
 };
 
 onMounted(() => {
+    // Bestimme den Zielnamen basierend auf dem gameMode
+    switch (props.game.gameMode) {
+        case 'schnell_comp':
+            targetName.value = 'schnellcomp';
+            break;
+        case 'schnell_coop':
+            targetName.value = 'schnellcoop';
+            break;
+        case 'simul':
+            targetName.value = 'simulation';
+            break;
+        default:
+            targetName.value = '';
+    }
+
     if (props.game.gameState === 4 || props.game.gameState === 2) {
         clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, gameDocId: props.game.id, gameState: props.game.gameState } };
     } else if (props.game.gameState === 1 && props.game.player1UID === props.userUID) {
-        clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
+        clickTarget.value = { name: targetName.value, params: { gameDocId: props.game.id, userUID: props.userUID } };
     } else if (props.game.gameState === 3 && props.game.player2UID === props.userUID) {
-        clickTarget.value = { name: 'schnellcomp', params: { gameDocId: props.game.id, userUID: props.userUID } };
+        clickTarget.value = { name: targetName.value, params: { gameDocId: props.game.id, userUID: props.userUID } };
     }
     isTargetDefined.value = true;
 });
