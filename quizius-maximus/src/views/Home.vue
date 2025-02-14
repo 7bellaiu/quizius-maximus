@@ -104,7 +104,7 @@ const getStatusText = (game, status) => {
 
         <div class="container mt-3">
             <div class="row justify-content-center">
-                <div class="col-md-8 mb-3">
+                <div class="col-md-4 mb-3">
                     <div class="card border-info">
                         <div class="card-body text-center bg-info bg-opacity-10 text-bg-info">
                             <h4>How to</h4>
@@ -114,10 +114,18 @@ const getStatusText = (game, status) => {
                         </div>
                     </div>
                 </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card border-info">
+                        <div class="card-body bg-info bg-opacity-10 text-bg-info">
+                            <h4>Neue Funktionen:</h4>
+                            <p>Test</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row justify-content-center">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-8 mb-3">
                     <div class="card border-info">
                         <div class="card-body bg-info bg-opacity-50 text-bg-info">
                             <h4>Meine Quizze:</h4>
@@ -138,14 +146,6 @@ const getStatusText = (game, status) => {
                                     <strong>Status:</strong> {{ getStatusText(game, game.gameState) }}
                                 </p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card border-info">
-                        <div class="card-body bg-info bg-opacity-50 text-bg-info">
-                            <h4>Neue Funktionen:</h4>
-                            <p>Test</p>
                         </div>
                     </div>
                 </div>

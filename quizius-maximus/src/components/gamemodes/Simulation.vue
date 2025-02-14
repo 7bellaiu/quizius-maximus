@@ -132,6 +132,6 @@ onMounted(() => {
 
 <template>
     <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :game-mode-longtext="GAMEMODE_SIMUL"
-        @player-score="handleFinished" />
+        @finished="handleFinished" />
     <h1 v-if="displayErrorMessage" class="text-center text-danger">{{ errorMessageText }}</h1>
 </template>

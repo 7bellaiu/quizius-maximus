@@ -12,6 +12,7 @@ import JoinExistingGame from "@/components/matchmaking/JoinExistingGame.vue";
 import SchnellComp from "@/components/gamemodes/SchnellComp.vue";
 import SchnellCoop from "@/components/gamemodes/SchnellCoop.vue";
 import Simulation from "@/components/gamemodes/Simulation.vue";
+import Learning from "@/components/gamemodes/Learning.vue";
 
 const props = defineProps({
     moduleId: {
@@ -135,7 +136,7 @@ const handleMatchmakingFailed = (message) => {
             <!-- <ThemeComp v-if="displayThemeComp" :gameDocId="matchmakingGameDocId" /> -->
             <!-- <ThemeCoop v-if="displayThemeCoop" :gameDocId="matchmakingGameDocId" /> -->
             <Simulation v-if="displaySimul && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId" />
-            <!-- <Learning v-if="displayLearn" :gameDocId="matchmakingGameDocId" /> -->
+            <Learning v-if="displayLearn && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId" />
         </div>
     </main>
 </template>

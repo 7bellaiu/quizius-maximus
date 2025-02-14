@@ -5,6 +5,7 @@ import { getAuth } from 'firebase/auth';
 import { firestoreDB } from "@/main";
 import { useRouter } from 'vue-router';
 import HourglassSplitIcon from '../icons/HourglassSplitIcon.vue';
+import InfoIcon from '../icons/InfoIcon.vue';
 
 const props = defineProps({
     gameDocId: {
@@ -44,9 +45,10 @@ const deleteQuiz = () => {
     <div class="row justify-content-center">
         <div class="col-md-4 mb-3 mt-3">
             <div class="card border-info">
-                <div class="card-body bg-info bg-opacity-50 text-bg-info text-center">
-                    Du findest keinen Gegenspieler oder möchtest das Quiz doch nicht spielen?
-                    Dann kannst du ganz einfach auf "Quiz löschen" klicken!
+                <div class="card-body bg-info bg-opacity-50 text-bg-info text-center pb-1">
+                    <p><span class="text-decoration-underline">Kleiner Tipp:</span> <br>
+                    Du möchtest das Quiz doch nicht spielen oder findest über längere Zeit keinen Gegenspieler?<br>
+                    Dann kannst du einfach auf "Quiz löschen" klicken!</p>
                 </div>
             </div>
         </div>

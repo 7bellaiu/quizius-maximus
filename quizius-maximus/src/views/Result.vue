@@ -5,6 +5,7 @@ import ResultSchnellComp from '@/components/results/ResultSchnellComp.vue';
 import ResultSchnellCoop from '@/components/results/ResultSchnellCoop.vue';
 import ResultSimulation from '@/components/results/ResultSimulation.vue';
 import WaitingForPlayer2 from '@/components/results/WaitingForPlayer2.vue';
+import ResultLearning from '@/components/results/ResultLearning.vue';
 
 const route = useRoute();
 // TODO: mit define Props umsetzen
@@ -26,6 +27,8 @@ const currentComponent = computed(() => {
                     return ResultSchnellCoop;
                 case 'simul':
                     return ResultSimulation;
+                case 'learn':
+                    return ResultLearning;
                 default:
                     return null;
             }

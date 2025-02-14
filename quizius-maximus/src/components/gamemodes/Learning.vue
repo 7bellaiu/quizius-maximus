@@ -5,7 +5,7 @@ import { computed, onMounted, ref } from 'vue';
 import Quiz from '../quiz/Quiz.vue';
 import { useRouter } from 'vue-router';
 
-// Steuert ein Schnelles Spiel im Cooperative Mode
+// Steuert ein Schnelles Spiel im Lernmodus
 const props = defineProps({
     gameDocId: {
         type: String,
@@ -19,7 +19,7 @@ const props = defineProps({
 
 // state
 const router = useRouter();
-const GAMEMODE_SCHNELL_COOP = "Kooperativ - Schnelles Quiz";
+const GAMEMODE_LEARNING = "Kooperativ - Lernmodus";
 const quizData = ref(null);
 const questionsData = ref([]); // Speichert die Fragen
 const isDataFetchCompleted = ref(false);
@@ -131,7 +131,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :game-mode-longtext="GAMEMODE_SCHNELL_COOP"
-        @finished="handleFinished" />
+    <Quiz v-if="isDataFetchCompleted" :questions="questionsData" :game-mode-longtext="GAMEMODE_LEARNING"
+        :is-explanation-displayed="true" @finished="handleFinished" />
     <h1 v-if="displayErrorMessage" class="text-center text-danger">{{ errorMessageText }}</h1>
 </template>
