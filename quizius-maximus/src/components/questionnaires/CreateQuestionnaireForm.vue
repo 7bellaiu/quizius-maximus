@@ -105,7 +105,7 @@ const resizeTextarea = (event) => {
     <form class="m-2" @submit.prevent="saveQuestionnaire">
         <!-- Kopfdaten: Modul -->
         <fieldset class="card border-info mb-5">
-            <legend class="card-header bg-info bg-opacity-50 border-info"><strong>Modul</strong></legend>
+            <legend class="card-header bg-info bg-opacity-50 border-info"><h5>Modul</h5></legend>
             <div class="card-body">
                 <div class="input-group input-group-sm mb-1">
                     <span class="input-group-text bg-info bg-opacity-25">Kürzel</span>
@@ -129,7 +129,7 @@ const resizeTextarea = (event) => {
         <!-- Bauchdaten: Fragen & Antworten -->
         <fieldset class="card border-info mb-3" v-for="(question, index) in form.questions" :key="index">
             <legend class="card-header bg-info bg-opacity-50 border-info">
-                <strong>{{ index + 1 }}. Frage</strong>
+                <h5>{{ index + 1 }}. Frage</h5>
             </legend>
             <!-- #. Frage -->
             <div class="row card-body">

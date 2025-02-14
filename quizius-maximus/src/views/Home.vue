@@ -178,7 +178,7 @@ const getStatusText = (game, status) => {
 
         <div class="d-flex align-items-center mt-3 mb-5">
             <AppLogo variant="dark" />
-            <h2 class="text-info mx-3">Wissen wie von Zauberhand in deinem Kopf</h2>
+            <h2 class="text-info text-center mx-3">Wissen wie von Zauberhand in deinem Kopf</h2>
             <AppLogo variant="dark" style="transform: scaleX(-1);" />
         </div>
 

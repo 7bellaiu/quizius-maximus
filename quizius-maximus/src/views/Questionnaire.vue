@@ -25,7 +25,7 @@ const createQuestionnaire = computed(() => props.action === 'create');
 </script>
 
 <template>
-    <main class="pt-4 row justify-content-center">
+    <main class="row justify-content-center">
         <section class="p-3 mt-3 mb-3 form-wrapper">
             <DisplayQuestionnaireForm v-if="displayQuestionnaire" :moduleid="props.moduleid" />
             <EditQuestionnaireForm v-else-if="changeQuestionnaire" :moduleid="props.moduleid" />

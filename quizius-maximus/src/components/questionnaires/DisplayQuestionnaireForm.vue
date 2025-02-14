@@ -68,7 +68,7 @@ onMounted(() => {
         <!-- Kopfdaten: Modul -->
         <fieldset class="card border-info mb-5">
             <legend class="card-header bg-info bg-opacity-50 border-info">
-                <strong>Modul</strong>
+                <h5>Modul</h5>
             </legend>
             <div class="card-body">
                 <div class="input-group input-group mb-1">
@@ -87,7 +87,7 @@ onMounted(() => {
         <!-- Bauchdaten -->
         <fieldset class="card border-info mb-3" v-for="(question, index) in form.questions" :key="index">
             <legend class="card-header bg-info bg-opacity-50 border-info">
-                <strong>{{ index + 1 }}. Frage</strong>
+                <h5>{{ index + 1 }}. Frage</h5>
             </legend>
             <!-- #. Frage -->
             <div class="row card-body">
