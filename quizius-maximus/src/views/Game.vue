@@ -135,8 +135,10 @@ const handleMatchmakingFailed = (message) => {
                 :userUID="userUID" />
             <!-- <ThemeComp v-if="displayThemeComp" :gameDocId="matchmakingGameDocId" /> -->
             <!-- <ThemeCoop v-if="displayThemeCoop" :gameDocId="matchmakingGameDocId" /> -->
-            <Simulation v-if="displaySimul && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId" />
-            <Learning v-if="displayLearn && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId" />
+            <Simulation v-if="displaySimul && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId"
+                :userUID="userUID" />
+            <Learning v-if="displayLearn && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId"
+                :userUID="userUID" />
         </div>
     </main>
 </template>

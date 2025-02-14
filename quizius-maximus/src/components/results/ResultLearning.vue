@@ -131,21 +131,21 @@ onMounted(async () => {
 </script>
 
 <template>
-    <h2 class="text-center mb-3 mt-4">
+    <h2 class="text-center mb-3 mt-3 p-3">
         <PeopleIcon class="me-3 text-success" width="30" height="30" />
         <span>Lernmodus</span><br>
         Auswertung
     </h2>
 
-    <div v-if="gameData" class="d-flex justify-content-center mt-5">
+    <div v-if="gameData" class="d-flex justify-content-center">
         <div class="card border-info m-2"
             v-for="(player, index) in [gameData.player1Username, gameData.player2Username]" :key="index"
             style="width: 18rem;">
             <div class="card-header bg-info bg-opacity-50 text-bg-info">
                 <h6 class="card-title">
                     <div class="row">
-                        <div class="col"><strong>Benutzername</strong></div>
-                        <div class="col"><strong>Punktzahl</strong></div>
+                        <div class="col"><h6>Benutzername</h6></div>
+                        <div class="col"><h6>Punktzahl</h6></div>
                     </div>
                 </h6>
             </div>
@@ -173,8 +173,9 @@ onMounted(async () => {
         </strong>
     </div>
 
-    <div class="d-flex justify-content-center mt-3">
+    <div class="d-flex justify-content-center mt-5">
         <router-link class="btn btn-outline-primary m-1" to="/activequizzes">Zurück</router-link>
         <button class="btn btn-primary m-1" @click="completeQuiz">Quiz abschließen</button>
     </div>
+    <div class="mt-5"></div>
 </template>

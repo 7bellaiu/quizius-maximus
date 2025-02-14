@@ -64,10 +64,10 @@ const deleteQuestionnaire = async (moduleId) => {
 <template>
     <main>
         <!-- Kopfbereich -->
-        <section class="pt-4 text-center container">
+        <section class="p-3 text-center container">
             <div class="row py-lg-3">
                 <div class="col-lg-6 col-md-8 mx-auto">
-                    <h2 class="mb-3 mt-3 text-center">Fragenkataloge</h2>
+                    <h2 class="text-center">Fragenkataloge</h2>
                     <div class="lead text-body-secondary py-3 d-flex align-items-center">
                         <input type="search" class="form-control me-2" v-model="search"
                             placeholder="Suche nach einem Modul ..." list="datalistOptions" id="exampleDataList">

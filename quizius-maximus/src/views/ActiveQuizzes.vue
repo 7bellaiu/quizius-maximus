@@ -70,9 +70,9 @@ onMounted(() => {
 
 <template>
     <main>
-        <section class="album py-3 container">
+        <section class="album py-3 container mt-3 p-3 mb-5">
             <article class="row justify-content-center">
-                <h2 class="text-center">Meine Quizze</h2>
+                <h2 class="text-center mb-3">Meine Quizze</h2>
                 <div class="container mt-3">
                     <div class="row row-cols-1 row-cols-md-2 g-4">
                         <ActiveQuizCard v-for="game in games" :key="game.id" :game="game" :userUID="userUID" />

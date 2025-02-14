@@ -126,28 +126,30 @@ const getStatusText = (game, status) => {
 
             <div class="row justify-content-center">
                 <div class="col-md-8 mb-3">
-                    <div class="card border-info">
-                        <div class="card-body bg-info bg-opacity-50 text-bg-info">
-                            <h4>Meine Quizze:</h4>
-                            <div v-for="game in games" :key="game.id" class="mb-2">
-                                <p>
-                                    <span v-if="game.gameMode === 'schnell_comp'">
-                                        <PersonIcon class="text-danger me-2" />Schnelles Quiz:
-                                    </span>
-                                    <span v-if="game.gameMode === 'schnell_coop'">
-                                        <PeopleIcon class="text-success me-2" />Schnelles Quiz:
-                                    </span>
-                                    <span v-if="game.gameMode === 'simul'">
-                                        <PersonIcon class="text-danger me-2" />Prüfungssimulation:
-                                    </span>
-                                    <span v-if="game.gameMode === 'learn'">
-                                        <PeopleIcon class="text-success me-2" />Lernmodus:
-                                    </span>({{ game.moduleShortname }}) {{ game.moduleLongname }} <br>
-                                    <strong>Status:</strong> {{ getStatusText(game, game.gameState) }}
-                                </p>
+                    <router-link to="/activequizzes" class="text-dark text-decoration-none">
+                        <div class="card border-info">
+                            <div class="card-body bg-info bg-opacity-50 text-bg-info">
+                                <h4>Meine Quizze:</h4>
+                                <div v-for="game in games" :key="game.id" class="mb-2">
+                                    <p>
+                                        <span v-if="game.gameMode === 'schnell_comp'">
+                                            <PersonIcon class="text-danger me-2" />Schnelles Quiz:
+                                        </span>
+                                        <span v-if="game.gameMode === 'schnell_coop'">
+                                            <PeopleIcon class="text-success me-2" />Schnelles Quiz:
+                                        </span>
+                                        <span v-if="game.gameMode === 'simul'">
+                                            <PersonIcon class="text-danger me-2" />Prüfungssimulation:
+                                        </span>
+                                        <span v-if="game.gameMode === 'learn'">
+                                            <PeopleIcon class="text-success me-2" />Lernmodus:
+                                        </span>({{ game.moduleShortname }}) {{ game.moduleLongname }} <br>
+                                        <strong>Status:</strong> {{ getStatusText(game, game.gameState) }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </router-link>
                 </div>
             </div>
 

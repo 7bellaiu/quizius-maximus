@@ -2,8 +2,6 @@
 import { collection, doc, getDocs, query, runTransaction, where } from 'firebase/firestore';
 import { firestoreDB } from "@/main";
 import { onMounted, ref } from 'vue';
-//wird von Game angesteuert, um ein neues Spiel in Firebase anzulegen
-//liefert via emit die Id des entsprechenden Document an Game zurück
 
 // Definition der Props & Emits von/für Parent
 const props = defineProps({
@@ -45,13 +43,12 @@ const QUESTIONS_PER_GAMEMODE = {
     schnell: 5,
     theme: 5,
     simul: 20,
-    learn: 10
+    learn: 0 // Initial auf 0 setzen, da die Anzahl dynamisch ermittelt wird - ALLE existierenden Fragen zum Modul
 }
 
 // Fragen zum Modul lesen  &  X Fragen je nach Spielmodus auswählen
 const fetchQuestionsForModule = () => {
     const { moduleId, gameMode } = props;
-    const numQuestions = QUESTIONS_PER_GAMEMODE[gameMode] || 5; // Standard auf 5 Fragen
 
     return getDocs(query(collection(firestoreDB, "questionnaires"), where("moduleID", "==", moduleId)))
         .then((questionnaires) => {
@@ -62,6 +59,13 @@ const fetchQuestionsForModule = () => {
         })
         .then((questions) => {
             if (questions.empty) throw new Error("Keine Fragen gefunden!");
+
+            // Wenn Spielmodus learn, alle Fragen auswählen
+            if (gameMode === 'learn') {
+                QUESTIONS_PER_GAMEMODE.learn = questions.docs.length;
+            }
+
+            const numQuestions = QUESTIONS_PER_GAMEMODE[gameMode] || 5; // Standard auf 5 Fragen
 
             // Zufällige X Fragen auswählen, basierend auf Spielmodus
             const selectedQuestions = questions.docs

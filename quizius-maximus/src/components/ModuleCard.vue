@@ -22,7 +22,7 @@ const props = defineProps({
 <template>
     <article class="card shadow-sm border-info">
         <div class="card-header text-bg-info bg-opacity-50 border-info">
-            {{ props.shortname }}: {{ props.longname }}
+           <h6>{{ props.shortname }}: {{ props.longname }}</h6>
         </div>
         <div class="card-body">
             <div class="row mb-1 align-items-center">

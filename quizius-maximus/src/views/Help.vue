@@ -33,9 +33,9 @@ const triggerToast = () => {
 
 <template>
     <main>
-        <section class="album py-3 container">
+        <section class="album mt-3 py-3 container">
             <article class="row justify-content-center">
-                <h2 class="text-center">Wie können wir dir helfen?</h2>
+                <h2 class="text-center mb-3">Wie können wir dir helfen?</h2>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <!-- FAQ Card innerhalb des Buttons -->
                     <button type="button" class="btn w-50 p-0" @click="displayContactForm = false">
@@ -77,16 +77,16 @@ const triggerToast = () => {
             </div>
 
             <!-- FAQ-Bereich -->
-            <article class="row row-cols-1 justify-content-center" v-if="!displayContactForm">
-                <h2 class="text-center mt-5">FAQs</h2>
+            <article class="row row-cols-1 justify-content-center mb-5" v-if="!displayContactForm">
+                <h3 class="text-center mt-5 mb-3">FAQs</h3>
                 <div class="d-flex justify-content-center">
                     <FAQ />
                 </div>
             </article>
 
             <!-- Kontaktformular-Bereich -->
-            <article class="row row-cols-1 justify-content-center" v-if="displayContactForm">
-                <h2 class="text-center mt-5">Kontaktformular</h2>
+            <article class="row row-cols-1 justify-content-center mb-5" v-if="displayContactForm">
+                <h3 class="text-center mt-5 mb-3">Kontaktformular</h3>
                 <ContactForm @cancel="handleContactCancel" @success="handleContactSuccess" />
             </article>
         </section>

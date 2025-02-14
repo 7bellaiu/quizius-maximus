@@ -137,15 +137,15 @@ onMounted(() => {
                 <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" />
             </article>
 
-            <h3 class="mt-3 text-center">Statistiken</h3>
+            <h3 class="mt-2 text-center">Statistiken</h3>
             <!-- Meine Quizze  -->
             <div class="row justify-content-center mt-3">
-                <div class="col-md-3 mb-3">
+                <div class="col-md-4 mb-5">
                     <div class="card border-info m-2 h-100">
                         <div class="card-header bg-info bg-opacity-50 text-bg-info">
-                            <h6 class="card-title">
+                            <h5 class="card-title">
                                 <strong>Meine Quizze</strong>
-                            </h6>
+                            </h5>
                         </div>
                         <div class="card-body">
                             <PeopleIcon class="text-success me-2" /><strong>Kooperativ:</strong>
@@ -157,23 +157,23 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-md-4 mb-5">
                     <div class="card border-info m-2 h-100">
                         <div class="card-header bg-info bg-opacity-50 text-bg-info">
-                            <h6 class="card-title">
+                            <h5 class="card-title">
                                 <strong>Rangliste - Top 10</strong>
-                            </h6>
+                            </h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col"><strong>Benutzername</strong></div>
-                                <div class="col"><strong>Punktzahl</strong></div>
+                                <div class="col-4"><strong>Punktzahl</strong></div>
                             </div>
                             <div v-for="user in leaderboard" :key="user.username" class="row">
                                 <div class="col">
                                     <PersonCircleIcon class="text-secondary me-2" />{{ user.username }}
                                 </div>
-                                <div class="col">{{ user.totalCorrectAnswers }}</div>
+                                <div class="col-4">{{ user.totalCorrectAnswers }}</div>
                             </div>
                         </div>
                     </div>

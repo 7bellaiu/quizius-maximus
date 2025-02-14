@@ -19,7 +19,7 @@ const props = defineProps({
 
 // state
 const router = useRouter();
-const GAMEMODE_SIMUL = "Kooperativ - Prüfungssimulation";
+const GAMEMODE_SIMUL = "Kompetitiv - Prüfungssimulation";
 const quizData = ref(null);
 const questionsData = ref([]); // Speichert die Fragen
 const isDataFetchCompleted = ref(false);

@@ -24,10 +24,10 @@ const emit = defineEmits(['delete-questionnaire']);
 <template>
     <article class="card shadow-sm border-info">
         <div class="card-header text-bg-info bg-opacity-50 border-info">
-            {{ props.shortname }}: {{ props.longname }}
+            <h6>{{ props.shortname }}: {{ props.longname }}</h6>
         </div>
         <div class="card-body">
-            <div class="row mb-2 align-items-center">
+            <div class="row mb-1 align-items-center">
                 <div class="col-2">
                     <router-link class="btn btn-sm btn-outline-primary w-100 mx-2"
                         :to="{ name: 'questionnaire', params: { action: 'display', moduleid: props.moduleid } }"
@@ -58,7 +58,8 @@ const emit = defineEmits(['delete-questionnaire']);
             <div class="row align-items-center">
                 <div class="col-2">
                     <button type="button" class="btn btn-sm btn-outline-danger w-100 mx-2"
-                        @click="emit('delete-questionnaire', props.moduleid)" title="Fragenkatalog löschen"> <!-- TODO: Wenn Fragenkatalog in games in einem dok mit player1Status <> 5 && player2Status <> 5 ist, dann kann Fragenkatalog nicht geloescht werden. -->
+                        @click="emit('delete-questionnaire', props.moduleid)" title="Fragenkatalog löschen">
+                        <!-- TODO: Wenn Fragenkatalog in games in einem dok mit player1Status <> 5 && player2Status <> 5 ist, dann kann Fragenkatalog nicht geloescht werden. -->
                         <TrashCanIcon />
                     </button>
                 </div>
