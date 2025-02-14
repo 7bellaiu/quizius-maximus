@@ -159,51 +159,53 @@ onMounted(async () => {
 </script>
 
 <template>
-    <h2 class="text-center mb-3 mt-3 p-3">
-        <PersonIcon class="me-3 text-danger" width="30" height="30" />
-        <span>Prüfungssimulation</span><br>
-        Auswertung
-    </h2>
+    <div class="container">
+        <h2 class="text-center mb-3 mt-3 p-3">
+            <PersonIcon class="me-3 text-danger" width="30" height="30" />
+            <span>Prüfungssimulation</span><br>
+            Auswertung
+        </h2>
 
-    <div class="col-lg-6 col-md-8 mx-auto">
-        <div class="card border-info">
-            <div class="card-header bg-info bg-opacity-50 text-bg-info">
-                <h6 class="card-title">
-                    <div class="row">
-                        <div class="col-3">Platzierung</div>
-                        <div class="col">Benutzername</div>
-                        <div class="col-3">Punktzahl</div>
-                    </div>
-                </h6>
-            </div>
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="card border-info">
+                <div class="card-header bg-info bg-opacity-50 text-bg-info">
+                    <h6 class="card-title">
+                        <div class="row">
+                            <div class="col-3">Platzierung</div>
+                            <div class="col">Benutzername</div>
+                            <div class="col-3">Punktzahl</div>
+                        </div>
+                    </h6>
+                </div>
 
-            <div class="card-body">
-                <div class="row" v-for="(player, index) in sortedPlayers" :key="index">
-                    <div class="col-3 d-flex align-items-center">
-                        <TrophyIcon class="text-warning me-2" v-if="player.rank === 1" />
-                        <TrophyIcon class="text-secondary me-2" v-if="player.rank === 2" />
-                        <strong> {{ player.rank }}. </strong>
+                <div class="card-body">
+                    <div class="row" v-for="(player, index) in sortedPlayers" :key="index">
+                        <div class="col-3 d-flex align-items-center">
+                            <TrophyIcon class="text-warning me-2" v-if="player.rank === 1" />
+                            <TrophyIcon class="text-secondary me-2" v-if="player.rank === 2" />
+                            <strong> {{ player.rank }}. </strong>
+                        </div>
+                        <div class="col">{{ player.username }}</div>
+                        <div class="col-3">{{ player.score }}</div>
                     </div>
-                    <div class="col">{{ player.username }}</div>
-                    <div class="col-3">{{ player.score }}</div>
+                </div>
+
+                <div class="card-footer bg-info bg-opacity-25 text-bg-info border-info text-center">
+                    <strong>
+                        <h4 v-if="determineUserStatus">{{ determineUserStatus }}</h4>
+                        <EmojiSmileIcon class="me-2" width="100" height="100"
+                            v-if="determineUserStatus.includes('Herzlichen Glückwunsch!')" />
+                        <EmojiTearIcon class="me-2" width="100" height="100"
+                            v-if="determineUserStatus.includes('Oh nein, leider durchgefallen!')" />
+                    </strong>
                 </div>
             </div>
-
-            <div class="card-footer bg-info bg-opacity-25 text-bg-info border-info text-center">
-                <strong>
-                    <h4 v-if="determineUserStatus">{{ determineUserStatus }}</h4>
-                    <EmojiSmileIcon class="me-2" width="100" height="100"
-                        v-if="determineUserStatus.includes('Herzlichen Glückwunsch!')" />
-                    <EmojiTearIcon class="me-2" width="100" height="100"
-                        v-if="determineUserStatus.includes('Oh nein, leider durchgefallen!')" />
-                </strong>
-            </div>
         </div>
-    </div>
 
-    <div class="d-flex justify-content-center mt-5">
-        <router-link class="btn btn-outline-primary m-1" to="/activequizzes">Zurück</router-link>
-        <button class="btn btn-primary m-1" @click="completeQuiz">Quiz abschließen</button>
+        <div class="d-flex justify-content-center mt-5">
+            <router-link class="btn btn-outline-primary m-1" to="/activequizzes">Zurück</router-link>
+            <button class="btn btn-primary m-1" @click="completeQuiz">Quiz abschließen</button>
+        </div>
+        <div class="mt-5"></div>
     </div>
-    <div class="mt-5"></div>
 </template>
