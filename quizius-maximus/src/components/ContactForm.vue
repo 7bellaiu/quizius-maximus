@@ -5,7 +5,7 @@ import { firestoreDB } from '@/main';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const email = ref("");
-const REQUEST_TYPES = ["Login", "Verbesserungsvorschlag", "Sonstiges Anliegen"];
+const REQUEST_TYPES = ["Login", "Verbesserungsvorschlag", "Account löschen" ,"Sonstiges Anliegen"];
 const requestType = ref(REQUEST_TYPES[0]);
 const message = ref("");
 const toastRef = ref(null);
@@ -79,6 +79,7 @@ const triggerToast = () => {
                     <option :value="REQUEST_TYPES[0]">{{ REQUEST_TYPES[0] }}</option>
                     <option :value="REQUEST_TYPES[1]">{{ REQUEST_TYPES[1] }}</option>
                     <option :value="REQUEST_TYPES[2]">{{ REQUEST_TYPES[2] }}</option>
+                    <option :value="REQUEST_TYPES[3]">{{ REQUEST_TYPES[3] }}</option>
                 </select>
                 <label for="requestTypeSelect">Was beschreibt dein Anliegen am ehesten?</label>
             </div>
