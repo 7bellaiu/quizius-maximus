@@ -50,6 +50,9 @@ onMounted(() => {
         case 'simul':
             targetName.value = 'simulation';
             break;
+        case 'learn':
+            targetName.value = 'learning';
+            break;
         default:
             targetName.value = '';
     }

@@ -17,7 +17,6 @@ const isCurrentQuestionAnswered = ref(false);
 const isLastQuestionAnswered = ref(false);
 const displayExplanation = ref(false);
 const isExplanationGreen = ref(false);
-const DEMO_TEXT_EXPLANATION = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore explicabo rerum sed obcaecati iste quo nihil, alias exercitationem in suscipit?";
 
 // Quiz interaction
 const handleNextQuestion = () => {
@@ -62,7 +61,8 @@ const handleFinished = () => {
             @selected="handleSelected" />
 
         <!-- Erklaerung -->
-        <Explanation v-if="isExplanationDisplayed && displayExplanation" :explanation-text="DEMO_TEXT_EXPLANATION"
+        <Explanation v-if="isExplanationDisplayed && displayExplanation"
+            :explanation-text="props.questions[currentQuestionIndex]?.explanation"
             :is-correct-answer="isExplanationGreen" />
 
         <!-- Button -->
