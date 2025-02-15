@@ -46,7 +46,7 @@ const deleteQuiz = async () => {
 </script>
 
 <template>
-    <div class="container mt-5">
+    <div class="container">
         <h2 class="text-center mt-3 p-3">
             <HourglassSplitIcon class="me-3 text-primary" width="30" height="30" />
             <span>Suche Gegenspieler...</span>
