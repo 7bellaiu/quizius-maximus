@@ -14,6 +14,7 @@ const form = reactive({
     moduleLongname: '',
     questions: [
         {
+            section: '',
             text: '',
             answers: [
                 { text: '' },
@@ -29,6 +30,7 @@ const form = reactive({
 
 const addQuestion = () => {
     form.questions.push({
+        section: '',
         text: '',
         answers: [
             { text: '' },
@@ -73,6 +75,7 @@ const saveQuestionnaire = async () => {
         // 4. Speichern der Fragen als Subcollection questions
         const questionDoc = form.questions.map((question, index) => {
             return addDoc(collection(questionnaireDoc, 'questions'), {
+                section: question.section,
                 question: question.text,
                 option1: question.answers[0].text,
                 option2: question.answers[1].text,
@@ -105,21 +108,23 @@ const resizeTextarea = (event) => {
     <form class="m-2" @submit.prevent="saveQuestionnaire">
         <!-- Kopfdaten: Modul -->
         <fieldset class="card border-info mb-5">
-            <legend class="card-header bg-info bg-opacity-50 border-info"><h5>Modul</h5></legend>
+            <legend class="card-header bg-info bg-opacity-50 border-info">
+                <h5>Modul</h5>
+            </legend>
             <div class="card-body">
                 <div class="input-group input-group-sm mb-1">
                     <span class="input-group-text bg-info bg-opacity-25">Kürzel</span>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="shortname" v-model="form.moduleShortname" maxlength="40"
-                            placeholder="Trage hier das Modulkürzel ein" required>
+                        <input type="text" class="form-control" id="shortname" v-model="form.moduleShortname"
+                            maxlength="40" placeholder="Trage hier das Modulkürzel ein" required>
                         <label for="shortname">(max. 40 Zeichen)</label>
                     </div>
                 </div>
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-info bg-opacity-25">Name</span>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="longname" v-model="form.moduleLongname" maxlength="120"
-                            placeholder="Modulname" required>
+                        <input type="text" class="form-control" id="longname" v-model="form.moduleLongname"
+                            maxlength="120" placeholder="Modulname" required>
                         <label for="longname" class="form-label">(max. 120 Zeichen)</label>
                     </div>
                 </div>
@@ -131,6 +136,17 @@ const resizeTextarea = (event) => {
             <legend class="card-header bg-info bg-opacity-50 border-info">
                 <h5>{{ index + 1 }}. Frage</h5>
             </legend>
+            <!-- Lektion -->
+            <div class="row col-md-4 card-body">
+                <div class="input-group input-group-sm mb-1">
+                    <span class="input-group-text bg-info bg-opacity-25">Lektion</span>
+                    <div class="form-floating col-2">
+                        <input type="number" class="form-control" :id="'section' + index" v-model="question.section"
+                            min="0" max="99" required maxlength="2" pattern="\d{1,2}" placeholder="max. 2 Ziffern">
+                        <label :for="'section' + index" class="form-label">(max. 2 Ziffern)</label>
+                    </div>
+                </div>
+            </div>
             <!-- #. Frage -->
             <div class="row card-body">
                 <legend><small>Fragestellung</small></legend>

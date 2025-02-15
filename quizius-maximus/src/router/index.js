@@ -17,6 +17,9 @@ import SchnellComp from '@/components/gamemodes/SchnellComp.vue';
 import SchnellCoop from '@/components/gamemodes/SchnellCoop.vue';
 import Simulation from '@/components/gamemodes/Simulation.vue';
 import Learning from '@/components/gamemodes/Learning.vue';
+import SectionSelection from '@/components/gamemodes/SectionSelection.vue';
+import ThemeComp from '@/components/gamemodes/ThemeComp.vue';
+import ThemeCoop from '@/components/gamemodes/ThemeCoop.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -97,6 +100,18 @@ const router = createRouter({
             props: true
         },
         {
+            path: "/themecomp/:gameDocId/:userUID",
+            name: "themecomp",
+            component: ThemeComp,
+            props: true
+        },
+        {
+            path: "/themecoop/:gameDocId/:userUID",
+            name: "themecoop",
+            component: ThemeCoop,
+            props: true
+        },
+        {
             path: '/result/:gameMode/:gameDocId/:gameState',
             name: 'result',
             component: Result,
@@ -114,9 +129,15 @@ const router = createRouter({
             props: true,  // URL-Params --props---> view
         },
         {
-            path: '/game/:moduleId/:moduleShortname/:moduleLongname/:gameMode',
+            path: '/game/:moduleId/:moduleShortname/:moduleLongname/:gameMode/:section?',
             name: 'game',
             component: Game,
+            props: true
+        },
+        {
+            path: '/sectionselection/:moduleId/:moduleShortname/:moduleLongname/:gameMode',
+            name: 'sectionselection',
+            component: SectionSelection,
             props: true
         },
     ]

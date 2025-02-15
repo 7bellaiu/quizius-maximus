@@ -28,10 +28,7 @@ const FAQ_CONTENT = ref([
         question: "Was sind Fragenkataloge?",
         answer1: "Fragenkataloge sind Sammlungen von Fragen zu den jeweiligen Modulen.",
         answer3: "<br>In der Übersicht 'Fragenkataloge' hast du die Möglichkeit,",
-        answer4: "<strong>-</strong> einen <strong>neuen Fragenkatalog zu erstellen</strong>",
-        answer5: "<strong>- Fragenkataloge anzuzeigen</strong>, um die darin enthaltenen Fragen anzusehen",
-        answer6: "<strong>- Fragenkataloge zu bearbeiten</strong>, zur Anpassung von bestehenden Fragenkatalogen sowie",
-        answer7: "<strong>- Fragenkataloge zu löschen</strong>"
+        answer4: "<li>einen <strong>neuen Fragenkatalog zu erstellen</strong></li><li><strong>Fragenkataloge anzuzeigen</strong>, um die darin enthaltenen Fragen anzusehen</li><li><strong>Fragenkataloge zu bearbeiten</strong>, zur Anpassung von bestehenden Fragenkatalogen sowie</li><li><strong>Fragenkataloge zu löschen</strong></li>"
     },
     {
         question: "Wie starte ich ein Quiz?"
@@ -47,17 +44,13 @@ const FAQ_CONTENT = ref([
         question: "Was sind kompetitive Spielmodi?",
         answer1: "Hier kannst du in in drei verschiedenen Spielmodi gegen deine Komiliton:innen antreten im 1 gegen 1.",
         answer3: "<br>Zur Auswahl stehen dabei:",
-        answer4: "<strong>-</strong> Schnelles Quiz",
-        answer5: "<strong>-</strong> Themenbasiertes Quiz",
-        answer6: "<strong>-</strong> Prüfungssimulation",
+        answer4: "<li>Schnelles Quiz</li><li>Themenbasiertes Quiz</li><li>Prüfungssimulation</li>",
     },
     {
         question: "Was sind kooperative Spielmodi?",
         answer1: "Hier kannst du dir in drei verschiedenen Spielmodi gemeinsam mit Komiliton:innen Wissen aneignen.",
         answer3: "<br>Zur Auswahl stehen dabei:",
-        answer4: "<strong>-</strong> Schnelles Quiz",
-        answer5: "<strong>-</strong> Themenbasiertes Quiz",
-        answer6: "<strong>-</strong> Lernmodus",
+        answer4: "<li>Schnelles Quiz</li><li>Themenbasiertes Quiz</li><li>Lernmodus</li>",
     },
     {
         question: "Was ist ein schnelles Quiz?"

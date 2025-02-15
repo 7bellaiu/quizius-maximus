@@ -28,6 +28,10 @@ const props = defineProps({
     userUsername: {
         type: String,
         required: true
+    },
+    section: {
+        type: String,
+        required: false
     }
 });
 const emit = defineEmits(["success", "failed"]);
@@ -40,8 +44,8 @@ const state = ref({
 });
 
 const QUESTIONS_PER_GAMEMODE = {
-    schnell: 5,
-    theme: 5,
+    schnell_comp: 5,
+    schnell_coop: 5,
     simul: 20,
     learn: 0 // Initial auf 0 setzen, da die Anzahl dynamisch ermittelt wird - ALLE existierenden Fragen zum Modul
 }
@@ -61,17 +65,22 @@ const fetchQuestionsForModule = () => {
             if (questions.empty) throw new Error("Keine Fragen gefunden!");
 
             // Wenn Spielmodus learn, alle Fragen auswählen
-            if (gameMode === 'learn') {
+            if (gameMode === 'learn' || gameMode === 'theme_comp' || gameMode === 'theme_coop') {
                 QUESTIONS_PER_GAMEMODE.learn = questions.docs.length;
             }
 
-            const numQuestions = QUESTIONS_PER_GAMEMODE[gameMode] || 5; // Standard auf 5 Fragen
+            const numQuestions = QUESTIONS_PER_GAMEMODE[gameMode]; // Standard auf 5 Fragen
 
             // Zufällige X Fragen auswählen, basierend auf Spielmodus
-            const selectedQuestions = questions.docs
+            let selectedQuestions = questions.docs
                 .map((doc) => ({ ...doc.data() }))
                 .sort(() => 0.5 - Math.random()) // Shuffle
                 .slice(0, numQuestions);
+
+/*             // Bei Modi theme nach Lektion filtern
+            if (gameMode === 'theme_comp' || gameMode === 'theme_coop') {
+                selectedQuestions = selectedQuestions.filter(question => question.section === props.section);
+            } */
 
             state.value.questionData = selectedQuestions[0]; // Erste Frage speichern
             return selectedQuestions; // Gibt die Fragen zurück

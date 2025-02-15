@@ -47,7 +47,8 @@ const loadModuleData = async () => {
                         { text: questionDoc.data().option4 }
                     ],
                     correctAnswer: parseInt(questionDoc.data().correctAnswer.replace('option', '')) - 1,
-                    explanation: questionDoc.data().explanation || ''
+                    explanation: questionDoc.data().explanation || '',
+                    section: questionDoc.data().section
                 });
             }
         }
@@ -89,6 +90,17 @@ onMounted(() => {
             <legend class="card-header bg-info bg-opacity-50 border-info">
                 <h5>{{ index + 1 }}. Frage</h5>
             </legend>
+            <!-- Lektion -->
+            <div class="row col-md-4 card-body">
+                <div class="input-group input-group-sm mb-1">
+                    <span class="input-group-text bg-info bg-opacity-25">Lektion</span>
+                    <div class="form-floating col-2">
+                        <input type="number" class="form-control" :id="'section' + index" v-model="question.section"
+                            min="0" max="99" required maxlength="2" pattern="\d{1,2}" placeholder="max. 2 Ziffern">
+                        <label :for="'section' + index" class="form-label">(max. 2 Ziffern)</label>
+                    </div>
+                </div>
+            </div>
             <!-- #. Frage -->
             <div class="row card-body">
                 <legend><small>Fragestellung</small></legend>

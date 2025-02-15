@@ -48,12 +48,12 @@ const props = defineProps({
                 </div>
                 <div class="col-3 d-flex justify-content-end">
                     <router-link class="btn btn-sm btn-outline-danger mx-1" title="Themenbasiertes Quiz - kompetitiv"
-                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_comp' } }">
+                        :to="{ name: 'sectionselection', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_comp' } }">
                         <PersonIcon />
                     </router-link>
                     <router-link type="button" class="btn btn-sm btn-outline-success mx-1"
                         title="Themenbasiertes Quiz - kooperativ"
-                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_coop' } }">
+                        :to="{ name: 'sectionselection', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_coop' } }">
                         <PeopleIcon />
                     </router-link>
                 </div>

@@ -76,13 +76,11 @@ const getStatusText = (game, status) => {
 
 <template>
     <main class="d-flex flex-column align-items-center">
-
         <div class="w-100 mt-4">
-            <div class="card border-top border-bottom border-secondary">
-                <div class="card-body bg-secondary bg-opacity-10 d-flex justify-content-between align-items-center">
+            <div class="card border-0 rounded">
+                <div class="card-body bg-secondary bg-opacity-10 d-flex justify-content-between align-items-center rounded">
                     <div class="col">
-                        <router-link class="text-dark"
-                            :to="{ name: 'questionnaire', params: { action: 'create', moduleid: 0 } }">
+                        <router-link class="text-dark" :to="{ name: 'questionnaire', params: { action: 'create', moduleid: 0 } }">
                             Neuen Fragenkatalog anlegen
                         </router-link>
                     </div>
@@ -105,8 +103,8 @@ const getStatusText = (game, status) => {
         <div class="container mt-3">
             <div class="row justify-content-center">
                 <div class="col-md-4 mb-3">
-                    <div class="card border-info">
-                        <div class="card-body text-center bg-info bg-opacity-10 text-bg-info">
+                    <div class="card border-0 rounded">
+                        <div class="card-body text-center bg-info bg-opacity-10 text-bg-info rounded">
                             <h4>How to</h4>
                             <router-link to="/support" class="text-dark">
                                 <p>Wie funktioniert Quizius Maximus?</p>
@@ -115,8 +113,8 @@ const getStatusText = (game, status) => {
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <div class="card border-info">
-                        <div class="card-body bg-info bg-opacity-10 text-bg-info">
+                    <div class="card border-0 rounded">
+                        <div class="card-body bg-info bg-opacity-10 text-bg-info rounded">
                             <h4>Neue Funktionen:</h4>
                             <p>Test</p>
                         </div>
@@ -127,8 +125,8 @@ const getStatusText = (game, status) => {
             <div class="row justify-content-center">
                 <div class="col-md-8 mb-3">
                     <router-link to="/activequizzes" class="text-dark text-decoration-none">
-                        <div class="card border-info">
-                            <div class="card-body bg-info bg-opacity-50 text-bg-info">
+                        <div class="card border-0 rounded">
+                            <div class="card-body bg-info bg-opacity-50 text-bg-info rounded">
                                 <h4>Meine Quizze:</h4>
                                 <div v-for="game in games" :key="game.id" class="mb-2">
                                     <p>
@@ -143,7 +141,8 @@ const getStatusText = (game, status) => {
                                         </span>
                                         <span v-if="game.gameMode === 'learn'">
                                             <PeopleIcon class="text-success me-2" />Lernmodus:
-                                        </span>({{ game.moduleShortname }}) {{ game.moduleLongname }} <br>
+                                        </span>({{ game.moduleShortname }}) {{ game.moduleLongname }}
+                                        <br>
                                         <strong>Status:</strong> {{ getStatusText(game, game.gameState) }}
                                     </p>
                                 </div>
@@ -155,21 +154,18 @@ const getStatusText = (game, status) => {
 
             <div class="row justify-content-center">
                 <div class="col-md-8 mb-3">
-                    <div class="card border-info">
-                        <div class="card-body bg-info bg-opacity-10 text-bg-info">
+                    <div class="card border-0 rounded">
+                        <div class="card-body bg-info bg-opacity-10 text-bg-info rounded">
                             <h4 class="text-center">Coming Soon</h4>
-                            <p><u>Das erwartet dich in den nächsten Updates:</u><br>
-                                <strong>Prüfungssimulation:</strong> Ergänzung von Modulklausuren - Auswahl zwischen 45
-                                min und 90 min<br>
-                                <strong>Gruppenspiele:</strong> Spiele in größeren Gruppen von 3-10 Studierenden <br>
-                                <strong>Avatare:</strong> Erstellung eigener Avatare (besondere Avatare käuflich
-                                erwerblich) <br>
-                                <strong>Einführung von Berechtigungen:</strong> Wer darf was? - Individuelle Einstellung
-                                für jeden Fragenkatalog bereits bei der Erstellung möglich, um festzulegen, wer
-                                angelegte Fragenkataloge bearbeiten und löschen darf <br>
-                                <strong>Personalisierte Fragenkataloge:</strong> Entscheide selbst, wer deine
-                                Fragenkataloge sehen darf - nur du selbst oder auch die Community
-                            </p>
+                            <u>Das erwartet dich in den nächsten Updates:</u>
+                            <ul>
+                                <li><strong>Prüfungssimulation:</strong> Ergänzung von Modulklausuren - Auswahl zwischen 45 min und 90 min</li>
+                                <li><strong>Gruppenspiele:</strong> Spiele in größeren Gruppen von 3-10 Studierenden</li>
+                                <li><strong>Avatare:</strong> Erstellung eigener Avatare (besondere Avatare käuflich erwerblich)</li>
+                                <li><strong>Einführung von Berechtigungen:</strong> Wer darf was? - Individuelle Einstellung für jeden Fragenkatalog bereits bei der Erstellung möglich, um festzulegen, wer angelegte Fragenkataloge bearbeiten und löschen darf</li>
+                                <li><strong>Personalisierte Fragenkataloge:</strong> Entscheide selbst, wer deine Fragenkataloge sehen darf - nur du selbst oder auch die Community</li>
+                                <li><strong>Einfügen von Abbildungen:</strong> In Fragenkataloge können auch Abbildungen eingefügt werden</li>
+                            </ul>
                         </div>
                     </div>
                 </div>

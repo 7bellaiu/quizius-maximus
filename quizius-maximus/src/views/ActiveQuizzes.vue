@@ -70,7 +70,7 @@ onMounted(() => {
 
 <template>
     <main>
-        <section class="album py-3 container mt-3 p-3 mb-5">
+        <section class="album py-3 container mt-3 p-3 mb-3">
             <article class="row justify-content-center">
                 <h2 class="text-center mb-3">Meine Quizze</h2>
                 <div class="container mt-3">

@@ -13,6 +13,8 @@ import SchnellComp from "@/components/gamemodes/SchnellComp.vue";
 import SchnellCoop from "@/components/gamemodes/SchnellCoop.vue";
 import Simulation from "@/components/gamemodes/Simulation.vue";
 import Learning from "@/components/gamemodes/Learning.vue";
+import ThemeComp from "@/components/gamemodes/ThemeComp.vue";
+import ThemeCoop from "@/components/gamemodes/ThemeCoop.vue";
 
 const props = defineProps({
     moduleId: {
@@ -30,6 +32,10 @@ const props = defineProps({
     gameMode: {
         type: String,
         required: true
+    },
+    section: {
+        type: String,
+        required: false
     },
 });
 
@@ -133,8 +139,10 @@ const handleMatchmakingFailed = (message) => {
                 :userUID="userUID" />
             <SchnellCoop v-if="displaySchnellCoop && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId"
                 :userUID="userUID" />
-            <!-- <ThemeComp v-if="displayThemeComp" :gameDocId="matchmakingGameDocId" /> -->
-            <!-- <ThemeCoop v-if="displayThemeCoop" :gameDocId="matchmakingGameDocId" /> -->
+            <ThemeComp v-if="displayThemeComp && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId"
+                :userUID="userUID" :section="props.section" />
+            <ThemeCoop v-if="displayThemeCoop && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId"
+                :userUID="userUID" :section="props.section" />
             <Simulation v-if="displaySimul && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId"
                 :userUID="userUID" />
             <Learning v-if="displayLearn && isMatchmakingCompleted" :gameDocId="matchmakingGameDocId"

@@ -84,8 +84,8 @@ const deleteQuestionnaire = async (moduleId) => {
             </div>
         </section>
         <!-- Liste der Module als Cards -->
-        <section class="album container">
-            <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-3 mb-5">
+        <section class="album container mb-5">
+            <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-3">
                 <div class="col" v-for="module in filteredModules">
                     <QuestionnairesCard :moduleid="module.id" :shortname="module.shortname" :longname="module.longname"
                         @delete-questionnaire="deleteQuestionnaire" />

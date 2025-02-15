@@ -53,6 +53,12 @@ onMounted(() => {
         case 'learn':
             targetName.value = 'learning';
             break;
+        case 'theme_comp':
+            targetName.value = 'themecomp';
+            break;
+        case 'theme_coop':
+            targetName.value = 'themecoop';
+            break;
         default:
             targetName.value = '';
     }
@@ -85,6 +91,12 @@ onMounted(() => {
                         </span>
                         <span v-if="game.gameMode === 'learn'">
                             <PeopleIcon class="text-success me-2" />Lernmodus
+                        </span>
+                        <span v-if="game.gameMode === 'theme_comp'">
+                            <PersonIcon class="text-danger me-2" />Themenbasiertes Quiz
+                        </span>
+                        <span v-if="game.gameMode === 'theme_coop'">
+                            <PeopleIcon class="text-success me-2" />Themenbasiertes Quiz
                         </span>
                     </h5>
                 </div>
