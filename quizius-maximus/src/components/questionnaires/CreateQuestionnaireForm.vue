@@ -141,7 +141,7 @@ const resizeTextarea = (event) => {
                 <div class="input-group input-group-sm mb-1">
                     <span class="input-group-text bg-info bg-opacity-25">Lektion</span>
                     <div class="form-floating col-2">
-                        <input type="number" class="form-control" :id="'section' + index" v-model="question.section"
+                        <input type="text" class="form-control" :id="'section' + index" v-model="question.section"
                             min="0" max="99" required maxlength="2" pattern="\d{1,2}" placeholder="max. 2 Ziffern">
                         <label :for="'section' + index" class="form-label">(max. 2 Ziffern)</label>
                     </div>

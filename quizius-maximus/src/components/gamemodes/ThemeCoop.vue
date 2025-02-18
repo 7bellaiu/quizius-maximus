@@ -23,7 +23,7 @@ const props = defineProps({
 
 // state
 const router = useRouter();
-const GAMEMODE_THEME_COOP = "Kooperativ - Themenbasiertes Quiz";
+const GAMEMODE_THEME_COOP = `Kooperativ - Themenbasiertes Quiz - Lektion ${props.section}`;
 const quizData = ref(null);
 const questionsData = ref([]); // Speichert die Fragen
 const isDataFetchCompleted = ref(false);

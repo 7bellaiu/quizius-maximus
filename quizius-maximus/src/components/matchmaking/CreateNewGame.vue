@@ -52,19 +52,28 @@ const QUESTIONS_PER_GAMEMODE = {
 
 // Fragen zum Modul lesen  &  X Fragen je nach Spielmodus auswählen
 const fetchQuestionsForModule = () => {
-    const { moduleId, gameMode } = props;
+    const { moduleId, gameMode, section } = props;
 
     return getDocs(query(collection(firestoreDB, "questionnaires"), where("moduleID", "==", moduleId)))
         .then((questionnaires) => {
             if (questionnaires.empty) throw new Error("Kein Fragebogen gefunden!");
             const moduleID = questionnaires.docs[0].id;
 
-            return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions")));
+            // Bei Modi theme nach Lektion filtern
+            if (gameMode === 'theme_comp' || gameMode === 'theme_coop') {
+                // Stelle sicher, dass section als Zahl behandelt wird
+                //const sectionNumber = Number(section);
+                return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions"), where("section", "==", props.section)));
+            }
+            else {
+                return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions")));
+            };
+
         })
         .then((questions) => {
             if (questions.empty) throw new Error("Keine Fragen gefunden!");
 
-            // Wenn Spielmodus learn, alle Fragen auswählen
+            // Wenn Spielmodus learn, theme alle Fragen auswählen
             if (gameMode === 'learn' || gameMode === 'theme_comp' || gameMode === 'theme_coop') {
                 QUESTIONS_PER_GAMEMODE.learn = questions.docs.length;
             }
@@ -76,11 +85,6 @@ const fetchQuestionsForModule = () => {
                 .map((doc) => ({ ...doc.data() }))
                 .sort(() => 0.5 - Math.random()) // Shuffle
                 .slice(0, numQuestions);
-
-/*             // Bei Modi theme nach Lektion filtern
-            if (gameMode === 'theme_comp' || gameMode === 'theme_coop') {
-                selectedQuestions = selectedQuestions.filter(question => question.section === props.section);
-            } */
 
             state.value.questionData = selectedQuestions[0]; // Erste Frage speichern
             return selectedQuestions; // Gibt die Fragen zurück
@@ -95,6 +99,7 @@ const createNewGame = () => {
     runTransaction(firestoreDB, (transaction) => {
         transaction.set(newGameDoc, {
             gameMode: props.gameMode,
+            section: props.section,
             moduleID: props.moduleId,
             moduleLongname: props.moduleLongname,
             moduleShortname: props.moduleShortname,

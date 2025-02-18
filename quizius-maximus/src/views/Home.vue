@@ -136,12 +136,19 @@ const getStatusText = (game, status) => {
                                         <span v-if="game.gameMode === 'schnell_coop'">
                                             <PeopleIcon class="text-success me-2" />Schnelles Quiz:
                                         </span>
+                                        <span v-if="game.gameMode === 'theme_comp'">
+                                            <PersonIcon class="text-danger me-2" />Themenbasiertes Quiz:
+                                        </span>
+                                        <span v-if="game.gameMode === 'theme_coop'">
+                                            <PeopleIcon class="text-success me-2" />Themenbasiertes Quiz:
+                                        </span>
                                         <span v-if="game.gameMode === 'simul'">
                                             <PersonIcon class="text-danger me-2" />Prüfungssimulation:
                                         </span>
                                         <span v-if="game.gameMode === 'learn'">
                                             <PeopleIcon class="text-success me-2" />Lernmodus:
                                         </span>({{ game.moduleShortname }}) {{ game.moduleLongname }}
+                                        <span v-if="game.gameMode === 'theme_coop' || game.gameMode === 'theme_coop'"> - Lektion {{ game.section }}</span>
                                         <br>
                                         <strong>Status:</strong> {{ getStatusText(game, game.gameState) }}
                                     </p>

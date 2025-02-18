@@ -66,9 +66,9 @@ onMounted(() => {
     if (props.game.gameState === 4 || props.game.gameState === 2) {
         clickTarget.value = { name: 'result', params: { gameMode: props.game.gameMode, gameDocId: props.game.id, gameState: props.game.gameState } };
     } else if (props.game.gameState === 1 && props.game.player1UID === props.userUID) {
-        clickTarget.value = { name: targetName.value, params: { gameDocId: props.game.id, userUID: props.userUID } };
+        clickTarget.value = { name: targetName.value, params: { gameDocId: props.game.id, userUID: props.userUID, section: props.game.section } };
     } else if (props.game.gameState === 3 && props.game.player2UID === props.userUID) {
-        clickTarget.value = { name: targetName.value, params: { gameDocId: props.game.id, userUID: props.userUID } };
+        clickTarget.value = { name: targetName.value, params: { gameDocId: props.game.id, userUID: props.userUID, section: props.game.section } };
     }
     isTargetDefined.value = true;
 });
@@ -102,7 +102,8 @@ onMounted(() => {
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        ({{ game.moduleShortname }}) {{ game.moduleLongname }}<br>
+                        ({{ game.moduleShortname }}) {{ game.moduleLongname }}
+                        <span v-if="game.gameMode.includes('theme')">- Lektion {{ game.section }}</span><br>
                         {{ game.player1Username }}
                         <FireIcon class="text-warning"
                             v-if="game.gameMode.includes('comp') || game.gameMode === 'simul'" />

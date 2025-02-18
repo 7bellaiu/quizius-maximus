@@ -100,13 +100,13 @@ const router = createRouter({
             props: true
         },
         {
-            path: "/themecomp/:gameDocId/:userUID",
+            path: "/themecomp/:gameDocId/:userUID/:section",
             name: "themecomp",
             component: ThemeComp,
             props: true
         },
         {
-            path: "/themecoop/:gameDocId/:userUID",
+            path: "/themecoop/:gameDocId/:userUID/:section",
             name: "themecoop",
             component: ThemeCoop,
             props: true

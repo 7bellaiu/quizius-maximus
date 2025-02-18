@@ -41,7 +41,7 @@ const loadSections = async () => {
                     questionsSnapshot.forEach(questionDoc => {
                         const questionData = questionDoc.data();
                         if (questionData.section) {
-                            sectionSet.add(Number(questionData.section)); // Konvertiere section in eine Zahl
+                            sectionSet.add(questionData.section); // Konvertiere section in eine Zahl
                         }
                     });
 
