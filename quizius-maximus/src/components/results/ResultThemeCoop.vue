@@ -35,16 +35,21 @@ const buildResult = () => {
 };
 
 // Prozentanteil der gemeinsam erzielten Punkte errechnen
-const totalQuestions = 10;
+const totalQuestions = computed(() => {
+    return gameData.value ? Number(gameData.value.totalQuestions) * 2 : 0;
+});
+
 const correctAnswers = computed(() => {
     if (gameData.value) {
         return gameData.value.player1Score + gameData.value.player2Score;
     }
     return 0;
 });
+
 const correctPercentage = computed(() => {
-    return (correctAnswers.value / totalQuestions) * 100;
+    return totalQuestions.value ? (correctAnswers.value / totalQuestions.value) * 100 : 0;
 });
+
 const resultMessage = computed(() => {
     if (correctPercentage.value >= 50) {
         return `Herzlichen Glückwunsch! Ihr habt ${correctPercentage.value}% erreicht!`;
@@ -111,12 +116,13 @@ const updateStatistics = (statsDocRef, uid, username) => {
                 newStatsData.compFalseAnswers = statsData.compFalseAnswers;
             }
 
+            const totalQuestions = Number(gameData.value.totalQuestions) * 2;
             if (uid === gameData.value.player1UID) {
                 newStatsData.coopCorrectAnswers += gameData.value.player1Score;
-                newStatsData.coopFalseAnswers += (gameData.value.totalQuestions - gameData.value.player1Score);
+                newStatsData.coopFalseAnswers += (totalQuestions - gameData.value.player1Score);
             } else if (uid === gameData.value.player2UID) {
                 newStatsData.coopCorrectAnswers += gameData.value.player2Score;
-                newStatsData.coopFalseAnswers += (gameData.value.totalQuestions - gameData.value.player2Score);
+                newStatsData.coopFalseAnswers += (totalQuestions - gameData.value.player2Score);
             }
 
             return setDoc(statsDocRef, newStatsData, { merge: true });
@@ -166,14 +172,9 @@ onMounted(async () => {
     <div v-if="gameData" class="bg-opacity-25 text-center mt-3">
         <strong>
             <h4>{{ resultMessage }}</h4>
-            <!--             <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" /> -->
             <PersonArmsUpIcon class="me-2" width="100" height="100"
                 v-if="resultMessage.includes('Herzlichen Glückwunsch!')" />
-<!--             <PersonArmsUpIcon class="me-2" width="100" height="100"
-                v-if="resultMessage.includes('Herzlichen Glückwunsch!')" /> -->
-            <!--             <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" /> -->
             <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" />
-<!--             <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" /> -->
         </strong>
     </div>
 

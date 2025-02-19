@@ -22,7 +22,7 @@ const props = defineProps({
 <template>
     <article class="card shadow-sm border-info">
         <div class="card-header text-bg-info bg-opacity-50 border-info">
-           <h6>{{ props.shortname }}: {{ props.longname }}</h6>
+            <h6>{{ props.shortname }}: {{ props.longname }}</h6>
         </div>
         <div class="card-body">
             <div class="row mb-1 align-items-center">
@@ -47,6 +47,18 @@ const props = defineProps({
                     <FAQLink text="Themenbasiertes Quiz" />
                 </div>
                 <div class="col-3 d-flex justify-content-end">
+                    <!-- Example single danger button -->
+<!--                     <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-danger mx-1 dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            title="Themenbasiertes Quiz - kompetitiv">
+                            <PersonIcon />
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                        </ul>
+                    </div> -->
                     <router-link class="btn btn-sm btn-outline-danger mx-1" title="Themenbasiertes Quiz - kompetitiv"
                         :to="{ name: 'sectionselection', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_comp' } }">
                         <PersonIcon />
