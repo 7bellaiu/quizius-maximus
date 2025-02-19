@@ -49,12 +49,18 @@ const deleteQuiz = async () => {
     <div class="container">
         <h2 class="text-center mt-3 p-3">
             <HourglassSplitIcon class="me-3 text-primary" width="30" height="30" />
-            <span>Suche Gegenspieler...</span>
+            <span>Suche Gegenspieler </span>
+            <div class="spinner-grow text-primary spinner-grow-sm" role="status"
+                style="width: 0.5rem; height: 0.5rem; animation-duration: 1s; animation-delay: 0s;"></div>
+            <div class="spinner-grow text-primary spinner-grow-sm" role="status"
+                style="width: 0.5rem; height: 0.5rem; animation-duration: 1s; animation-delay: 0.33s;"></div>
+            <div class="spinner-grow text-primary spinner-grow-sm" role="status"
+                style="width: 0.5rem; height: 0.5rem; animation-duration: 1s; animation-delay: 0.66s;"></div>
         </h2>
         <div class="row justify-content-center">
-            <div class="col-md-8 mt-3">
-                <div class="card border-info">
-                    <div class="card-body bg-info bg-opacity-50 text-bg-info text-center pb-1">
+            <div class="col-md-8">
+                <div class="card border-0 rounded">
+                    <div class="card-body bg-info bg-opacity-50 text-bg-info rounded text-center pb-1">
                         <p><span class="text-decoration-underline">Kleiner Tipp:</span> <br>
                             Du möchtest das Quiz doch nicht spielen oder findest über längere Zeit keinen
                             Gegenspieler?<br>
