@@ -46,8 +46,7 @@ const state = ref({
 const QUESTIONS_PER_GAMEMODE = {
     schnell_comp: 5,
     schnell_coop: 5,
-    simul: 20,
-    learn: 0 // Initial auf 0 setzen, da die Anzahl dynamisch ermittelt wird - ALLE existierenden Fragen zum Modul
+    simul: 20
 }
 
 // Fragen zum Modul lesen  &  X Fragen je nach Spielmodus auswählen
@@ -61,24 +60,15 @@ const fetchQuestionsForModule = () => {
 
             // Bei Modi theme nach Lektion filtern
             if (gameMode === 'theme_comp' || gameMode === 'theme_coop') {
-                // Stelle sicher, dass section als Zahl behandelt wird
-                //const sectionNumber = Number(section);
                 return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions"), where("section", "==", props.section)));
-            }
-            else {
+            } else {
                 return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions")));
-            };
-
+            }
         })
         .then((questions) => {
             if (questions.empty) throw new Error("Keine Fragen gefunden!");
 
-            // Wenn Spielmodus learn, theme alle Fragen auswählen
-            if (gameMode === 'learn' || gameMode === 'theme_comp' || gameMode === 'theme_coop') {
-                QUESTIONS_PER_GAMEMODE.learn = questions.docs.length;
-            }
-
-            const numQuestions = QUESTIONS_PER_GAMEMODE[gameMode]; // Standard auf 5 Fragen
+            const numQuestions = QUESTIONS_PER_GAMEMODE[gameMode] || questions.docs.length; // Standard auf alle Fragen setzen, falls undefined
 
             // Zufällige X Fragen auswählen, basierend auf Spielmodus
             let selectedQuestions = questions.docs
@@ -87,6 +77,7 @@ const fetchQuestionsForModule = () => {
                 .slice(0, numQuestions);
 
             state.value.questionData = selectedQuestions[0]; // Erste Frage speichern
+            state.value.totalQuestions = numQuestions; // Speichere die Anzahl der Fragen im State
             return selectedQuestions; // Gibt die Fragen zurück
         });
 };
@@ -96,33 +87,37 @@ const createNewGame = () => {
     const newGameDoc = doc(collection(firestoreDB, "games"));
     state.value.gameDocId = newGameDoc.id;
 
-    runTransaction(firestoreDB, (transaction) => {
-        transaction.set(newGameDoc, {
-            gameMode: props.gameMode,
-            section: props.section,
-            moduleID: props.moduleId,
-            moduleLongname: props.moduleLongname,
-            moduleShortname: props.moduleShortname,
-            player1UID: props.userUID,
-            player1Username: props.userUsername,
-            player2UID: "",
-            player2Username: "",
-            gameState: 1,   //1 Spieler1 spielt, 2 Spieler1 sucht Gegenspieler, 3 Spieler2 spielt, 4 Spiel beendet
-            player1Finished: false,
-            player2Finished: false,
-            player1Score: 0,
-            player2Score: 0
-        });
+    fetchQuestionsForModule().then((selectedQuestions) => {
+        const numQuestions = state.value.totalQuestions; // Hole die Anzahl der Fragen aus dem State
 
-        return fetchQuestionsForModule().then((selectedQuestions) => {
+        return runTransaction(firestoreDB, (transaction) => {
+            transaction.set(newGameDoc, {
+                gameMode: props.gameMode,
+                section: props.section ?? null, // Setze section auf null, wenn undefined
+                moduleID: props.moduleId,
+                moduleLongname: props.moduleLongname,
+                moduleShortname: props.moduleShortname,
+                player1UID: props.userUID,
+                player1Username: props.userUsername,
+                player2UID: "",
+                player2Username: "",
+                gameState: 1,   //1 Spieler1 spielt, 2 Spieler1 sucht Gegenspieler, 3 Spieler2 spielt, 4 Spiel beendet
+                player1Finished: false,
+                player2Finished: false,
+                player1Score: 0,
+                player2Score: 0,
+                totalQuestions: numQuestions
+            });
+
             selectedQuestions.forEach((question) => {
                 const gamesQuestions = doc(collection(newGameDoc, "questions"));
                 transaction.set(gamesQuestions, {
                     ...question
                 });
             });
-        });
-    })
+
+            return Promise.resolve(); // Rückgabe einer Promise
+        })
         .then(() => {
             state.value.message = "Neues Spiel erstellt.";
             emit("success", state.value.gameDocId);
@@ -132,6 +127,7 @@ const createNewGame = () => {
             state.value.message = "Fehler bei der Spiel-Erstellung.";
             emit("failed", error);
         });
+    });
 };
 
 onMounted(() => {
