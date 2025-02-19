@@ -35,7 +35,7 @@ const buildResult = () => {
 };
 
 // Prozentanteil der gemeinsam erzielten Punkte errechnen
-const totalQuestions = 20;
+const totalQuestions = gameData.value.totalQuestions;
 const correctAnswers = computed(() => {
     if (gameData.value) {
         return gameData.value.player1Score + gameData.value.player2Score;
@@ -113,10 +113,10 @@ const updateStatistics = (statsDocRef, uid, username) => {
 
             if (uid === gameData.value.player1UID) {
                 newStatsData.coopCorrectAnswers += gameData.value.player1Score;
-                newStatsData.coopFalseAnswers += (5 - gameData.value.player1Score);
+                newStatsData.coopFalseAnswers += (gameData.value.totalQuestions - gameData.value.player1Score);
             } else if (uid === gameData.value.player2UID) {
                 newStatsData.coopCorrectAnswers += gameData.value.player2Score;
-                newStatsData.coopFalseAnswers += (5 - gameData.value.player2Score);
+                newStatsData.coopFalseAnswers += (gameData.value.totalQuestions - gameData.value.player2Score);
             }
 
             return setDoc(statsDocRef, newStatsData, { merge: true });
@@ -165,11 +165,11 @@ onMounted(async () => {
             <!--             <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" /> -->
             <PersonArmsUpIcon class="me-2" width="100" height="100"
                 v-if="resultMessage.includes('Herzlichen Glückwunsch!')" />
-            <PersonArmsUpIcon class="me-2" width="100" height="100"
-                v-if="resultMessage.includes('Herzlichen Glückwunsch!')" />
+<!--             <PersonArmsUpIcon class="me-2" width="100" height="100"
+                v-if="resultMessage.includes('Herzlichen Glückwunsch!')" /> -->
             <!--             <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" /> -->
             <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" />
-            <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" />
+<!--             <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" /> -->
         </strong>
     </div>
 

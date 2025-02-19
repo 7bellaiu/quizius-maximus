@@ -144,8 +144,12 @@ onMounted(async () => {
             <div class="card-header bg-info bg-opacity-50 text-bg-info">
                 <h6 class="card-title">
                     <div class="row">
-                        <div class="col"><h6>Benutzername</h6></div>
-                        <div class="col"><h6>Punktzahl</h6></div>
+                        <div class="col">
+                            <h6>Benutzername</h6>
+                        </div>
+                        <div class="col">
+                            <h6>Punktzahl</h6>
+                        </div>
                     </div>
                 </h6>
             </div>
@@ -165,11 +169,11 @@ onMounted(async () => {
             <!--             <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" /> -->
             <PersonArmsUpIcon class="me-2" width="100" height="100"
                 v-if="resultMessage.includes('Herzlichen Glückwunsch!')" />
-            <PersonArmsUpIcon class="me-2" width="100" height="100"
-                v-if="resultMessage.includes('Herzlichen Glückwunsch!')" />
+<!--             <PersonArmsUpIcon class="me-2" width="100" height="100"
+                v-if="resultMessage.includes('Herzlichen Glückwunsch!')" /> -->
             <!--             <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" /> -->
             <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" />
-            <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" />
+<!--             <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" /> -->
         </strong>
     </div>
 

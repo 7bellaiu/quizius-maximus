@@ -119,10 +119,10 @@ const updateStatistics = (statsDocRef, uid, username) => {
 
             if (uid === gameData.value.player1UID) {
                 newStatsData.compCorrectAnswers += gameData.value.player1Score;
-                newStatsData.compFalseAnswers += (5 - gameData.value.player1Score);
+                newStatsData.compFalseAnswers += (gameData.value.totalQuestions - gameData.value.player1Score);
             } else if (uid === gameData.value.player2UID) {
                 newStatsData.compCorrectAnswers += gameData.value.player2Score;
-                newStatsData.compFalseAnswers += (5 - gameData.value.player2Score);
+                newStatsData.compFalseAnswers += (gameData.value.totalQuestions - gameData.value.player2Score);
             }
 
             return setDoc(statsDocRef, newStatsData, { merge: true });
