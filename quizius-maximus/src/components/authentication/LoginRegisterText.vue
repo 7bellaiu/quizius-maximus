@@ -52,7 +52,7 @@
                 <div class="card border-0 rounded h-100">
                     <div class="card-body bg-info bg-opacity-25 text-center rounded">
                         <h6>Überwache deinen Wissensstand mithilfe der angezeigten Statistik.<br>
-                            Wenn du fleißig lernst, schaffst du es vielleich sogar in die Rangliste der Top 10
+                            Wenn du fleißig lernst, schaffst du es vielleicht sogar in die Rangliste der Top 10
                             Spieler:innen!</h6>
                     </div>
                 </div>
