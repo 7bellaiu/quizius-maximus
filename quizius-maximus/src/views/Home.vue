@@ -78,9 +78,11 @@ const getStatusText = (game, status) => {
     <main class="d-flex flex-column align-items-center">
         <div class="w-100 mt-4">
             <div class="card border-0 rounded">
-                <div class="card-body bg-secondary bg-opacity-10 d-flex justify-content-between align-items-center rounded">
+                <div
+                    class="card-body bg-secondary bg-opacity-10 d-flex justify-content-between align-items-center rounded">
                     <div class="col">
-                        <router-link class="text-dark" :to="{ name: 'questionnaire', params: { action: 'create', moduleid: 0 } }">
+                        <router-link class="text-dark"
+                            :to="{ name: 'questionnaire', params: { action: 'create', moduleid: 0 } }">
                             Neuen Fragenkatalog anlegen
                         </router-link>
                     </div>
@@ -113,10 +115,23 @@ const getStatusText = (game, status) => {
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <div class="card border-0 rounded">
+                    <div class="card border-0 rounded h-100">
                         <div class="card-body bg-info bg-opacity-10 text-bg-info rounded">
                             <h4>Neue Funktionen:</h4>
-                            <p>Test</p>
+                            <!-- carousel-->
+                            <div id="carouselNewFunctions" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <p class="w-100">Prüfungssimulation</p>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <p class="w-100">Lernmodus</p>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <p class="w-100">Bestenliste im Profil</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -148,7 +163,8 @@ const getStatusText = (game, status) => {
                                         <span v-if="game.gameMode === 'learn'">
                                             <PeopleIcon class="text-success me-2" />Lernmodus:
                                         </span>({{ game.moduleShortname }}) {{ game.moduleLongname }}
-                                        <span v-if="game.gameMode === 'theme_coop' || game.gameMode === 'theme_coop'"> - Lektion {{ game.section }}</span>
+                                        <span v-if="game.gameMode === 'theme_coop' || game.gameMode === 'theme_coop'"> -
+                                            Lektion {{ game.section }}</span>
                                         <br>
                                         <strong>Status:</strong> {{ getStatusText(game, game.gameState) }}
                                     </p>
@@ -166,12 +182,19 @@ const getStatusText = (game, status) => {
                             <h4 class="text-center">Coming Soon</h4>
                             <u>Das erwartet dich in den nächsten Updates:</u>
                             <ul>
-                                <li><strong>Prüfungssimulation:</strong> Ergänzung von Modulklausuren - Auswahl zwischen 45 min und 90 min</li>
-                                <li><strong>Gruppenspiele:</strong> Spiele in größeren Gruppen von 3-10 Studierenden</li>
-                                <li><strong>Avatare:</strong> Erstellung eigener Avatare (besondere Avatare käuflich erwerblich)</li>
-                                <li><strong>Einführung von Berechtigungen:</strong> Wer darf was? - Individuelle Einstellung für jeden Fragenkatalog bereits bei der Erstellung möglich, um festzulegen, wer angelegte Fragenkataloge bearbeiten und löschen darf</li>
-                                <li><strong>Personalisierte Fragenkataloge:</strong> Entscheide selbst, wer deine Fragenkataloge sehen darf - nur du selbst oder auch die Community</li>
-                                <li><strong>Einfügen von Abbildungen:</strong> In Fragenkataloge können auch Abbildungen eingefügt werden</li>
+                                <li><strong>Prüfungssimulation:</strong> Ergänzung von Modulklausuren - Auswahl zwischen
+                                    45 min und 90 min</li>
+                                <li><strong>Gruppenspiele:</strong> Spiele in größeren Gruppen von 3-10 Studierenden
+                                </li>
+                                <li><strong>Avatare:</strong> Erstellung eigener Avatare (besondere Avatare käuflich
+                                    erwerblich)</li>
+                                <li><strong>Einführung von Berechtigungen:</strong> Wer darf was? - Individuelle
+                                    Einstellung für jeden Fragenkatalog bereits bei der Erstellung möglich, um
+                                    festzulegen, wer angelegte Fragenkataloge bearbeiten und löschen darf</li>
+                                <li><strong>Personalisierte Fragenkataloge:</strong> Entscheide selbst, wer deine
+                                    Fragenkataloge sehen darf - nur du selbst oder auch die Community</li>
+                                <li><strong>Einfügen von Abbildungen:</strong> In Fragenkataloge können auch Abbildungen
+                                    eingefügt werden</li>
                             </ul>
                         </div>
                     </div>
