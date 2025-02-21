@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router';
 import PersonArmsUpIcon from '../icons/PersonArmsUpIcon.vue';
 import EmojiTearIcon from '../icons/EmojiTearIcon.vue';
 import PeopleIcon from '../icons/PeopleIcon.vue';
+import EmojiSmileIcon from '../icons/EmojiSmileIcon.vue';
 
 const props = defineProps({
     gameDocId: {
@@ -43,8 +44,9 @@ const correctAnswers = computed(() => {
     return 0;
 });
 const correctPercentage = computed(() => {
-    return (correctAnswers.value / totalQuestions) * 100;
+    return ((correctAnswers.value / totalQuestions) * 100).toFixed(1);
 });
+
 const resultMessage = computed(() => {
     if (correctPercentage.value >= 50) {
         return `Herzlichen Glückwunsch! Ihr habt ${correctPercentage.value}% erreicht!`;
@@ -166,14 +168,9 @@ onMounted(async () => {
     <div v-if="gameData" class="bg-opacity-25 text-center mt-3">
         <strong>
             <h4>{{ resultMessage }}</h4>
-            <!--             <PersonArmsUpIcon class="me-2" width="100" height="100" v-if="correctPercentage.value >= 50" /> -->
-            <PersonArmsUpIcon class="me-2" width="100" height="100"
+            <EmojiSmileIcon class="me-2" width="100" height="100"
                 v-if="resultMessage.includes('Herzlichen Glückwunsch!')" />
-<!--             <PersonArmsUpIcon class="me-2" width="100" height="100"
-                v-if="resultMessage.includes('Herzlichen Glückwunsch!')" /> -->
-            <!--             <EmojiTearIcon class="me-2" width="100" height="100" v-if="correctPercentage.value < 50" /> -->
             <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" />
-<!--             <EmojiTearIcon class="me-2" width="100" height="100" v-if="resultMessage.includes('Oh nein!')" /> -->
         </strong>
     </div>
 

@@ -75,7 +75,7 @@ const determineUserStatus = computed(() => {
     const grade = calculateGrade(percentage);
 
     if (grade === 5.0) {
-        return `Oh nein, leider durchgefallen! Du hast nicht bestanden (Note: ${grade})`;
+        return `Oh nein, leider durchgefallen! (Note: ${grade})`;
     } else {
         return `Herzlichen Glückwunsch! Du hast bestanden (Note: ${grade})`;
     }
