@@ -105,7 +105,7 @@ onMounted(() => {
                         ({{ game.moduleShortname }}) {{ game.moduleLongname }}
                         <span v-if="game.gameMode.includes('theme')">- Lektion {{ game.section }}</span><br>
                         {{ game.player1Username }}
-                        <FireIcon class="text-warning"
+                        <FireIcon class="text-danger"
                             v-if="game.gameMode.includes('comp') || game.gameMode === 'simul'" />
                         <GearIcon class="text-success"
                             v-if="game.gameMode.includes('coop') || game.gameMode === 'learn'" />
