@@ -196,8 +196,7 @@ const getStatusText = (game, status) => {
                                         <span v-if="game.gameMode === 'learn'">
                                             <PeopleIcon class="text-success me-2" />Lernmodus:
                                         </span>({{ game.moduleShortname }}) {{ game.moduleLongname }}
-                                        <span v-if="game.gameMode === 'theme_coop' || game.gameMode === 'theme_coop'"> -
-                                            Lektion {{ game.section }}</span>
+                                        <span v-if="game.gameMode === 'theme_comp' || game.gameMode === 'theme_coop'"> - Lektion {{ game.section }}</span>
                                         <br>
                                         <strong>Status:</strong> {{ getStatusText(game, game.gameState) }}
                                     </p>
