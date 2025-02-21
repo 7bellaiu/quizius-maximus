@@ -165,14 +165,14 @@ const triggerToast = () => {
                     <input class="form-check-input" type="checkbox" v-model="flexCheckTerms" id="flexCheckTerms"
                         required>
                     <label class="form-check-label" for="flexCheckTerms">
-                        Ich stimme den <a href="">Nutzungsbedingungen</a> zu.
+                        Ich stimme den <router-link to="/termsandconditions">Nutzungsbedingungen</router-link> zu.
                     </label>
                 </div>
                 <div v-if="flexCheckTerms" class="form-check mx-1">
                     <input class="form-check-input" type="checkbox" v-model="flexCheckPrivacy" id="flexCheckPrivacy"
                         required>
                     <label class="form-check-label" for="flexCheckPrivacy">
-                        Ich habe die <a href="">Datenschutzerklärung</a> gelesen.
+                        Ich habe die <router-link to="/privacypolicy">Datenschutzerklärung</router-link> gelesen.
                     </label>
                 </div>
                 <div class="d-flex justify-content-between mt-3">
