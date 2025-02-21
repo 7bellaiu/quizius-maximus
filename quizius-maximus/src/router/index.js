@@ -20,6 +20,7 @@ import Learning from '@/components/gamemodes/Learning.vue';
 import SectionSelection from '@/components/gamemodes/SectionSelection.vue';
 import ThemeComp from '@/components/gamemodes/ThemeComp.vue';
 import ThemeCoop from '@/components/gamemodes/ThemeCoop.vue';
+import TermsAndConditions from '@/components/TermsAndConditions.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,11 @@ const router = createRouter({
             path: "/privacypolicy",
             name: "privacypolicy",
             component: PrivacyPolicy
+        },
+        {
+            path: "/termsandconditions",
+            name: "termsandconditions",
+            component: TermsAndConditions
         },
         {
             path: "/imprint",
