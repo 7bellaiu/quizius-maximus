@@ -3,6 +3,7 @@
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
+import LoginRegisterText from "./LoginRegisterText.vue";
 
 const DEFAULT_EMAIL_DOMAIN = '@iu-study.org';
 const LEGACY_EMAIL_DOMAIN = '@iubh.de';
@@ -185,6 +186,8 @@ const triggerToast = () => {
             <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" />
         </div>
     </main>
+
+    <LoginRegisterText />
 </template>
 
 <style scoped>
