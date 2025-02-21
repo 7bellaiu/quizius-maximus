@@ -105,7 +105,7 @@ const getStatusText = (game, status) => {
         <div class="container mt-3">
             <div class="row justify-content-center">
                 <div class="col-md-4 mb-3">
-                    <div class="card border-0 rounded">
+                    <div class="card border-0 rounded h-100">
                         <div class="card-body text-center bg-info bg-opacity-10 text-bg-info rounded">
                             <h4>How to</h4>
                             <router-link to="/support" class="text-dark">
@@ -118,17 +118,50 @@ const getStatusText = (game, status) => {
                     <div class="card border-0 rounded h-100">
                         <div class="card-body bg-info bg-opacity-10 text-bg-info rounded">
                             <h4>Neue Funktionen:</h4>
-                            <!-- carousel-->
                             <div id="carouselNewFunctions" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <p class="w-100">Prüfungssimulation</p>
+                                    <div class="carousel-item active" data-bs-interval="10000">
+                                        <p class="w-100">
+                                            <u>Update vom 28.02.2025:</u><br>
+                                            Fehlerbehebungen und Verbesserungen.
+                                        </p>
                                     </div>
-                                    <div class="carousel-item">
-                                        <p class="w-100">Lernmodus</p>
+                                    <div class="carousel-item" data-bs-interval="10000">
+                                        <p class="w-100">
+                                            <u>Update vom 21.02.2025:</u><br>
+                                            Du möchtest spezifische Lektionen lernen?<br>
+                                            Probiere jetzt unseren neuen Spielmodus "Themenbasiertes Quiz" aus!
+                                        </p>
                                     </div>
-                                    <div class="carousel-item">
-                                        <p class="w-100">Bestenliste im Profil</p>
+                                    <div class="carousel-item" data-bs-interval="10000">
+                                        <p class="w-100">
+                                            <u>Update vom 14.02.2025:</u><br>
+                                            Du möchtest dir erst einmal das Wissen in einem Modul aneignen, um dich
+                                            optimal auf die Klausur vorzubereiten?<br>
+                                            Probiere jetzt unseren neuen Spielmodus "Lernmodus" mit Erklärungen aus!
+                                        </p>
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="10000">
+                                        <p class="w-100">
+                                            <u>Update vom 07.02.2025:</u><br>
+                                            Du möchtest testen, ob du schon bereit bist für die Klausur?<br>
+                                            Probiere jetzt unseren neuen Spielmodus "Prüfungssimulation" aus!
+                                        </p>
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="10000">
+                                        <p class="w-100">
+                                            <u>Update vom 31.01.2025:</u><br>
+                                            Du hast nur einen kurzen Zeitslot zum Lernen?<br>
+                                            Probiere unseren Spielmodus "Schnelles Quiz" aus - jetzt auch im
+                                            kooperativen Modus!
+                                        </p>
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="10000">
+                                        <p class="w-100">
+                                            <u>Update vom 24.01.2025:</u><br>
+                                            Du hast nur einen kurzen Zeitslot zum Lernen?<br>
+                                            Probiere jetzt unseren neuen kompetitiven Spielmodus "Schnelles Quiz" aus!
+                                        </p>
                                     </div>
                                 </div>
                             </div>
