@@ -43,8 +43,8 @@ const triggerToast = () => {
                             'card': true,
                             'border-info': displayContactForm,
                             'bg-info bg-opacity-50': !displayContactForm
-                        }" class="m-0">
-                            <div class="card-body h-100">
+                        }" class="m-0 h-100">
+                            <div class="card-body">
                                 <h6 class="card-title">FAQs</h6>
                                 <p class="card-text">
                                     Klicke hier für Antworten auf die meistgestellten Fragen!</p>
@@ -58,8 +58,8 @@ const triggerToast = () => {
                             'card': true,
                             'border-info': !displayContactForm,
                             'bg-info bg-opacity-50': displayContactForm
-                        }" class="m-0">
-                            <div class="card-body h-100">
+                        }" class="m-0 h-100">
+                            <div class="card-body">
                                 <h6 class="card-title">Kontaktformular</h6>
                                 <p class="card-text">Keine Antwort gefunden? Dann klicke hier, um uns zu kontaktieren.
                                 </p>
