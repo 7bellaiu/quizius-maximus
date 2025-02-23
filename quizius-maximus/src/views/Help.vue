@@ -45,7 +45,7 @@ const triggerToast = () => {
                             'bg-info bg-opacity-50': !displayContactForm
                         }" class="m-0">
                             <div class="card-body h-100">
-                                <h5 class="card-title">FAQs</h5>
+                                <h6 class="card-title">FAQs</h6>
                                 <p class="card-text">
                                     Klicke hier für Antworten auf die meistgestellten Fragen!</p>
                             </div>
@@ -60,7 +60,7 @@ const triggerToast = () => {
                             'bg-info bg-opacity-50': displayContactForm
                         }" class="m-0">
                             <div class="card-body h-100">
-                                <h5 class="card-title">Kontaktformular</h5>
+                                <h6 class="card-title">Kontaktformular</h6>
                                 <p class="card-text">Keine Antwort gefunden? Dann klicke hier, um uns zu kontaktieren.
                                 </p>
                             </div>
