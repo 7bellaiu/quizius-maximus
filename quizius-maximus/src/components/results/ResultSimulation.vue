@@ -53,17 +53,20 @@ const buildResult = () => {
 
 const calculateGrade = (percentage) => {
     // iu-Notenschlüssel
-    if (percentage >= 96) return 1.0;
-    if (percentage >= 91) return 1.3;
-    if (percentage >= 86) return 1.7;
-    if (percentage >= 81) return 2.0;
-    if (percentage >= 76) return 2.3;
-    if (percentage >= 71) return 2.7;
-    if (percentage >= 66) return 3.0;
-    if (percentage >= 61) return 3.3;
-    if (percentage >= 56) return 3.7;
-    if (percentage >= 50) return 4.0;
-    return 5.0;
+    let grade;
+    if (percentage >= 96) grade = 1.0;
+    else if (percentage >= 91) grade = 1.3;
+    else if (percentage >= 86) grade = 1.7;
+    else if (percentage >= 81) grade = 2.0;
+    else if (percentage >= 76) grade = 2.3;
+    else if (percentage >= 71) grade = 2.7;
+    else if (percentage >= 66) grade = 3.0;
+    else if (percentage >= 61) grade = 3.3;
+    else if (percentage >= 56) grade = 3.7;
+    else if (percentage >= 50) grade = 4.0;
+    else grade = 5.0;
+
+    return grade.toFixed(1); // Ergebnis auf eine Nachkommastelle runden
 };
 
 const determineUserStatus = computed(() => {
@@ -74,7 +77,7 @@ const determineUserStatus = computed(() => {
     const percentage = (userPlayer.score / 20) * 100;
     const grade = calculateGrade(percentage);
 
-    if (grade === 5.0) {
+    if (grade === '5.0') {
         return `Oh nein, leider durchgefallen! (Note: ${grade})`;
     } else {
         return `Herzlichen Glückwunsch! Du hast bestanden (Note: ${grade})`;

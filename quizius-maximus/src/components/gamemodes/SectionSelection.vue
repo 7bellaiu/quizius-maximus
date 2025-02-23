@@ -34,21 +34,19 @@ const loadSections = async () => {
 
         const sectionSet = new Set();
 
-        questionnairesSnapshot.forEach(doc => {
+        for (const doc of questionnairesSnapshot.docs) {
             const questionsCollectionRef = collection(doc.ref, 'questions');
-            getDocs(questionsCollectionRef)
-                .then(questionsSnapshot => {
-                    questionsSnapshot.forEach(questionDoc => {
-                        const questionData = questionDoc.data();
-                        if (questionData.section) {
-                            sectionSet.add(questionData.section); // Konvertiere section in eine Zahl
-                        }
-                    });
+            const questionsSnapshot = await getDocs(questionsCollectionRef);
+            questionsSnapshot.forEach(questionDoc => {
+                const questionData = questionDoc.data();
+                if (questionData.section) {
+                    sectionSet.add(questionData.section); // Konvertiere section in eine Zahl
+                }
+            });
+        }
 
-                    // Set in Array umwandeln, sortieren und in sections speichern
-                    sections.value = Array.from(sectionSet).sort((a, b) => a - b);
-                });
-        });
+        // Set in Array umwandeln, sortieren und in sections speichern
+        sections.value = Array.from(sectionSet).sort((a, b) => a - b);
     } catch (error) {
         console.error("Fehler beim Laden der Lektionen: ", error);
     }
@@ -69,6 +67,23 @@ onMounted(() => {
 
     <div class="container mt-3 mb-3">
         <div class="row justify-content-center">
+            <!-- Komplettes Modul -->
+            <div class="col-md-4 mb-3">
+                <router-link :to="{
+                    name: 'game', params: {
+                        moduleId: props.moduleId, moduleShortname: props.moduleShortname,
+                        moduleLongname: props.moduleLongname, gameMode: props.gameMode, section: 0
+                    }
+                }" class="text-dark text-decoration-none">
+                    <div class="card border-info rounded h-100">
+                        <div class="card-body bg-info bg-opacity-50 text-center rounded">
+                            <h5>Komplettes Modul</h5>
+                        </div>
+                    </div>
+                </router-link>
+            </div>
+
+            <!-- Lektionen -->
             <div v-for="section in sections" :key="section" class="col-md-4 mb-3">
                 <router-link :to="{
                     name: 'game', params: {

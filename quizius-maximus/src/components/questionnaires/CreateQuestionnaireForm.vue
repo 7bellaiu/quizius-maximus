@@ -12,20 +12,18 @@ import ExclamationIcon from '../icons/ExclamationIcon.vue';
 const form = reactive({
     moduleShortname: '',
     moduleLongname: '',
-    questions: [
-        {
-            section: '',
-            text: '',
-            answers: [
-                { text: '' },
-                { text: '' },
-                { text: '' },
-                { text: '' }
-            ],
-            correctAnswer: null,
-            explanation: ''
-        }
-    ]
+    questions: Array.from({ length: 20 }, () => ({
+        section: '',
+        text: '',
+        answers: [
+            { text: '' },
+            { text: '' },
+            { text: '' },
+            { text: '' }
+        ],
+        correctAnswer: null,
+        explanation: ''
+    }))
 });
 
 const addQuestion = () => {
@@ -100,6 +98,16 @@ const resizeTextarea = (event) => {
     event.target.style.height = "auto"; // Höhe zurücksetzen
     event.target.style.height = event.target.scrollHeight + "px";
 };
+
+// Validierungsfunktion für Lektion
+const validateSection = (event) => {
+    const value = event.target.value;
+    if (value < 1 || value > 99) {
+        event.target.setCustomValidity("Bitte eine Zahl zwischen 1 und 99 eingeben.");
+    } else {
+        event.target.setCustomValidity("");
+    }
+};
 </script>
 
 <template>
@@ -142,8 +150,8 @@ const resizeTextarea = (event) => {
                     <span class="input-group-text bg-info bg-opacity-25">Lektion</span>
                     <div class="form-floating col-2">
                         <input type="text" class="form-control" :id="'section' + index" v-model="question.section"
-                            min="0" max="99" required maxlength="2" pattern="\d{1,2}" placeholder="max. 2 Ziffern">
-                        <label :for="'section' + index" class="form-label">(max. 2 Ziffern)</label>
+                            required maxlength="2" pattern="^[1-9][0-9]?$" placeholder="1-99" @input="validateSection">
+                        <label :for="'section' + index" class="form-label">(1-99)</label>
                     </div>
                 </div>
             </div>

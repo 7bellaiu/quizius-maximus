@@ -60,7 +60,11 @@ const fetchQuestionsForModule = () => {
 
             // Bei Modi theme nach Lektion filtern
             if (gameMode === 'theme_comp' || gameMode === 'theme_coop') {
-                return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions"), where("section", "==", props.section)));
+                if (section === '0') { // Wenn Lektion = 0 - Komplettes Modul abfragen
+                    return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions")));
+                } else {
+                    return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions"), where("section", "==", section)));
+                }
             } else {
                 return getDocs(query(collection(firestoreDB, "questionnaires", moduleID, "questions")));
             }
@@ -118,15 +122,15 @@ const createNewGame = () => {
 
             return Promise.resolve(); // Rückgabe einer Promise
         })
-        .then(() => {
-            state.value.message = "Neues Spiel erstellt.";
-            emit("success", state.value.gameDocId);
-        })
-        .catch((error) => {
-            console.error("Fehler bei der Spiel-Erstellung:", error);
-            state.value.message = "Fehler bei der Spiel-Erstellung.";
-            emit("failed", error);
-        });
+            .then(() => {
+                state.value.message = "Neues Spiel erstellt.";
+                emit("success", state.value.gameDocId);
+            })
+            .catch((error) => {
+                console.error("Fehler bei der Spiel-Erstellung:", error);
+                state.value.message = "Fehler bei der Spiel-Erstellung.";
+                emit("failed", error);
+            });
     });
 };
 

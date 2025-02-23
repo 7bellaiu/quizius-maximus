@@ -175,7 +175,7 @@ const getStatusText = (game, status) => {
                     <router-link to="/activequizzes" class="text-dark text-decoration-none">
                         <div class="card border-0 rounded">
                             <div class="card-body bg-info bg-opacity-50 text-bg-info rounded">
-                                <h4>Meine Quizze:</h4>
+                                <h4 class="text-center">Meine Quizze</h4>
                                 <div v-for="game in games" :key="game.id" class="mb-2">
                                     <p>
                                         <span v-if="game.gameMode === 'schnell_comp'">
@@ -196,7 +196,8 @@ const getStatusText = (game, status) => {
                                         <span v-if="game.gameMode === 'learn'">
                                             <PeopleIcon class="text-success me-2" />Lernmodus:
                                         </span>({{ game.moduleShortname }}) {{ game.moduleLongname }}
-                                        <span v-if="game.gameMode === 'theme_comp' || game.gameMode === 'theme_coop'"> - Lektion {{ game.section }}</span>
+                                        <span v-if="game.gameMode === 'theme_comp' || game.gameMode === 'theme_coop'"> -
+                                            Lektion {{ game.section }}</span>
                                         <br>
                                         <strong>Status:</strong> {{ getStatusText(game, game.gameState) }}
                                     </p>
@@ -227,6 +228,10 @@ const getStatusText = (game, status) => {
                                     Fragenkataloge sehen darf - nur du selbst oder auch die Community</li>
                                 <li><strong>Einfügen von Abbildungen:</strong> In Fragenkataloge können auch Abbildungen
                                     eingefügt werden</li>
+                                <li><strong>Offene Fragen:</strong> Auch offene Fragen sind Teil einer jeden Klausur -
+                                    daher dürfen diese natürlich auch bei Quizius Maximus nicht fehlen</li>
+                                <li><strong>Punktevergabe:</strong> Kategorisierung und entsprechende Punktevergabe nach
+                                    6, 8 und 10 Punkten bei den offenen Fragen</li>
                             </ul>
                         </div>
                     </div>

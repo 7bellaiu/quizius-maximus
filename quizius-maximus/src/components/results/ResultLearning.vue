@@ -117,6 +117,7 @@ const updateStatistics = (statsDocRef, uid, username) => {
                 newStatsData.compFalseAnswers = statsData.compFalseAnswers;
             }
 
+            // Verwende den Wert direkt aus gameData ohne ihn zu verdoppeln
             const totalQuestions = Number(gameData.value.totalQuestions);
             if (uid === gameData.value.player1UID) {
                 newStatsData.coopCorrectAnswers += gameData.value.player1Score;
@@ -144,27 +145,29 @@ onMounted(async () => {
         Auswertung
     </h2>
 
-    <div v-if="gameData" class="d-flex justify-content-center">
-        <div class="card border-info m-2"
-            v-for="(player, index) in [gameData.player1Username, gameData.player2Username]" :key="index"
-            style="width: 18rem;">
-            <div class="card-header bg-info bg-opacity-50 text-bg-info">
-                <h6 class="card-title">
-                    <div class="row">
-                        <div class="col">
-                            <h6>Benutzername</h6>
-                        </div>
-                        <div class="col">
-                            <h6>Punktzahl</h6>
+    <div v-if="gameData" class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4 mb-3" v-for="(player, index) in [gameData.player1Username, gameData.player2Username]" :key="index">
+                <div class="card border-info">
+                    <div class="card-header bg-info bg-opacity-50 text-bg-info">
+                        <h6 class="card-title">
+                            <div class="row">
+                                <div class="col">
+                                    <h6>Benutzername</h6>
+                                </div>
+                                <div class="col text-end">
+                                    <h6>Punktzahl</h6>
+                                </div>
+                            </div>
+                        </h6>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">{{ player }}</div>
+                            <div class="col text-end">{{ index === 0 ? gameData.player1Score : gameData.player2Score }}</div>
                         </div>
                     </div>
-                </h6>
-            </div>
-
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">{{ player }}</div>
-                    <div class="col">{{ index === 0 ? gameData.player1Score : gameData.player2Score }}</div>
                 </div>
             </div>
         </div>

@@ -102,10 +102,10 @@ const fetchStatistics = async () => {
         leaderboardData.push({ username: data.username || "Unbekannter Spieler", totalCorrectAnswers });
     });
 
-    // Sortiere die Rangliste nach der Anzahl der richtigen Antworten und wähle die Top 10 aus
+    // Sortiere die Rangliste nach der Anzahl der richtigen Antworten und wähle die Top 5 aus
     leaderboard.value = leaderboardData
         .sort((a, b) => b.totalCorrectAnswers - a.totalCorrectAnswers)
-        .slice(0, 10);
+        .slice(0, 5);
 };
 
 onMounted(() => {
@@ -161,7 +161,7 @@ onMounted(() => {
                     <div class="card border-info m-2 h-100">
                         <div class="card-header bg-info bg-opacity-50 text-bg-info">
                             <h5 class="card-title">
-                                <strong>Rangliste - Top 10</strong>
+                                <strong>Rangliste - Top 5</strong>
                             </h5>
                         </div>
                         <div class="card-body">
