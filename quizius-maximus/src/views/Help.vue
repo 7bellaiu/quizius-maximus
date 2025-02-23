@@ -1,5 +1,5 @@
 <script setup>
-import ContactForm from "../components/ContactForm.vue";
+import ContactForm from "../components/help/ContactForm.vue";
 import FAQ from "@/components/help/FAQ.vue";
 import router from '@/router'
 import { ref } from "vue";
