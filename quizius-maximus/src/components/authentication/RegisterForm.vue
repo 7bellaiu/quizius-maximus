@@ -4,6 +4,8 @@ import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
 import LoginRegisterText from "./LoginRegisterText.vue";
+import TermsAndConditionsModal from "../TermsAndConditionsModal.vue";
+import PrivacyPolicyModal from "../PrivacyPolicyModal.vue";
 
 const DEFAULT_EMAIL_DOMAIN = '@iu-study.org';
 const LEGACY_EMAIL_DOMAIN = '@iubh.de';
@@ -77,7 +79,6 @@ const register = () => {
         .catch((error) => {
             // Fehler bei der Registrierung
             switch (error.code) {
-                //TODO: Passwortrichtlinie erfordert entsprechende Nachricht, wenn nicht eingehalten, ggfs. via Formularvalidierung & Bootstrap?
                 case "auth/password-does-not-meet-requirements":
                     toastMessage.value = 'Die Passwort-Vorgaben wurden nicht eingehalten: [Password must contain at least 12 characters, Password must contain a numeric character, Password must contain a non-alphanumeric character]';
                     break;
@@ -166,14 +167,17 @@ const triggerToast = () => {
                     <input class="form-check-input" type="checkbox" v-model="flexCheckTerms" id="flexCheckTerms"
                         required>
                     <label class="form-check-label" for="flexCheckTerms">
-                        Ich stimme den <router-link to="/termsandconditions">Nutzungsbedingungen</router-link> zu.
+                        Ich stimme den <button type="button" class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                            data-bs-target="#termsConditionsModal">Nutzungsbedingungen</button>
+                        zu.
                     </label>
                 </div>
                 <div v-if="flexCheckTerms" class="form-check mx-1">
                     <input class="form-check-input" type="checkbox" v-model="flexCheckPrivacy" id="flexCheckPrivacy"
                         required>
                     <label class="form-check-label" for="flexCheckPrivacy">
-                        Ich habe die <router-link to="/privacypolicy">Datenschutzerklärung</router-link> gelesen.
+                        Ich habe die <button type="button" class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                            data-bs-target="#privacyPolicyModal">Datenschutzerklärung</button> gelesen.
                     </label>
                 </div>
                 <div class="d-flex justify-content-between mt-3">
@@ -181,6 +185,10 @@ const triggerToast = () => {
                     <button class="btn btn-primary w-50" :disabled="!isFormValid">Registrieren</button>
                 </div>
             </form>
+
+            <!-- Nutzungsbedingungen Pop-up -->
+            <TermsAndConditionsModal />
+            <PrivacyPolicyModal />
 
             <!-- Erfolgs-/Fehlermeldung -->
             <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" />
