@@ -21,14 +21,14 @@ watch(() => props.optionText, () => {
 </script>
 
 <template>
-    <div class="col">
-        <div class="col">
-            <button type="button" class="btn p-0 my-1 w-100" :class="{
+    <div class="col my-1">
+        <div class="col w-100 h-100">
+            <button type="button" class="btn p-0 m-0 w-100 h-100" :class="{
                 'btn-outline-primary': !isSelected,
                 'btn-outline-success': isCorrect && isSelected,
                 'btn-outline-danger': !isCorrect && isSelected
             }" @click="handleClick">
-                <div class="card" :class="{
+                <div class="card w-100 h-100" :class="{
                     'border-primary': !isSelected,
                     'border-success text-success': isCorrect && isSelected,
                     'bg-danger text-white': !isCorrect && isSelected
