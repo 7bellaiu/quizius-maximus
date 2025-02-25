@@ -193,8 +193,8 @@ const validateSection = (event) => {
                     <span class="input-group-text bg-info bg-opacity-25">Lektion</span>
                     <div class="form-floating col-2">
                         <input type="text" class="form-control" :id="'section' + index" v-model="question.section"
-                            required maxlength="2" pattern="^[1-9][0-9]?$" placeholder="1-99" @input="validateSection">
-                        <label :for="'section' + index" class="form-label">(1-99)</label>
+                            required maxlength="2" pattern="^[1-9][0-9]?$" placeholder="(max. 2 Ziffern)" @input="validateSection">
+                        <label :for="'section' + index" class="form-label">(max. 2 Ziffern)</label>
                     </div>
                 </div>
             </div>

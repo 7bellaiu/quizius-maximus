@@ -9,6 +9,7 @@ import ChangePasswordForm from "@/components/authentication/ChangePasswordForm.v
 import PeopleIcon from "@/components/icons/PeopleIcon.vue";
 import PersonIcon from "@/components/icons/PersonIcon.vue";
 import PersonCircleIcon from "@/components/icons/PersonCircleIcon.vue";
+import Statistiken from "@/components/Statistiken.vue";
 
 const toastRef = ref(null);
 const toastMessage = ref("");
@@ -119,7 +120,7 @@ onMounted(() => {
 
 <template>
     <main>
-        <section class="row justify-content-center">
+        <section class="row justify-content-center m-1">
             <article class="p-3 mt-3 mb-3 form-wrapper">
                 <h2 class="mb-3 text-center">Mein Profil</h2>
                 <DisplayProfileForm v-if="displayData" />
@@ -136,57 +137,10 @@ onMounted(() => {
                 </div>
                 <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" />
             </article>
-
-            <h3 class="mt-2 text-center">Statistiken</h3>
-            <!-- Meine Quizze -->
-            <div class="row justify-content-center mt-3">
-                <div class="col-md-4 mb-5">
-                    <div class="card border-info m-2 h-100">
-                        <div class="card-header bg-info bg-opacity-50 text-bg-info">
-                            <h5 class="card-title">
-                                <strong>Meine Quizze</strong>
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <PeopleIcon class="text-success me-2" /><strong>Kooperativ:</strong>
-                            <p>Anzahl richtige Fragen: {{ coopCorrectAnswers }}</p>
-                            <p>Anzahl falsche Fragen: {{ coopFalseAnswers }}</p>
-                            <PersonIcon class="text-danger me-2" /><strong>Kompetitiv:</strong>
-                            <p>Anzahl richtige Fragen: {{ compCorrectAnswers }}</p>
-                            <p>Anzahl falsche Fragen: {{ compFalseAnswers }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <div class="card border-info m-2 h-100">
-                        <div class="card-header bg-info bg-opacity-50 text-bg-info">
-                            <h5 class="card-title">
-                                <strong>Rangliste - Top 5</strong>
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Benutzername</th>
-                                        <th scope="col">Punktzahl</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(user, index) in leaderboard" :key="user.username">
-                                        <th scope="row">{{ index + 1 }}</th>
-                                        <td>
-                                            <PersonCircleIcon class="text-secondary me-2" />{{ user.username }}
-                                        </td>
-                                        <td>{{ user.totalCorrectAnswers }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Statistik -->
+             <div class="mb-3">
+            <Statistiken />
+        </div>
         </section>
     </main>
 </template>

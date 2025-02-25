@@ -6,6 +6,7 @@ import { collection, query, where, getDocs, or } from 'firebase/firestore';
 import router from '@/router';
 import PersonIcon from '@/components/icons/PersonIcon.vue';
 import PeopleIcon from '@/components/icons/PeopleIcon.vue';
+import Statistiken from '@/components/Statistiken.vue';
 
 const userLoggedIn = ref(false);
 const userName = ref("");
@@ -117,7 +118,7 @@ const getStatusText = (game, status) => {
                 <div class="col-md-4 mb-3">
                     <div class="card border-0 rounded h-100">
                         <div class="card-body bg-info bg-opacity-10 text-bg-info rounded">
-                            <h4 class="text-center mb-2">Neue Funktionen</h4>
+                            <h4 class="text-center mb-2">News</h4>
                             <div id="carouselNewFunctions" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner text-center">
                                     <div class="carousel-item active" data-bs-interval="10000">
@@ -207,6 +208,8 @@ const getStatusText = (game, status) => {
                     </router-link>
                 </div>
             </div>
+
+                    <Statistiken />
 
             <div class="row justify-content-center">
                 <div class="col-md-8 mb-3">
