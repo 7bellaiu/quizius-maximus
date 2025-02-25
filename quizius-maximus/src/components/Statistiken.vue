@@ -91,12 +91,12 @@ onMounted(() => {
                                 <div class="progress-bar bg-success" role="progressbar"
                                     :style="{ width: coopCorrectAnswers / (coopCorrectAnswers + coopFalseAnswers) * 100 + '%' }"
                                     aria-valuenow="coopCorrectAnswers" aria-valuemin="0" aria-valuemax="100">{{
-                                        (coopCorrectAnswers / (coopCorrectAnswers + coopFalseAnswers) * 100).toFixed(2) }}%
+                                        (coopCorrectAnswers / (coopCorrectAnswers + coopFalseAnswers) * 100).toFixed(1) }}%
                                 </div>
                                 <div class="progress-bar bg-danger" role="progressbar"
                                     :style="{ width: coopFalseAnswers / (coopCorrectAnswers + coopFalseAnswers) * 100 + '%' }"
                                     aria-valuenow="coopFalseAnswers" aria-valuemin="0" aria-valuemax="100">{{
-                                        (coopFalseAnswers / (coopCorrectAnswers + coopFalseAnswers) * 100).toFixed(2) }}%
+                                        (coopFalseAnswers / (coopCorrectAnswers + coopFalseAnswers) * 100).toFixed(1) }}%
                                 </div>
                             </div>
                             <br>
@@ -111,12 +111,12 @@ onMounted(() => {
                                 <div class="progress-bar bg-success" role="progressbar"
                                     :style="{ width: compCorrectAnswers / (compCorrectAnswers + compFalseAnswers) * 100 + '%' }"
                                     aria-valuenow="compCorrectAnswers" aria-valuemin="0" aria-valuemax="100">{{
-                                        (compCorrectAnswers / (compCorrectAnswers + compFalseAnswers) * 100).toFixed(2) }}%
+                                        (compCorrectAnswers / (compCorrectAnswers + compFalseAnswers) * 100).toFixed(1) }}%
                                 </div>
                                 <div class="progress-bar bg-danger" role="progressbar"
                                     :style="{ width: compFalseAnswers / (compCorrectAnswers + compFalseAnswers) * 100 + '%' }"
                                     aria-valuenow="compFalseAnswers" aria-valuemin="0" aria-valuemax="100">{{
-                                        (compFalseAnswers / (compCorrectAnswers + compFalseAnswers) * 100).toFixed(2) }}%
+                                        (compFalseAnswers / (compCorrectAnswers + compFalseAnswers) * 100).toFixed(1) }}%
                                 </div>
                             </div>
                         </div>
