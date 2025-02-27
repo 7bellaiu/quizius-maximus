@@ -35,6 +35,10 @@ const handleSelected = (isCorrect) => {
     isExplanationGreen.value = isCorrect;
     displayExplanation.value = true;
 
+    if(props.questions?.length == 1){
+        hasNextQuestion.value = false;
+    }
+
     if (!hasNextQuestion.value) {
         isLastQuestionAnswered.value = true;
     } else {
