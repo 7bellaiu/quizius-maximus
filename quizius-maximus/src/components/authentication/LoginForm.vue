@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
+import LoginRegisterText from "./LoginRegisterText.vue";
 
 /** REFERENCES */
 const router = useRouter();
@@ -48,7 +49,7 @@ const triggerToast = () => {
 </script>
 
 <template>
-    <main class="d-flex justify-content-center">
+    <main class="d-flex flex-column align-items-center">
         <div v-if="!userLoggedIn" class="p-3 mt-3 mb-3 form-wrapper">
             <h2 class="mb-3 text-center">Anmelden</h2>
 
@@ -83,6 +84,9 @@ const triggerToast = () => {
             </form>
             <Toast ref="toastRef" :message="toastMessage" :variant="toastVariant" />
         </div>
+
+        <!-- Cards Section -->
+        <LoginRegisterText />
     </main>
 </template>
 

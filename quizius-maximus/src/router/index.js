@@ -8,8 +8,19 @@ import Profile from '@/views/Profile.vue';
 import Modules from '@/views/Modules.vue';
 import Help from '@/views/Help.vue';
 import Questionnaires from '@/views/Questionnaires.vue';
-import EditQuestionnaire from '@/views/EditQuestionnaire.vue';
-import CreateQuestionnaire from '@/views/CreateQuestionnaire.vue';
+import ActiveQuizzes from '@/views/ActiveQuizzes.vue';
+import CompetitiveGamemodes from '@/views/CompetitiveGamemodes.vue';
+import Game from '@/views/Game.vue';
+import Questionnaire from '@/views/Questionnaire.vue';
+import Result from '@/views/Result.vue';
+import SchnellComp from '@/components/gamemodes/SchnellComp.vue';
+import SchnellCoop from '@/components/gamemodes/SchnellCoop.vue';
+import Simulation from '@/components/gamemodes/Simulation.vue';
+import Learning from '@/components/gamemodes/Learning.vue';
+import SectionSelection from '@/components/gamemodes/SectionSelection.vue';
+import ThemeComp from '@/components/gamemodes/ThemeComp.vue';
+import ThemeCoop from '@/components/gamemodes/ThemeCoop.vue';
+import TermsAndConditions from '@/components/TermsAndConditions.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +46,11 @@ const router = createRouter({
             component: PrivacyPolicy
         },
         {
+            path: "/termsandconditions",
+            name: "termsandconditions",
+            component: TermsAndConditions
+        },
+        {
             path: "/imprint",
             name: "imprint",
             component: Imprint
@@ -55,20 +71,80 @@ const router = createRouter({
             component: Questionnaires
         },
         {
-            path: "/editquestionnaire/:moduleid",
-            name: "editquestionnaire",
-            component: EditQuestionnaire,
+            path: "/questionnaire/:action/:moduleid",
+            name: "questionnaire",
+            component: Questionnaire,
             props: true
         },
         {
-            path: '/createquestionnaire',
-            name: 'createquestionnaire',
-            component: CreateQuestionnaire
+            path: '/activequizzes',
+            name: 'activequizzes',
+            component: ActiveQuizzes
+        },
+        {
+            path: "/schnellcomp/:gameDocId/:userUID",
+            name: "schnellcomp",
+            component: SchnellComp,
+            props: true
+        },
+        {
+            path: "/schnellcoop/:gameDocId/:userUID",
+            name: "schnellcoop",
+            component: SchnellCoop,
+            props: true
+        },
+        {
+            path: "/simulation/:gameDocId/:userUID",
+            name: "simulation",
+            component: Simulation,
+            props: true
+        },
+        {
+            path: "/learning/:gameDocId/:userUID",
+            name: "learning",
+            component: Learning,
+            props: true
+        },
+        {
+            path: "/themecomp/:gameDocId/:userUID/:section",
+            name: "themecomp",
+            component: ThemeComp,
+            props: true
+        },
+        {
+            path: "/themecoop/:gameDocId/:userUID/:section",
+            name: "themecoop",
+            component: ThemeCoop,
+            props: true
+        },
+        {
+            path: '/result/:gameMode/:gameDocId/:gameState',
+            name: 'result',
+            component: Result,
+            props: true
         },
         {
             path: "/support",
             name: "support",
             component: Help
+        },
+        {
+            path: '/compgamemodes/:moduleId/:moduleShortname/:moduleLongname',
+            name: 'compgamemodes',
+            component: CompetitiveGamemodes,
+            props: true,  // URL-Params --props---> view
+        },
+        {
+            path: '/game/:moduleId/:moduleShortname/:moduleLongname/:gameMode/:section?',
+            name: 'game',
+            component: Game,
+            props: true
+        },
+        {
+            path: '/sectionselection/:moduleId/:moduleShortname/:moduleLongname/:gameMode',
+            name: 'sectionselection',
+            component: SectionSelection,
+            props: true
         },
     ]
 });

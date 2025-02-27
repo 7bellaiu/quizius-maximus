@@ -1,4 +1,8 @@
 <script setup>
+import FAQLink from './global/FAQLink.vue';
+import PeopleIcon from './icons/PeopleIcon.vue';
+import PersonIcon from './icons/PersonIcon.vue';
+
 const props = defineProps({
     moduleid: {
         type: String,
@@ -16,31 +20,85 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="col">
-        <div class="card shadow-sm border-primary">
-            <div class="card-header text-bg-primary border-primary">
-                {{ props.shortname }}: {{ props.moduleid }}
+    <article class="card shadow-sm border-info">
+        <div class="card-header text-bg-info bg-opacity-50 border-info">
+            <h6>{{ props.shortname }}: {{ props.longname }}</h6>
+        </div>
+        <div class="card-body">
+            <div class="row mb-1 align-items-center">
+                <!-- Linker Bereich: 75% -->
+                <div class="col-9">
+                    <FAQLink text="Schnelles Quiz" />
+                </div>
+                <!-- Rechter Bereich: 25% -->
+                <div class="col-3 d-flex justify-content-end">
+                    <router-link class="btn btn-sm btn-outline-danger mx-1" title="Schnelles Quiz - kompetitiv"
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'schnell_comp' } }">
+                        <PersonIcon />
+                    </router-link>
+                    <router-link class="btn btn-sm btn-outline-success mx-1" title="Schnelles Quiz - kooperativ"
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'schnell_coop' } }">
+                        <PeopleIcon />
+                    </router-link>
+                </div>
             </div>
-            <div class="card-body bg-primary bg-opacity-10">
-                <h6 class="card-subtitle">{{ props.longname }}</h6>
-                <p class="card-text">Hier könnte zusätzlich noch ein Beschreibungstext rein.</p>
-                <div class="d-flex justify-content-center align-items-center">
-                    <button type="button" class="btn btn-sm btn-outline-danger w-25 mx-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-person-fill" viewBox="0 0 16 16">
-                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path>
-                        </svg>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-success w-25 mx-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-people-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5">
-                            </path>
-                        </svg>
+            <div class="row mb-1 align-items-center">
+                <div class="col-9">
+                    <FAQLink text="Themenbasiertes Quiz" />
+                </div>
+                <div class="col-3 d-flex justify-content-end">
+                    <!-- Example single danger button -->
+<!--                     <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-danger mx-1 dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            title="Themenbasiertes Quiz - kompetitiv">
+                            <PersonIcon />
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                        </ul>
+                    </div> -->
+                    <router-link class="btn btn-sm btn-outline-danger mx-1" title="Themenbasiertes Quiz - kompetitiv"
+                        :to="{ name: 'sectionselection', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_comp' } }">
+                        <PersonIcon />
+                    </router-link>
+                    <router-link type="button" class="btn btn-sm btn-outline-success mx-1"
+                        title="Themenbasiertes Quiz - kooperativ"
+                        :to="{ name: 'sectionselection', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'theme_coop' } }">
+                        <PeopleIcon />
+                    </router-link>
+                </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+                <div class="col-9">
+                    <FAQLink text="Prüfungssimulation" />
+                </div>
+                <div class="col-3 d-flex justify-content-end">
+                    <router-link type="button" class="btn btn-sm btn-outline-danger mx-1"
+                        title="Prüfungssimulation - kompetitiv"
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'simul' } }">
+                        <PersonIcon />
+                    </router-link>
+                    <button class="btn btn-sm btn-secondary mx-1" disabled>
+                        <PeopleIcon />
                     </button>
                 </div>
             </div>
+            <div class="row mb-1 align-items-center">
+                <div class="col-9">
+                    <FAQLink text="Lernmodus" />
+                </div>
+                <div class="col-3 d-flex justify-content-end">
+                    <button type="button" class="btn btn-sm btn-secondary mx-1" disabled>
+                        <PersonIcon />
+                    </button>
+                    <router-link class="btn btn-sm btn-outline-success mx-1" title="Lernmodus - kooperativ"
+                        :to="{ name: 'game', params: { moduleId: props.moduleid, moduleShortname: props.shortname, moduleLongname: props.longname, gameMode: 'learn' } }">
+                        <PeopleIcon />
+                    </router-link>
+                </div>
+            </div>
         </div>
-    </div>
+    </article>
 </template>

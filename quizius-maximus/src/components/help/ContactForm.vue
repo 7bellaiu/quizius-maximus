@@ -1,10 +1,11 @@
+<!-- TODO: in help-Ornder verschieben -->
 <script setup>
 import { ref, computed } from 'vue';
 import { firestoreDB } from '@/main';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const email = ref("");
-const REQUEST_TYPES = ["Login", "Verbesserungsvorschlag", "Sonstiges Anliegen"];
+const REQUEST_TYPES = ["Login", "Verbesserungsvorschlag", "Account löschen" ,"Sonstiges Anliegen"];
 const requestType = ref(REQUEST_TYPES[0]);
 const message = ref("");
 const toastRef = ref(null);
@@ -60,7 +61,7 @@ const triggerToast = () => {
                         d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
                 </svg>
             </div>
-            <input type="email" class="form-control" id="email" placeholder="Deine E-Mail für die Kommunikation"
+            <input type="email" class="form-control" id="email" placeholder="Deine E-Mail-Adresse für die Kommunikation"
                 aria-label="E-Mail" data-ddg-inputtype="credentials.email" v-model="email" required />
         </div>
         <div class="input-group mb-2">
@@ -78,6 +79,7 @@ const triggerToast = () => {
                     <option :value="REQUEST_TYPES[0]">{{ REQUEST_TYPES[0] }}</option>
                     <option :value="REQUEST_TYPES[1]">{{ REQUEST_TYPES[1] }}</option>
                     <option :value="REQUEST_TYPES[2]">{{ REQUEST_TYPES[2] }}</option>
+                    <option :value="REQUEST_TYPES[3]">{{ REQUEST_TYPES[3] }}</option>
                 </select>
                 <label for="requestTypeSelect">Was beschreibt dein Anliegen am ehesten?</label>
             </div>
