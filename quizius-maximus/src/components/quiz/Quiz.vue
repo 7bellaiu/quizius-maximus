@@ -58,7 +58,7 @@ const handleFinished = () => {
 
         <!-- Antwortoptionen -->
         <AnswerOptions v-if="props.questions[currentQuestionIndex]" :question="props.questions[currentQuestionIndex]"
-            @selected="handleSelected" />
+            :progressindicator="currentQuestionIndex" @selected="handleSelected" />
 
         <!-- Erklaerung -->
         <Explanation v-if="isExplanationDisplayed && displayExplanation"
