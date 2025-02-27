@@ -15,24 +15,24 @@ const FAQ_CONTENT = ref([
         answer2: "Klicke einfach auf \"Mein Profil\" und anschließend auf \"Passwort ändern\"."
     },
     {
-        question: "Wo finde ich Statistiken?",
+        question: "Wie kann ich meinen Lernerfolg überprüfen?",
         answer1: "In deinem Profil findest du sowohl eine Statistik deiner Quizze, die unterteilt in kooperativ und kompetitiv jeweils anzeigt, wie viele Fragen richtig und falsch beantwortet wurden, als auch eine Rangliste der 5 besten Spieler:innen."
     },
     {
         question: "Wie lösche ich mein Benutzerkonto?",
-        answer1: "Falls du dein Benutzerkonto löschen möchtest melde dich gerne bei uns über das Kontaktformular mit einer kurzen Begründung, warum wird dein Konto löschen sollen.",
+        answer1: "Falls du dein Benutzerkonto löschen möchtest melde dich gerne bei uns über das Kontaktformular mit einer kurzen Begründung, warum wir dein Konto löschen sollen.",
         answer3: "Den Rest übernehmen wir für dich :)"
     },
     {
         question: "Was sind Fragenkataloge?",
         answer1: "Fragenkataloge sind Sammlungen von Fragen zu den jeweiligen Modulen.",
         answer3: "<br>In der Übersicht \"Fragenkataloge\" hast du die Möglichkeit,",
-        answer4: "<ul><li>einen <strong>neuen Fragenkatalog zu erstellen</strong></li><li><strong>Fragenkataloge anzuzeigen</strong>, um die darin enthaltenen Fragen anzusehen</li><li><strong>Fragenkataloge zu bearbeiten</strong>, zur Anpassung von bestehenden Fragenkatalogen sowie</li><li><strong>Fragenkataloge zu löschen</strong></li></ul>"
+        answer4: "<ul><li>einen <strong>neuen Fragenkatalog zu erstellen</strong>,</li><li><strong>Fragenkataloge anzuzeigen</strong>, um die darin enthaltenen Fragen anzusehen,</li><li><strong>Fragenkataloge zu bearbeiten</strong>, zur Anpassung von bestehenden Fragenkatalogen sowie</li><li><strong>Fragenkataloge zu löschen</strong>.</li></ul>"
     },
     {
         question: "Wie starte ich ein Quiz?",
         answer1: "Zur Übersichtsseite mit all unseren verfügbaren Quizzen kommst du über die Startseite, indem du auf den Button \"Quiz starten\" klickst oder über das Burger-Menü \"Quiz starten\" auswählst.",
-        answer2: "Dann einfach dein gewünschtes Modul anklicken, den gewünschten Spielmodus auswählen und schon geht es los :)"
+        answer2: "Dann einfach dein gewünschtes Modul suchen, den gewünschten Spielmodus auswählen und schon geht es los :)"
     },
     {
         question: "Wo finde ich meine laufenden Quizze?",
@@ -63,7 +63,7 @@ const FAQ_CONTENT = ref([
     },
     {
         question: "Was ist der Lernmodus?",
-        answer1: "Hier kannst du dir in gemeinsamen Lern-Sessions mit deinen Komiliton:innen wertvolles Wissen entweder zu kompletten Modulen oder einzelnen Lektionen der Module ohne Zeitdruck aneignen.",
+        answer1: "Hier kannst du dir in gemeinsamen Lern-Sessions mit deinen Komiliton:innen wertvolles Wissen zu kompletten Modulen ohne Zeitdruck aneignen.",
         answer2: "Einfach das gewünschte Modul auswählen und schon kann es losgehen!"
     },
     {
