@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import AnswerOptionButton from './AnswerOptionButton.vue';
 
 // Input von Parent
-const props = defineProps(['question']);
+const props = defineProps(['question', 'progressindicator']);
 const emits = defineEmits(['selected']);
 
 // Component State
@@ -38,16 +38,16 @@ watch(() => props.question, () => {
         <!-- Option 1 -->
         <AnswerOptionButton :optionText="props.question.option1" :option-id="1" @selected="handleSelected"
             :display="isSelected1 || isSelected2 || isSelected3 || isSelected4"
-            :is-correct="props.question.correctAnswer == 'option1'" />
+            :is-correct="props.question.correctAnswer == 'option1'" :progess-indicator="props.progressindicator" />
         <!-- Option 2 -->
         <AnswerOptionButton :optionText="props.question.option2" :option-id="2" @selected="handleSelected"
             :display="isSelected1 || isSelected2 || isSelected3 || isSelected4"
-            :is-correct="props.question.correctAnswer == 'option2'" />
+            :is-correct="props.question.correctAnswer == 'option2'" :progess-indicator="props.progressindicator" />
         <AnswerOptionButton :optionText="props.question.option3" :option-id="3" @selected="handleSelected"
             :display="isSelected1 || isSelected2 || isSelected3 || isSelected4"
-            :is-correct="props.question.correctAnswer == 'option3'" />
+            :is-correct="props.question.correctAnswer == 'option3'" :progess-indicator="props.progressindicator" />
         <AnswerOptionButton :optionText="props.question.option4" :option-id="4" @selected="handleSelected"
             :display="isSelected1 || isSelected2 || isSelected3 || isSelected4"
-            :is-correct="props.question.correctAnswer == 'option4'" />
+            :is-correct="props.question.correctAnswer == 'option4'" :progess-indicator="props.progressindicator" />
     </div>
 </template>

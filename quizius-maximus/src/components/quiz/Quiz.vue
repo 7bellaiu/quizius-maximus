@@ -35,6 +35,10 @@ const handleSelected = (isCorrect) => {
     isExplanationGreen.value = isCorrect;
     displayExplanation.value = true;
 
+    if(props.questions?.length == 1){
+        hasNextQuestion.value = false;
+    }
+
     if (!hasNextQuestion.value) {
         isLastQuestionAnswered.value = true;
     } else {
@@ -58,7 +62,7 @@ const handleFinished = () => {
 
         <!-- Antwortoptionen -->
         <AnswerOptions v-if="props.questions[currentQuestionIndex]" :question="props.questions[currentQuestionIndex]"
-            @selected="handleSelected" />
+            :progressindicator="currentQuestionIndex" @selected="handleSelected" />
 
         <!-- Erklaerung -->
         <Explanation v-if="isExplanationDisplayed && displayExplanation"

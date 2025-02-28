@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 
-const props = defineProps(["optionId", "optionText", "display", "isCorrect"]);
+const props = defineProps(["optionId", "optionText", "display", "isCorrect", "progessIndicator"]);
 const emits = defineEmits(["selected"])
 
 const isSelected = ref(false);
@@ -15,7 +15,7 @@ const handleClick = () => {
 }
 
 //Selektion zurücksetzen, wenn neue Option übergeben
-watch(() => props.optionText, () => {
+watch(() => props.progessIndicator, () => {
     isSelected.value = false;
 });
 </script>
